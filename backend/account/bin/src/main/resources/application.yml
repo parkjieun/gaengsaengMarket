@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ssafy_blog?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: ssafy
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database: mysql
+#    hibernate:
+#      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        char_set: 
+    generate-ddl: true
+server:
+  port: 8003
+
+file:
+  upload:
+    directory: /static/image/
+oauth2:
+  kakao:
+    client-id: f37d3a404d52c03b013a84acbfad3555
+    client-secret: SNRNhPd67awuNnFzIuVIP9fojIgvAHJO
+
+jwt:
+  secret: secret0key0in0ssafyasdfasdfasdfasdfasdf
