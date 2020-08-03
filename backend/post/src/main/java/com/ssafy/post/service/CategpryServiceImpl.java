@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.post.dto.CategoryBig;
 import com.ssafy.post.dto.CategoryMid;
+import com.ssafy.post.dto.Post;
 import com.ssafy.post.mapper.CategoryMapper; 
 @Service
 @Transactional
@@ -26,6 +27,11 @@ public class CategpryServiceImpl implements CategoryService {
 	public List<CategoryMid> selectAllCategoryMid(String category_big_id) throws Exception {
 		// TODO Auto-generated method stub
 		return mapper.selectAllCategoryMid(category_big_id);
+	}
+
+	@Override
+	public List<Post> selectCategoryPost(String category_mid) throws Exception {
+		return mapper.selectCategoryPost(category_mid);
 	}
 
 }

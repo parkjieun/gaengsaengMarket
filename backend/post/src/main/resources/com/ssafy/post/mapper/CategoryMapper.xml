@@ -11,6 +11,34 @@
 		 select * from category_mid WHERE cate_big_id = #{cate_big_id}
 	</select>
 	
+	<select id="selectCategoryPost" resultType="Post" >
+		select
+		     t0.*
+		    ,t1.files
+		    ,t2.tags
+		from post t0
+		
+		left outer join (
+		    select post_id, max(img_url) as files
+		    from post_img
+		    group by post_id
+		) t1
+		on t0.post_id = t1.post_id
+		
+		left outer join (
+			
+		    SELECT post_id, group_concat(tag) AS tags
+			 FROM hashtag 
+			 GROUP BY post_id
+		) t2
+		on t0.post_id = t2.post_id
+		
+		left outer join `like` t3
+		on t0.post_id = t3.post_id
+		
+		where del_flag != 1 AND cate_mid_id=#{category_mid}
+	</select>
+	
 	 
     
 </mapper>

@@ -34,4 +34,8 @@ public interface PostMapper {
 
 	//public int deletePostImg(List<String> deleteFiles) throws Exception;
 	public int deletePostImg(List<String> deleteFiles) throws Exception;
+
+	public int insertLikePost(HashMap<String, Object> map) throws Exception;
+
+	public int deleteLikePost(HashMap<String, Object> map) throws Exception;
 }
