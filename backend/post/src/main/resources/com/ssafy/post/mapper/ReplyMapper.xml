@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.post.mapper.ReplyMapper">
+
+	<insert id="insertReply">
+    	insert into reply(contents, post_id, user_id) 
+    	values(#{contents},#{post_id},#{user_id})
+    </insert>
+    
+    <update id="deleteReply">
+   		update reply
+       	set del_flag=1
+    	where reply_id=#{reply_id}
+    </update>
+  
+  	<update id="updateReply">
+		update reply
+       	set contents = #{contents}
+    	where reply_id = #{reply_id}
+   </update>
+    
+    <select id="selectReply" resultType="Reply">
+		select *
+		from reply
+		where post_id = #{post_id}
+	</select>
+    
+</mapper>
+
+
+

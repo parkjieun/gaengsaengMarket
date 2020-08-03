@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.post.mapper.PostMapper">
+
+	 <insert id="insertPost">
+    	insert into post(title, contents, cate_mid_id, user_id, price, deal_type, deal_weak) 
+    	values(#{title},#{contents},#{cate_mid_id},#{user_id},#{price},#{deal_type},#{deal_weak})
+    </insert>
+    
+   	<insert id="insertHashtag">
+    	insert into hashtag(tag, post_id) values
+    	<foreach collection="tags" item="tag" open="" close="" separator=",">
+    		(#{tag},#{num})
+    	</foreach>
+    </insert>
+    
+    <insert id="insertPostImg2" parameterType="java.util.List">
+    	insert into 
+    		post_img(img_url, post_id) 
+    	values
+    	<foreach collection="imgList" item="img_url" open="" close="" separator=" , ">
+    	(#{img_url}, #{num})
+    	</foreach>
+    </insert>
+    
+    <insert id="insertPostImg" parameterType="java.util.List">
+    	insert into 
+    		post_img(img_url, post_id) 
+    	values
+    	
+    	(#{img_url}, #{num})
+    	
+    </insert>
+    
+	<select id="selectPostNum" resultType="int">
+		select max(post_id) from post
+	</select>
+	
+	<update id="deletePost">
+		update post
+       	set del_flag=1
+    	where post_id=#{post_id}
+	</update>
+	
+	<select id="selectAllPost" resultType="Post" >
+		select
+		     t0.*
+		    ,t1.files
+		    ,t2.tags
+		from post t0
+		
+		left outer join (
+		    select post_id, max(img_url) as files
+		    from post_img
+		    group by post_id
+		) t1
+		on t0.post_id = t1.post_id
+		
+		left outer join (
+			
+		    SELECT post_id, group_concat(tag) AS tags
+			 FROM hashtag 
+			 GROUP BY post_id
+		) t2
+		on t0.post_id = t2.post_id
+		
+		left outer join `like` t3
+		on t0.post_id = t3.post_id
+		
+		where del_flag != 1 
+		<if test="query!=null and !query.equals('')">
+		and (t0.post_id in (
+				    select post_id
+				    from hashtag
+				    where tag like CONCAT('%',#{query},'%')
+				    group by post_id
+				)
+		  	or t0.title like  CONCAT('%',#{query},'%')
+		  )
+		 </if>
+		 
+		<choose>
+       		<when test="like">
+		       and  t3.user_id =  #{user_id}
+       		</when>
+       		<when test="user_id!=null and !user_id.equals('')">
+		 			and  t0.user_id =  #{user_id}
+       		</when>
+       </choose>
+		 
+		 
+	<!-- 	 <if test="user_id!=null and !user_id.equals('')">
+		 and  t0.user_id =  #{user_id}
+		 </if>
+		 <if test="like">
+		 and  t3.user_id =  #{user_id}
+		 </if> -->
+	</select>
+	
+	<select id="detailPost" resultType="Post" >
+		SELECT p.*
+			 , (SELECT group_concat(tag) FROM hashtag WHERE post_id=#{post_id}) AS 'tags'
+			 , (SELECT GROUP_CONCAT(img_url) FROM post_img WHERE post_id=#{post_id}) AS 'files'
+			 , c.name AS 'cate_mid_name'
+			 , b.name AS 'cate_big_name'
+			 , b.cate_big_id AS 'cate_big_id'
+		FROM post p, category_mid c, category_big b
+		WHERE p.cate_mid_id = c.cate_mid_id 
+			and b.cate_big_id = c.cate_big_id
+			and p.post_id = #{post_id}
+	</select>
+	
+	<update id="updatePost">
+		update post
+       	set title = #{title}
+		  	, contents = #{contents}
+		  	, cate_mid_id = #{cate_mid_id}
+		 	, price= #{price}
+		  	, deal_type = #{deal_type}
+       		, deal_weak = #{deal_weak}  
+    	where post_id = #{post_id}
+   </update>
+    
+    <delete id="deleteHashtag">
+    	delete from hashtag
+    	where post_id = #{post_id}
+    </delete>
+    
+     <delete id="deletePostImg">
+		delete from post_img
+    	<where> 
+	    	<foreach collection="list" item="img_url" open="(" close=")" separator="or">
+	    		img_url =  #{img_url}
+	    	</foreach>
+    	</where>
+    </delete>
+    
+</mapper>
+
+
+
