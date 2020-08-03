@@ -4,7 +4,7 @@
   
     <!-- <div style="width:35%" class="text-left"><v-app-bar-nav-icon class="my-0" color="#00263b" @click="openCategory"></v-app-bar-nav-icon></div> -->
     <!-- <v-toolbar-title><router-link to="/"><span><v-icon>mdi-cart</v-icon></span>Page title </router-link></v-toolbar-title> -->
-    <div v-if="!myProfile" style="width:35%;position:absolute;right:2%;" class="text-right d-none d-sm-block">
+    <div v-if="!loggedIn" style="width:35%;position:absolute;right:2%;" class="text-right d-none d-sm-block">
       <v-btn text small class="my-0" @click="openForm">
         <v-icon small>mdi-account</v-icon>로그인
       </v-btn>
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapGetters } from 'vuex'
 import LoginForm from "@/components/user/LoginForm.vue"
 
 export default {
@@ -131,7 +131,8 @@ export default {
     LoginForm,
   },
   computed: {
-      ...mapState(['authorization','myProfile'])
+      ...mapState(['authorization','myProfile']),
+      ...mapGetters(['loggedIn'])
   },
   data() {
     return{
