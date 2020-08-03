@@ -1,5 +1,7 @@
 <template>
     <div id="userProfile">
+        <h5>회원정보</h5>
+        <v-divider></v-divider>
         <v-row justify="center" align="center">
         <!-- profile image -->
             <v-avatar color="#a6e3e9" size="62">
@@ -18,10 +20,9 @@
             </div>
         <!-- update button -->
         <!-- user == login.user만 보여줄 것!!! -->
-            <v-btn v-if="myPage" prepend-icon="mdi-" color="#defcfc" small @click="updateBtn" style="margin: 10px;">수정</v-btn>
+            <v-btn v-if="myPage" color="#defcfc" small @click="updateBtn" style="margin: 10px;">수정</v-btn>
             
         </v-row>
-        <v-divider></v-divider>
         
         <!-- menu -->
         <v-tabs centered>
@@ -32,7 +33,7 @@
         </v-tabs>
 
         <!-- product list -->
-        <PostList :posts="allPosts" id="postList"/>
+        <PostList :posts="showPosts" id="postList"/>
     </div>
 </template>
 
@@ -51,19 +52,21 @@ export default {
             onSalePosts: [],
             soldOutPosts: [],
             user: null,
-            myPage: false,
         }
     },
     components: {
         PostList
     },
     methods: {
-        ...mapActions(['getMyProfile', 'getPostsByUID']),
+        ...mapActions(['getMyProfile']),
         getUserProfile(userID) {
-            axios.get(httpUser + '/api/user/' + userID)
+            httpUser.get('/api/user/' + userID)
             .then((res) => {
-                console.log("유저 데이타", res)
                 this.user = res.data
+                httpPost.get('/api/post?user_id=' + res.data.userId)
+                .then((res) => {
+                    this.setPosts(res.data)
+                })
             })
         }, 
         setPosts(posts) {
@@ -92,29 +95,16 @@ export default {
         updateBtn() {
             this.$router.push({ name: 'UserProfileUpdate' })
         }
-
     },
     computed : {
-        ...mapState(['myProfile', 'postsByUID']),
+        ...mapState(['myProfile']),
+        myPage: function() { 
+            return this.myProfile.userId == this.user.userId }
     },
     created() {
-        const uid = this.$route.params.uid
-        this.getUserProfile (uid)
-        this.getMyProfile()
-        .then(() => {
-            if (this.myProfile.userId === uid) {
-                this.myPage = true
-            }
-        })
-        
+        this.getUserProfile (this.$route.params.uid)
+        this.getMyProfile()       
     },
-    mounted() {
-        httpPost.get("/api/post?user_id="+ this.$route.params.uid).then(res => {
-            console.log("회원정보 작성글", res.data)
-            this.allPosts=res.data
-            this.setPosts(res.data)
-        })
-    }
 }
 </script>
 
