@@ -11,10 +11,10 @@ import org.springframework.data.repository.query.Param;
 
 import com.ssafy.user.model.User;
 
-public interface UserRepository extends JpaRepository<User, Integer>{
+public interface UserRepository extends JpaRepository<User, String>{
 	public boolean existsBySocialUid(String socialUid);
-	public User findBySocialUid(String socialUid);
+	public User findBySocialUid(String userId);
 	@Query(value="select user_id from user where social_uid = :socialUid",nativeQuery=true)
-	public Integer findId(@Param("socialUid") String socialUid);
+	public String findId(@Param("socialUid") String socialUid);
 
 }
