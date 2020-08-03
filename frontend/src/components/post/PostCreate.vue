@@ -16,7 +16,7 @@
             v-model="StandbyImgs"
             accept="image/*"
             @change="onFileChange()"
-            label="상품 사진을 등록해 주세요"
+            label="상품 사진을 등록해주세요."
             filled
             prepend-icon="mdi-camera"
           >
