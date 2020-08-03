@@ -1,5 +1,6 @@
 package com.ssafy.post.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,13 @@ public class CategpryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<Post> selectCategoryPost(String category_mid) throws Exception {
-		return mapper.selectCategoryPost(category_mid);
+	public List<Post> selectCategoryPost(String category_mid, int sno) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("category_mid",category_mid);
+		map.put("sno", sno);
+		
+		return mapper.selectCategoryPost(map);
 	}
+
 
 }

@@ -1,5 +1,6 @@
 package com.ssafy.post.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,5 +17,5 @@ public interface CategoryMapper {
 
 	public List<CategoryMid> selectAllCategoryMid(String category_big_id) throws Exception;
 
-	public List<Post> selectCategoryPost(String category_mid) throws Exception;
+	public List<Post> selectCategoryPost(HashMap<String, Object> map) throws Exception;
 }
