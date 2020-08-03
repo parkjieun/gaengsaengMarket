@@ -1,0 +1,477 @@
+CREATE DATABASE ssafy_blog;
+
+-- 사용자
+CREATE TABLE ssafy_blog.user (
+	user_id     INT          NOT NULL COMMENT '사용자 id', -- 사용자 id
+	nick_name   VARCHAR(128) NOT NULL COMMENT '닉네임', -- 닉네임
+	introduce   TEXT         NULL     COMMENT '내용', -- 내용
+	create_date DATETIME     NULL     DEFAULT current_timestamp() COMMENT '가입일', -- 가입일
+	address     VARCHAR(255) NULL     COMMENT '주소', -- 주소
+	social_uid  VARCHAR(125) NOT NULL COMMENT '소셜토큰', -- 소셜토큰
+	profile_img VARCHAR(125) NULL     COMMENT '프로필사진', -- 프로필사진
+	point_val   INT          NULL     COMMENT '포인트' -- 포인트
+)
+COMMENT '사용자';
+
+-- 사용자
+ALTER TABLE ssafy_blog.user
+	ADD CONSTRAINT  -- 사용자 기본키
+		PRIMARY KEY (
+			user_id -- 사용자 id
+		);
+
+-- 사용자 유니크 인덱스2
+CREATE UNIQUE INDEX UIX_user2
+	ON ssafy_blog.user ( -- 사용자
+		social_uid ASC -- 소셜토큰
+	);
+
+ALTER TABLE ssafy_blog.user
+	MODIFY COLUMN user_id INT NOT NULL AUTO_INCREMENT COMMENT '사용자 id';
+
+ALTER TABLE ssafy_blog.user
+	AUTO_INCREMENT = 10000;
+
+-- 게시글
+CREATE TABLE ssafy_blog.post (
+	post_id     INT          NOT NULL COMMENT '게시글 id', -- 게시글 id
+	title       VARCHAR(125) NOT NULL COMMENT '제목', -- 제목
+	create_date DATETIME     NULL     DEFAULT current_timestamp() COMMENT '생성일', -- 생성일
+	update_date DATETIME     NULL     DEFAULT current_timestamp() COMMENT '수정일', -- 수정일
+	contents    TEXT         NULL     COMMENT '내용', -- 내용
+	type        INT          NOT NULL COMMENT '1: 판매중
+	2: 판매완료', -- 판매상태값
+	like_cnt    INT          NULL     COMMENT '좋아요', -- 좋아요
+	cate_mid_id INT          NOT NULL COMMENT '카테고리 중분류 id', -- 카테고리 중분류 id
+	user_id     INT          NOT NULL COMMENT '사용자 id', -- 사용자 id
+	price       INT          NOT NULL COMMENT '가격', -- 가격
+	del_flag    BOOLEAN      NOT NULL DEFAULT FALSE COMMENT 'FALSE:삭제안함
+	TRUE:삭제', -- 삭제여부
+	deal_type   INT          NULL     COMMENT '1:택배거래
+	2:직거래
+	3:택배/직거래', -- 거래방법
+	deal_weak   INT          NULL     COMMENT '1: 일
+	10: 월
+	100: 화
+	1000: 수
+	10000: 목
+	100000: 금
+	1000000: 토' -- 거래가능날짜
+)
+COMMENT '게시글';
+
+-- 게시글
+ALTER TABLE ssafy_blog.post
+	ADD CONSTRAINT  -- 게시글 기본키
+		PRIMARY KEY (
+			post_id -- 게시글 id
+		);
+
+ALTER TABLE ssafy_blog.post
+	MODIFY COLUMN post_id INT NOT NULL AUTO_INCREMENT COMMENT '게시글 id';
+
+ALTER TABLE ssafy_blog.post
+	AUTO_INCREMENT = 10000;
+
+-- 해시태그
+CREATE TABLE ssafy_blog.hashtag (
+	tag_id  INT          NOT NULL COMMENT '태그 id', -- 태그 id
+	tag     VARCHAR(125) NOT NULL COMMENT '태그명', -- 태그명
+	post_id INT          NOT NULL COMMENT '게시글 id' -- 게시글 id
+)
+COMMENT '해시태그';
+
+-- 해시태그
+ALTER TABLE ssafy_blog.hashtag
+	ADD CONSTRAINT  -- 해시태그 기본키
+		PRIMARY KEY (
+			tag_id -- 태그 id
+		);
+
+ALTER TABLE ssafy_blog.hashtag
+	MODIFY COLUMN tag_id INT NOT NULL AUTO_INCREMENT COMMENT '태그 id';
+
+ALTER TABLE ssafy_blog.hashtag
+	AUTO_INCREMENT = 10000;
+
+-- 좋아요테이블
+CREATE TABLE ssafy_blog.like (
+	post_id INT NOT NULL COMMENT '게시글 id', -- 게시글 id
+	user_id INT NOT NULL COMMENT '사용자 id' -- 사용자 id
+)
+COMMENT '좋아요테이블';
+
+-- 좋아요테이블
+ALTER TABLE ssafy_blog.like
+	ADD CONSTRAINT  -- 좋아요테이블 기본키
+		PRIMARY KEY (
+			post_id, -- 게시글 id
+			user_id  -- 사용자 id
+		);
+
+ALTER TABLE ssafy_blog.like
+	MODIFY COLUMN post_id INT NOT NULL AUTO_INCREMENT COMMENT '게시글 id';
+
+ALTER TABLE ssafy_blog.like
+	AUTO_INCREMENT = 10000;
+
+-- 댓글
+CREATE TABLE ssafy_blog.reply (
+	reply_id    INT          NOT NULL COMMENT '댓글 id', -- 댓글 id
+	create_date DATETIME     NULL     DEFAULT current_timestamp() COMMENT '작성일', -- 작성일
+	contents    VARCHAR(255) NOT NULL COMMENT '내용', -- 내용
+	post_id     INT          NOT NULL COMMENT '게시글 id', -- 게시글 id
+	user_id     INT          NOT NULL COMMENT '사용자 id', -- 사용자 id
+	del_flag    BOOLEAN      NOT NULL DEFAULT FALSE COMMENT 'FALSE: 삭제안됨
+	TRUE: 삭제' -- 삭제여부
+)
+COMMENT '댓글';
+
+-- 댓글
+ALTER TABLE ssafy_blog.reply
+	ADD CONSTRAINT  -- 댓글 기본키
+		PRIMARY KEY (
+			reply_id -- 댓글 id
+		);
+
+ALTER TABLE ssafy_blog.reply
+	MODIFY COLUMN reply_id INT NOT NULL AUTO_INCREMENT COMMENT '댓글 id';
+
+ALTER TABLE ssafy_blog.reply
+	AUTO_INCREMENT = 10000;
+
+-- 유저팔로우
+CREATE TABLE ssafy_blog.follow (
+	user_id   INT NOT NULL COMMENT '사용자 id', -- 사용자 id
+	following INT NOT NULL COMMENT '팔로잉 id' -- 팔로잉 id
+)
+COMMENT '유저팔로우';
+
+-- 유저팔로우
+ALTER TABLE ssafy_blog.follow
+	ADD CONSTRAINT  -- 유저팔로우 기본키
+		PRIMARY KEY (
+			user_id,   -- 사용자 id
+			following  -- 팔로잉 id
+		);
+
+-- 카테고리 대분류
+CREATE TABLE ssafy_blog.category_big (
+	cate_big_id INT          NOT NULL COMMENT '카테고리 대분류 id', -- 카테고리 대분류 id
+	name        VARCHAR(125) NOT NULL COMMENT '카테고리명' -- 카테고리명
+)
+COMMENT '카테고리 대분류';
+
+-- 카테고리 대분류
+ALTER TABLE ssafy_blog.category_big
+	ADD CONSTRAINT  -- 카테고리 대분류 기본키
+		PRIMARY KEY (
+			cate_big_id -- 카테고리 대분류 id
+		);
+
+ALTER TABLE ssafy_blog.category_big
+	MODIFY COLUMN cate_big_id INT NOT NULL AUTO_INCREMENT COMMENT '카테고리 대분류 id';
+
+ALTER TABLE ssafy_blog.category_big
+	AUTO_INCREMENT = 10000;
+
+-- 카테고리 중분류
+CREATE TABLE ssafy_blog.category_mid (
+	cate_mid_id INT          NOT NULL COMMENT '카테고리 중분류 id', -- 카테고리 중분류 id
+	name        VARCHAR(125) NOT NULL COMMENT '카테고리명', -- 카테고리명
+	cate_big_id INT          NOT NULL COMMENT '카테고리 대분류 id' -- 카테고리 대분류 id
+)
+COMMENT '카테고리 중분류';
+
+-- 카테고리 중분류
+ALTER TABLE ssafy_blog.category_mid
+	ADD CONSTRAINT  -- 카테고리 중분류 기본키
+		PRIMARY KEY (
+			cate_mid_id -- 카테고리 중분류 id
+		);
+
+ALTER TABLE ssafy_blog.category_mid
+	MODIFY COLUMN cate_mid_id INT NOT NULL AUTO_INCREMENT COMMENT '카테고리 중분류 id';
+
+ALTER TABLE ssafy_blog.category_mid
+	AUTO_INCREMENT = 10000;
+
+
+-- 이미지
+CREATE TABLE ssafy_blog.post_img (
+	img_id  INT          NOT NULL COMMENT '이미지 id', -- 이미지 id
+	img_url VARCHAR(255) NOT NULL COMMENT '이미지url', -- 이미지url
+	post_id INT          NOT NULL COMMENT '게시글 id' -- 게시글 id
+)
+COMMENT '이미지';
+
+-- 이미지
+ALTER TABLE ssafy_blog.post_img
+	ADD CONSTRAINT  -- 이미지 기본키
+		PRIMARY KEY (
+			img_id -- 이미지 id
+		);
+
+ALTER TABLE ssafy_blog.post_img
+	MODIFY COLUMN img_id INT NOT NULL AUTO_INCREMENT COMMENT '이미지 id';
+
+ALTER TABLE ssafy_blog.post_img
+	AUTO_INCREMENT = 10000;
+
+-- 채팅관계
+CREATE TABLE ssafy_blog.room_join (
+	user_id INT NOT NULL COMMENT '사용자 id', -- 사용자 id
+	room_id INT NOT NULL COMMENT '채팅룸 id' -- 채팅룸 id
+)
+COMMENT '채팅관계';
+
+-- 채팅관계
+ALTER TABLE ssafy_blog.room_join
+	ADD CONSTRAINT  -- 채팅관계 기본키
+		PRIMARY KEY (
+			user_id, -- 사용자 id
+			room_id  -- 채팅룸 id
+		);
+
+-- 채팅방
+CREATE TABLE ssafy_blog.room (
+	room_id     INT      NOT NULL COMMENT '채팅룸 id', -- 채팅룸 id
+	create_date DATETIME NULL     DEFAULT current_timestamp() COMMENT '생성일' -- 생성일
+)
+COMMENT '채팅방';
+
+-- 채팅방
+ALTER TABLE ssafy_blog.room
+	ADD CONSTRAINT  -- 채팅방 기본키
+		PRIMARY KEY (
+			room_id -- 채팅룸 id
+		);
+
+ALTER TABLE ssafy_blog.room
+	MODIFY COLUMN room_id INT NOT NULL AUTO_INCREMENT COMMENT '채팅룸 id';
+
+ALTER TABLE ssafy_blog.room
+	AUTO_INCREMENT = 10000;
+
+-- 메시지
+CREATE TABLE ssafy_blog.message (
+	message_id  INT          NOT NULL COMMENT '채팅내용 id', -- 채팅내용 id
+	content     VARCHAR(125) NOT NULL COMMENT '내용', -- 내용
+	create_date DATETIME     NULL     DEFAULT current_timestamp() COMMENT '생성일', -- 생성일
+	is_read     BOOLEAN      NOT NULL DEFAULT FALSE COMMENT 'FALSE:안읽음
+	TRUE:읽음', -- 읽음여부
+	room_id     INT          NOT NULL COMMENT '채팅룸 id', -- 채팅룸 id
+	user_id     INT          NOT NULL COMMENT '사용자 id' -- 사용자 id
+)
+COMMENT '메시지';
+
+-- 메시지
+ALTER TABLE ssafy_blog.message
+	ADD CONSTRAINT  -- 메시지 기본키
+		PRIMARY KEY (
+			message_id -- 채팅내용 id
+		);
+
+ALTER TABLE ssafy_blog.message
+	MODIFY COLUMN message_id INT NOT NULL AUTO_INCREMENT COMMENT '채팅내용 id';
+
+ALTER TABLE ssafy_blog.message
+	AUTO_INCREMENT = 10000;
+
+-- 포인트로그
+CREATE TABLE ssafy_blog.point_log (
+	p_log_id    INT      NOT NULL COMMENT '포인트 로그 id', -- 포인트 로그 id
+	create_date DATETIME NULL     DEFAULT current_timestamp() COMMENT '생성일', -- 생성일
+	point_use   INT      NULL     COMMENT '사용포인트', -- 사용포인트
+	user_id     INT      NULL     COMMENT '사용자 id' -- 사용자 id
+)
+COMMENT '포인트로그';
+
+-- 포인트로그
+ALTER TABLE ssafy_blog.point_log
+	ADD CONSTRAINT  -- 포인트로그 기본키
+		PRIMARY KEY (
+			p_log_id -- 포인트 로그 id
+		);
+
+ALTER TABLE ssafy_blog.point_log
+	MODIFY COLUMN p_log_id INT NOT NULL AUTO_INCREMENT COMMENT '포인트 로그 id';
+
+ALTER TABLE ssafy_blog.point_log
+	AUTO_INCREMENT = 10000;
+
+-- 게시글
+ALTER TABLE ssafy_blog.post
+	ADD CONSTRAINT FK_category_mid_TO_post -- 카테고리 중분류 -> 게시글
+		FOREIGN KEY (
+			cate_mid_id -- 카테고리 중분류 id
+		)
+		REFERENCES ssafy_blog.category_mid ( -- 카테고리 중분류
+			cate_mid_id -- 카테고리 중분류 id
+		);
+
+-- 게시글
+ALTER TABLE ssafy_blog.post
+	ADD CONSTRAINT FK_user_TO_post -- 사용자 -> 게시글
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 해시태그
+ALTER TABLE ssafy_blog.hashtag
+	ADD CONSTRAINT FK_post_TO_hashtag -- 게시글 -> 해시태그
+		FOREIGN KEY (
+			post_id -- 게시글 id
+		)
+		REFERENCES ssafy_blog.post ( -- 게시글
+			post_id -- 게시글 id
+		);
+
+-- 좋아요테이블
+ALTER TABLE ssafy_blog.like
+	ADD CONSTRAINT FK_post_TO_like -- 게시글 -> 좋아요테이블
+		FOREIGN KEY (
+			post_id -- 게시글 id
+		)
+		REFERENCES ssafy_blog.post ( -- 게시글
+			post_id -- 게시글 id
+		);
+
+-- 좋아요테이블
+ALTER TABLE ssafy_blog.like
+	ADD CONSTRAINT FK_user_TO_like -- 사용자 -> 좋아요테이블
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 댓글
+ALTER TABLE ssafy_blog.reply
+	ADD CONSTRAINT FK_post_TO_reply -- 게시글 -> 댓글
+		FOREIGN KEY (
+			post_id -- 게시글 id
+		)
+		REFERENCES ssafy_blog.post ( -- 게시글
+			post_id -- 게시글 id
+		);
+
+-- 댓글
+ALTER TABLE ssafy_blog.reply
+	ADD CONSTRAINT FK_user_TO_reply -- 사용자 -> 댓글
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 유저팔로우
+ALTER TABLE ssafy_blog.follow
+	ADD CONSTRAINT FK_user_TO_follow2 -- 사용자 -> 유저팔로우
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 유저팔로우
+ALTER TABLE ssafy_blog.follow
+	ADD CONSTRAINT FK_user_TO_follow -- 사용자 -> 유저팔로우2
+		FOREIGN KEY (
+			following -- 팔로잉 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 카테고리 중분류
+ALTER TABLE ssafy_blog.category_mid
+	ADD CONSTRAINT FK_category_big_TO_category_mid -- 카테고리 대분류 -> 카테고리 중분류
+		FOREIGN KEY (
+			cate_big_id -- 카테고리 대분류 id
+		)
+		REFERENCES ssafy_blog.category_big ( -- 카테고리 대분류
+			cate_big_id -- 카테고리 대분류 id
+		);
+
+-- 이미지
+ALTER TABLE ssafy_blog.post_img
+	ADD CONSTRAINT FK_post_TO_post_img -- 게시글 -> 이미지
+		FOREIGN KEY (
+			post_id -- 게시글 id
+		)
+		REFERENCES ssafy_blog.post ( -- 게시글
+			post_id -- 게시글 id
+		);
+
+-- 채팅관계
+ALTER TABLE ssafy_blog.room_join
+	ADD CONSTRAINT FK_user_TO_room_join -- 사용자 -> 채팅관계
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 채팅관계
+ALTER TABLE ssafy_blog.room_join
+	ADD CONSTRAINT FK_room_TO_room_join -- 채팅방 -> 채팅관계
+		FOREIGN KEY (
+			room_id -- 채팅룸 id
+		)
+		REFERENCES ssafy_blog.room ( -- 채팅방
+			room_id -- 채팅룸 id
+		);
+
+-- 메시지
+ALTER TABLE ssafy_blog.message
+	ADD CONSTRAINT FK_room_TO_message -- 채팅방 -> 메시지
+		FOREIGN KEY (
+			room_id -- 채팅룸 id
+		)
+		REFERENCES ssafy_blog.room ( -- 채팅방
+			room_id -- 채팅룸 id
+		);
+
+-- 메시지
+ALTER TABLE ssafy_blog.message
+	ADD CONSTRAINT FK_user_TO_message -- 사용자 -> 메시지
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+
+-- 포인트로그
+ALTER TABLE ssafy_blog.point_log
+	ADD CONSTRAINT FK_user_TO_point_log -- 사용자 -> 포인트로그
+		FOREIGN KEY (
+			user_id -- 사용자 id
+		)
+		REFERENCES ssafy_blog.user ( -- 사용자
+			user_id -- 사용자 id
+		);
+		
+		
+-- sample data
+INSERT INTO `category_big` (`cate_big_id`, `name`) VALUES
+	(10000, '브랜드패션'),
+	(10001, '패션의료·잡화·뷰티'),
+	(10002, '컴퓨터·디지털·가전'),
+	(10003, '식품·생필품');
+
+INSERT INTO `category_mid` (`cate_mid_id`, `name`, `cate_big_id`) VALUES
+	(10000, '브랜드의류', 10000),
+	(10001, '브랜드잡화', 10000),
+	(10002, '스포츠브랜드', 10000),
+	(10003, '컴퓨터', 10002),
+	(10004, '디지털', 10002),
+	(10005, '가전', 10002);
