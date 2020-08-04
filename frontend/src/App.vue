@@ -4,7 +4,7 @@
       <CategoryMenu :category="category" @category="openCategory"/>
     </div>
     <div id="navbar"> -->
-      <NavBar :category="category" @openForm="openForm" @openCategory="openCategory" style="z-index:99;"/>
+      <NavBar :category="category" @openForm="openForm" @openCategory="openCategory"/>
     <!-- </div> -->
     
     <!-- Sizes your content based upon application components -->
@@ -13,7 +13,7 @@
       <v-container fluid> -->
 
         <!-- If using vue-router -->
-        <router-view style="margin-top:10px;"></router-view>
+        <router-view></router-view>
       <!-- </v-container>
     </v-main> -->
 
