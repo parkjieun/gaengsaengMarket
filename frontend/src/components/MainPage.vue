@@ -1,12 +1,8 @@
 <template>
 <v-app>
-    <v-container fluid>
-       
+    <v-container fluid style="padding-top:0px;">
         <v-row align="center">
             <v-col align="center" style="margin:auto;padding:0px;">
-                <div style="border-top:solid 1px rgba(0,0,0,0.1);">
-                <category-tabs style="width:75%;height:48px;z-index: 1;" />
-                </div>
                 <v-carousel style="z-index:5;" delimiter-icon="mdi-minus" height="250px" cycle hide-delimiter-background :show-arrows="false">
                     <v-carousel-item src="../assets/banners/banner.png">
                     </v-carousel-item>
