@@ -69,15 +69,15 @@
 
               <div style="font-weight: 600px;font-size:13px; margin-right:10px;height:56px; color:#555555;   display: flex;">
                   <v-col style="border-right: 1.5px solid #f2f3f6; text-align:center">
-                    <div><img style="width:30px; height:30px; margin-right:5px" :src="require(`@/assets/post/heart.png`)"></div>
+                    <div><img calss="txt_btn" :src="require(`@/assets/post/heart.png`)"></div>
                       찜하기
                   </v-col>
                   <v-col style="border-right: 1.5px solid #f2f3f6; text-align:center">
-                    <div><img style="width:30px; height:30px; margin-right:5px" :src="require(`@/assets/post/chat.png`)"></div>
+                    <div><img calss="txt_btn" :src="require(`@/assets/post/chat.png`)"></div>
                     연락하기
                   </v-col>
                   <v-col style="text-align:center">
-                    <div><img style="width:30px; height:30px; margin-right:5px" :src="require(`@/assets/post/card.png`)"></div>
+                    <div><img calss="txt_btn" :src="require(`@/assets/post/card.png`)"></div>
                     바로구매
                   </v-col>
               </div>
@@ -86,7 +86,7 @@
         </v-row>
 
        <v-row>
-         <v-col cols="12" >
+         <v-col cols="10" >
             <v-tabs background-color="#fafafa"  :grow="true">
               <v-tab ripple>
                 <span  style="font-weight:600;"> 상품정보 </span>
@@ -98,7 +98,9 @@
               <v-tab-item>
                 <v-card flat>
                   <v-card-text style=" text-align:left; color:#212121">
-                    <div v-html="item.contents"></div>
+                    <v-row >
+                      <div v-html="item.contents"></div>
+                    </v-row>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
@@ -110,15 +112,28 @@
               </v-tab-item>
             </v-tabs>
            </v-col>
+            <v-col cols="2" style=" text-align:center">
+              <div style=" border-bottom:2px solid #cfcfcf;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
+                <div style="padding-top:20px">
+                  <v-avatar color="#a6e3e9" size="85" @click="goUserProfile(item.user_id)">
+                  <!-- <img :src="'http://i3a504.p.ssafy.io:8003'+item.profile_img" > -->
+                    <img src="http://i3a504.p.ssafy.io:8000/api/static/image/1596138378575_분홍.PNG" >
+                </v-avatar>
+                </div>
+                <div style="padding-top:10px; color:#72787f" @click="goUserProfile(item.user_id)">
+                {{item.user_id}} 
+                 <!-- {{item.nick_name}} -->
+                </div>
+            </v-col>
         </v-row>
        
         <v-divider></v-divider>
 
-      <!-- <div v-show="item.user_id == "> -->
-        <v-row>
+        <!-- v-show="item.user_id ==  myProfile.userId" -->
+        <v-row v-if="myProfile != null" >  
           <v-col cols="12" style="text-align:right">   
               <v-btn class="ma-2" tile outlined color="success" @click="goPostUpdate">
-              <v-icon left>mdi-pencil</v-icon> 수정하기
+              <v-icon left>mdi-pencil</v-icon> 수정하기 {{myProfile.value}}
             </v-btn>
             <!-- <v-btn class="ma-2" tile color="#FFE6EB" dark @click="ConfirmDelete(item.post_id)">삭제</v-btn> -->
           </v-col>
@@ -130,16 +145,20 @@
 <script> 
 import { mapGetters } from 'vuex';
 
+
 export default {
  
   name: 'post-detail',
   computed: {
     ...mapGetters(['item']),
+    //totoal(){ return this.$store.state.count;}
   },
   
   created() {
     console.log(">>>>>>>"+`${this.$route.query.post_id}`);
     this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}`);
+    this.myProfile = this.$store.state.myProfile;
+    console.dir(this.myProfile);
   },
 
   methods: {
@@ -159,12 +178,16 @@ export default {
     },
     goPostUpdate(){ 
       this.$router.push({ name: 'post-update', params: { post_id:  Number(this.$route.query.post_id)} } )
-      
+    },
+    goUserProfile(user_id){
+      console.dir(">>>>>>>>>>>goUserProfile: "+user_id)
+      this.$router.push({name: 'UserProfile', params: { uid : user_id }} )
     },
 
   },
  data () {
    return {
+      myProfile : null,
       week: [
           {
               name: "일",
@@ -195,11 +218,10 @@ export default {
               count: 1000000
           }
       ],
-      // active: null,
     }
  },
   filters: {
-      currency: function (value) {
+      currency (value) {
           var num = new Number(value);
           return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
       }
@@ -210,7 +232,7 @@ export default {
 
 </script>
 
-<style >
+<style scoped>
 .kcuhgh::before {
     content: "";
     position: absolute;
@@ -227,5 +249,8 @@ position: relative;
     padding-left: 15px;
     color: rgb(153, 153, 153);
     text-align:left
+}
+.txt_btn{
+  width:30px; height:30px; margin-right:5px;
 }
 </style>
