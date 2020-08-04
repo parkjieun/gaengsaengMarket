@@ -1,12 +1,11 @@
 <template>
 <v-app id="inspire">
     <div>
-        <v-tabs outlined grow v-model="tab" background-color="#fff" class="elevation-2" color="#a6e3e9">
+        <v-tabs class="tabs " hide-slider grow v-model="tab" background-color="#fff"  style="" >
             <!-- <v-tabs-slider></v-tabs-slider> -->
 
             <v-tab v-for="(i,index) in categoryBig" :key="index" :href="`#tab-${index}`" style="width:60px;" @mouseover="inTab(index,i.cate_big_id)" @mouseout="outTab">
                 <div style="font-weight:bold;">
-                
                 {{i.name}}
                 </div>
             </v-tab>
@@ -72,7 +71,6 @@ export default {
             data.forEach(element => {
                 var temp = []
                 httpPost.get("/api/post/category/category_mid/" + element.cate_big_id).then(res => {
-
                     this.categoryMid[element.cate_big_id]=res.data
                 })
                 
@@ -88,7 +86,7 @@ export default {
             // t["asdf"] = 3
             // k["ttt"].push(t)
             // console.log(k)
-            console.log(this.categoryMid)
+
             
         },
         out() {
@@ -116,6 +114,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.v-tab{
+    color:rgba(0,0,0,1) !important;
+}
+
+.v-tab--active{
+    border-bottom:solid 2px #A6e3e9 !important;
+    color:rgba(166,227,233,1) !important;
+}
 
 </style>
