@@ -60,7 +60,7 @@ export default {
         PostList
     },
     methods: {
-        ...mapActions(['getMyProfile']),
+        ...mapActions(['setUserProfile']),
         
          
         setPosts(data) {
@@ -98,7 +98,7 @@ export default {
         ...mapState(['myProfile']),
     },
     created() {
-        this.getMyProfile()
+        this.setUserProfile()
         .then(() => {
             httpPost.get('/api/post?user_id=' + this.myProfile.userId)
             .then((res) => {

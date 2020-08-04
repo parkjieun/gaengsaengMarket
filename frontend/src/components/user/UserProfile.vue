@@ -58,7 +58,7 @@ export default {
         PostList
     },
     methods: {
-        ...mapActions(['getMyProfile']),
+        ...mapActions(['setUserProfile']),
         getUserProfile(userID) {
             httpUser.get('/api/user/' + userID)
             .then((res) => {
@@ -98,12 +98,11 @@ export default {
     },
     computed : {
         ...mapState(['myProfile']),
-        myPage: function() { 
-            return this.myProfile.userId == this.user.userId }
+        myPage: function() { return this.myProfile.userId == this.user.userId }
     },
     created() {
         this.getUserProfile (this.$route.params.uid)
-        this.getMyProfile()       
+        this.setUserProfile()       
     },
 }
 </script>
