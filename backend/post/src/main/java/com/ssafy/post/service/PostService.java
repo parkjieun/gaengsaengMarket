@@ -31,4 +31,7 @@ public interface PostService {
 	public int insertLikePost(String post_id, String user_id)  throws Exception;
 
 	public int deleteLikePost(String post_id, String user_id)  throws Exception;
+	
+	public String selectLike(String post_id, String user_id)  throws Exception;
+	
 }

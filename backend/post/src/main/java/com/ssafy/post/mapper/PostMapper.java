@@ -38,4 +38,6 @@ public interface PostMapper {
 	public int insertLikePost(HashMap<String, Object> map) throws Exception;
 
 	public int deleteLikePost(HashMap<String, Object> map) throws Exception;
+	
+	public int selectLike(HashMap<String, Object> map) throws Exception;
 }
