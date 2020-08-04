@@ -12,7 +12,7 @@ export default new Vuex.Store({
   state: {
     authorization:sessionStorage.getItem("authorization"),
     myProfile: sessionStorage.getItem("myProfile"),
-    isAuthenticated: false,
+    isAuthenticated: sessionStorage.getItem("isAuthenticated"),
     items: [],
     item: {},
   },
@@ -32,8 +32,8 @@ export default new Vuex.Store({
     },
     SET_AUTH(state,value){
       sessionStorage.setItem("authorization",value)
+      sessionStorage.setItem('isAuthenticated', true)
       state.authorization = value
-      state.isAuthenticated = true
     },
     setPosts(state, payload) {
       state.items = payload;

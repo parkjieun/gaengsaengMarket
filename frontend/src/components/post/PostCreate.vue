@@ -229,6 +229,8 @@
 
 <script>
 import axios from "axios";
+import { mapState } from 'vuex';
+
 export default {
   data: () => ({
     price: "",
@@ -418,6 +420,15 @@ export default {
         });
     },
   },
+  computed: {
+    ...mapState(['isAuthenticated'])
+  },
+  mounted() {
+    if ( !this.isAuthenticated ) {
+      alert("로그인을 해주세요")
+      this.$router.push({name: 'MainPage'})
+    }
+  }
 };
 </script>
 <style scoped>
