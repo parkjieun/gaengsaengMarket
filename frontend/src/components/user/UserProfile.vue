@@ -1,7 +1,7 @@
 <template>
     <div id="userProfile">
-        <h5>회원정보</h5>
-        <v-divider></v-divider>
+        <h3>회원정보</h3>
+        <v-divider class="my-5"></v-divider>
         <v-row justify="center" align="center">
         <!-- profile image -->
             <v-avatar color="#a6e3e9" size="62">
@@ -108,8 +108,12 @@ export default {
 </script>
 
 <style scoped>
+#userProfile {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
 #postList {
-    width: 65%;
     margin-left: auto;
     margin-right: auto;
 }
