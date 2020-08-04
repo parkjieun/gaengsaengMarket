@@ -174,5 +174,26 @@ public class PostServiceImpl implements PostService {
 		
 		return mapper.deleteLikePost(map);
 	}
+
+	@Override
+	public String selectLike(String post_id, String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id", post_id);
+		map.put("user_id", user_id);
+		
+		int flag = mapper.selectLike(map);
+		System.out.println("selectLike flag:"+flag);
+		String result = "";
+		
+		if(flag > 0) {
+			flag = mapper.deleteLikePost(map);
+			result = "delete";
+		}else {
+			flag = mapper.insertLikePost(map);
+			result = "insert";
+		}
+		
+		return result;
+	}
 	 
 }

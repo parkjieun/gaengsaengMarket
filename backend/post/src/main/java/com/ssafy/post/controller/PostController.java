@@ -229,5 +229,17 @@ public class PostController {
 		
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "좋아요 클릭/취소")
+	@RequestMapping(value ="/doLike", method = RequestMethod.POST)
+	public ResponseEntity<String> doLike(String post_id, String user_id) throws Exception {
+		logger.info("-------------doLike-----------------------------");
+
+		String result = postService.selectLike(post_id, user_id);
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>result:"+result);
+		
+		return new ResponseEntity<String>(result, HttpStatus.OK);
+	}
 		
 }
