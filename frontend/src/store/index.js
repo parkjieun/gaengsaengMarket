@@ -91,6 +91,24 @@ export default new Vuex.Store({
           alert('에러가 발생했습니다.');
         })
     },
+    setPostlike(context, data) {
+      console.dir(">>>>>>>>>>"+data.user_id+"/"+data.post_id);
+      http_post
+        .post('/api/post/doLike?user_id=' + data.user_id +'&post_id=' + data.post_id)
+        .then(({ data }) => {
+           //context.commit('setPost', data);
+           console.log("data:"+data);
+           if (data === 'insert') {
+              msg = '찜하기가 등록 되었습니다.';
+            }else{
+              msg = '찜하기가 해지 되었습니다.';
+            }
+          alert(msg);
+        })
+        .catch(() => {
+          alert('에러가 발생했습니다.');
+        })
+    },
     deletePost(context, payload ) {
       http_post
       .delete(payload)
