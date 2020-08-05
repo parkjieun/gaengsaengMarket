@@ -68,7 +68,7 @@
               </div>
 
               <div style="font-weight: 600px;font-size:13px; margin-right:10px;height:56px; color:#555555;   display: flex;">
-                  <v-col style="border-right: 1.5px solid #f2f3f6; text-align:center">
+                  <v-col style="border-right: 1.5px solid #f2f3f6; text-align:center"  @click="goPostLike">
                     <div><img calss="txt_btn" :src="require(`@/assets/post/heart.png`)"></div>
                       찜하기
                   </v-col>
@@ -115,12 +115,12 @@
             <v-col cols="2" style=" text-align:center">
               <div style=" border-bottom:2px solid #cfcfcf;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
                 <div style="padding-top:20px">
-                  <v-avatar color="#a6e3e9" size="85" @click="goUserProfile(item.user_id)">
+                  <v-avatar color="#a6e3e9" size="85" @click="goUserProfile">
                   <!-- <img :src="'http://i3a504.p.ssafy.io:8003'+item.profile_img" > -->
                     <img src="http://i3a504.p.ssafy.io:8000/api/static/image/1596138378575_분홍.PNG" >
                 </v-avatar>
                 </div>
-                <div style="padding-top:10px; color:#72787f" @click="goUserProfile(item.user_id)">
+                <div style="padding-top:10px; color:#72787f" @click="goUserProfile">
                 {{item.user_id}} 
                  <!-- {{item.nick_name}} -->
                 </div>
@@ -158,7 +158,8 @@ export default {
     console.log(">>>>>>>"+`${this.$route.query.post_id}`);
     this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}`);
     this.myProfile = this.$store.state.myProfile;
-    console.dir(this.myProfile);
+    console.dir("this.myProfile:" + this.myProfile.userId);
+
   },
 
   methods: {
@@ -179,11 +180,20 @@ export default {
     goPostUpdate(){ 
       this.$router.push({ name: 'post-update', params: { post_id:  Number(this.$route.query.post_id)} } )
     },
-    goUserProfile(user_id){
-      console.dir(">>>>>>>>>>>goUserProfile: "+user_id)
-      this.$router.push({name: 'UserProfile', params: { uid : user_id }} )
+    goUserProfile(){
+      console.dir(">>>>>>>>>>>goUserProfile: "+this.item.user_id)
+      this.$router.push({name: 'UserProfile', params: { uid : this.item.user_id }} )
     },
-
+    goPostLike(){
+      
+      //로그인 안했으면
+      if(this.myProfile == null){
+          alert('로그인 해주세요');
+      }else{
+        console.dir("goPostLike>>>>>>>>>>"+this.myProfile+"/"+this.item.post_id);
+        this.$store.dispatch('setPostlike', {user_id:this.item.user_id , post_id: this.item.post_id});
+      }
+    },
   },
  data () {
    return {
