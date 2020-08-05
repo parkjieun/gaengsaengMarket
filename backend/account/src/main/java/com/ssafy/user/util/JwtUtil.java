@@ -16,11 +16,11 @@ public class JwtUtil {
 	public JwtUtil(String secret) {
 		this.key = Keys.hmacShaKeyFor(secret.getBytes());
 	}
-    public String createToken(String socialId) {
+    public String createToken(String userId) {
 
         String token = Jwts.builder()
                 .signWith(key)
-                .claim("socialId",socialId)
+                .claim("userId",userId)
                 .compact();
         return token;
     }
@@ -29,6 +29,6 @@ public class JwtUtil {
 				.setSigningKey(key)
 				.build()
 				.parseClaimsJws(jwt);
-		return jws.getBody().get("socialId").toString();
+		return jws.getBody().get("userId").toString();
 	}
 }

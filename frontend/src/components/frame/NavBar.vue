@@ -2,9 +2,7 @@
 <div>
   <v-app-bar height="25%" app flat style="color:#00263b;">
   
-    <!-- <div style="width:35%" class="text-left"><v-app-bar-nav-icon class="my-0" color="#00263b" @click="openCategory"></v-app-bar-nav-icon></div> -->
-    <!-- <v-toolbar-title><router-link to="/"><span><v-icon>mdi-cart</v-icon></span>Page title </router-link></v-toolbar-title> -->
-    <div v-if="!myProfile" style="width:35%;position:absolute;right:2%;" class="text-right d-none d-sm-block">
+    <div v-if="!loggedIn" style="width:35%;position:absolute;right:2%;" class="text-right d-none d-sm-block">
       <v-btn text small class="my-0" @click="openForm">
         <v-icon small>mdi-account</v-icon>로그인
       </v-btn>
@@ -17,9 +15,7 @@
       <v-btn text small class="my-0" @click="goPostCreate">
         <v-icon small class="nav-icon">mdi-cart</v-icon>판매하기
       </v-btn>
-      <!-- <v-btn text small class="my-0">
-        <v-icon small>mdi-chat-processing-outline</v-icon>채팅
-      </v-btn> -->
+
     </div>
     <div style="width:100%;position:absolute;right:2%;" class="text-right d-block d-sm-none" >
       <div v-if="!myProfile">
@@ -31,66 +27,13 @@
       <v-btn text small class="my-0" @click="goMyProfile">
         <v-icon small>mdi-account</v-icon>내 정보
       </v-btn>
-      <!-- <v-btn text small class="my-0">
-        <v-icon small class="nav-icon">mdi-cart</v-icon>판매하기
-      </v-btn> -->
+
       <v-btn text small class="my-0">
         <v-icon small>mdi-chat-processing-outline</v-icon>채팅
       </v-btn>
       </div>
     </div>
-    <!-- <div class="text-right d-block d-sm-none" style="width:100%;position:absolute;right:2%;">
-      <v-menu
-      v-model="menu"
-      :close-on-content-click="false"
-      :max-width="150"
-      offset-x
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn icon v-bind="attrs" v-on="on" class="my-0">
-          <v-icon color="#00263b">mdi-dots-vertical</v-icon>
-        </v-btn>
-      </template>
-      
-      <v-card color="#cbf1f5">
-        <v-list dense v-if="isAuthenticated" color="#defcfc">
-          <v-list-item @click="dialog=true">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title >로그인/회원가입</v-list-item-title>
-          </v-list-item>
-          
-        </v-list>
-        
-        <v-list dense v-else color="#defcfc">
-          <v-list-item @click="goMyProfile">
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title >내 정보</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-icon @click="goPostCreate">
-              <v-icon>mdi-cart</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>판매하기</v-list-item-title>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-chat-processing-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>채팅</v-list-item-title>
-          </v-list-item>
-        </v-list>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="menu = false" small>Cancel</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-menu>
-    </div> -->
-
+ 
   </v-app-bar>
   <v-row id="nav">
             <v-col align="center">
@@ -118,20 +61,29 @@
                 </v-btn>
             </v-col>
         </v-row>
+        <v-row>
+          <v-col align="center" style="margin:auto;padding:0px;">
+          <div style="border-top:solid 1px rgba(0,0,0,0.1);border-bottom:solid 1px rgba(0,0,0,0.1);">
+                <category-tabs style="width:80%;height:48px;z-index: 1;" />
+          </div>
+          </v-col>
+        </v-row>
 </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState,mapGetters } from 'vuex'
 import LoginForm from "@/components/user/LoginForm.vue"
-
+import CategoryTabs from "@/components/frame/CategoryTabs.vue"
 export default {
   props: ['category'],
   components: {
     LoginForm,
+    CategoryTabs,
   },
   computed: {
-      ...mapState(['authorization','myProfile'])
+      ...mapState(['authorization','myProfile']),
+      ...mapGetters(['loggedIn'])
   },
   data() {
     return{

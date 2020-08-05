@@ -29,8 +29,10 @@ public class JoinPayload {
 
 	private String address;
 
-	private String socialUid;
+	private String socialId;
 
 	private MultipartFile img;
+	
+	
 
 }
