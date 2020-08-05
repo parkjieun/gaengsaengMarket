@@ -20,10 +20,7 @@ public class DirectoryCreator implements ApplicationRunner{
 	
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		
-		
 		String rootPath = context.getRealPath(directoryPath);
-		
 		File folder = new File(rootPath);
 		// 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
 		if (!folder.exists()) {
