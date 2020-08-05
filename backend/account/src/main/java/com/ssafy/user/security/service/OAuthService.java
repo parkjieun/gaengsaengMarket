@@ -23,7 +23,7 @@ public class OAuthService {
 	private final String KAKAO_URL="https://kapi.kakao.com/v2/user/me";
 	private final String GOOGLE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 	public boolean isOlder(String accessToken,String platform) {
-		return userRepository.existsBySocialUid(getSocialIdByOAuth(accessToken,platform));
+		return userRepository.existsBySocialId(getSocialIdByOAuth(accessToken,platform));
 	}
 	
 	public String getSocialIdByOAuth(String accessToken,String platform) {

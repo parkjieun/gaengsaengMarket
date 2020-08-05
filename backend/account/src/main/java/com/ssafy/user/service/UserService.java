@@ -53,7 +53,7 @@ public class UserService {
 		User user = oUser.get();
 		user.setAddress("");
 		user.setPointVal(-1);
-		user.setSocialUid("");
+		user.setSocialId("");
 		return user;
 	}
 
