@@ -33,20 +33,19 @@
       </v-btn>
       </div>
     </div>
- 
+
   </v-app-bar>
   <v-row id="nav">
-            <v-col align="center">
-                <div style="">
-                    <router-link to="/"><v-img width="250px" src="@/assets/logo.png"></v-img></router-link>
-                </div>
-            </v-col>
-            <v-col cols="5">
-                <v-flex>
-                    <v-combobox multiple v-model="select" color="#a6e3e9" @keydown.enter="searchItem"  chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="상품 및 #해시태그를 입력해 주세요" :search-input.sync="search"  @keyup.space="updateTags" >
-                    </v-combobox>
-                </v-flex>
-
+      <v-col align="center">
+          <div style="">
+              <router-link to="/"><v-img width="250px" src="@/assets/logo.png"></v-img></router-link>
+          </div>
+      </v-col>
+      <v-col cols="5">
+          <v-flex>
+              <v-combobox multiple v-model="select" color="#a6e3e9" @keydown.enter="searchItem"  chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="상품 및 #해시태그를 입력해 주세요" :search-input.sync="search"  @keyup.space="updateTags" >
+              </v-combobox>
+          </v-flex>
             </v-col>
             <v-col align="center">
                 <v-btn text @click="goMyProfile">
@@ -82,7 +81,7 @@ export default {
     CategoryTabs,
   },
   computed: {
-      ...mapState(['authorization','myProfile']),
+      ...mapState(['authorization','myProfile', 'isAuthenticated']),
       ...mapGetters(['loggedIn'])
   },
   data() {
@@ -102,10 +101,22 @@ export default {
       this.$emit("openForm")
     },
     goPostCreate() {
-      this.$router.push({name:'post-create'})
+      if ( this.isAuthenticated ) {
+        this.$router.push({name:'post-create'})
+      }
+      else {
+        alert("회원만 판매글을 등록할 수 있습니다. 로그인을 해주세요.")
+      }
+      
     },
     goMyProfile() {
-      this.$router.push({ name: 'MyProfile' })
+      if ( this.isAuthenticated ) {
+        this.$router.push({ name: 'MyProfile' })
+      }
+      else {
+        alert("로그인을 해주세요")
+      }
+      
     },
     searchItem() {
             alert("검색 미구현!")

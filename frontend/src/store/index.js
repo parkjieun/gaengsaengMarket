@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import cookies from 'vue-cookies'
 import http_user from '@/util/http-common'
-import Axios from 'axios'
 import http_post from '@/util/http-post'
 import router from '../router';
 
@@ -12,8 +10,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    
     authorization:sessionStorage.getItem("authorization"),
+    isAuthenticated: sessionStorage.getItem("isAuthenticated"),
     myProfile: sessionStorage.getItem("myProfile")?JSON.parse(sessionStorage.getItem("myProfile")):[],
     items: [],
     item: {},
@@ -41,8 +39,8 @@ export default new Vuex.Store({
     },
     SET_AUTH(state,value){
       sessionStorage.setItem("authorization",value)
+      sessionStorage.setItem('isAuthenticated', true)
       state.authorization = value
-      state.isAuthenticated = true
     },
     setPosts(state, payload) {
       state.items = payload;
@@ -55,7 +53,7 @@ export default new Vuex.Store({
   },
 
   actions: {
-    getMyProfile( { commit, getters } ) {
+    setUserProfile( { commit, getters } ) {
       return http_user.get('/api/user', getters.config)
       .then((res) => {
         console.log("내 정보", res)
