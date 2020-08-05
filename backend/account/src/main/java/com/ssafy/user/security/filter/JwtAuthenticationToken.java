@@ -15,11 +15,11 @@ public class JwtAuthenticationToken extends AbstractAuthenticationToken{
     private static final long serialVersionUID = 1L;
     private final Object principal;
 
-    public JwtAuthenticationToken(String socialId) {
+    public JwtAuthenticationToken(String userId) {
         super(null);
         
         super.setAuthenticated(true); // must use super, as we override
-        this.principal=socialId;
+        this.principal=userId;
     }
  
     @Override

@@ -26,8 +26,8 @@ import lombok.ToString;
 @ToString
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	@Column(length = 33, nullable = false)
+	private String userId;
 	@Column
 	private String nickName;
 	@Column
