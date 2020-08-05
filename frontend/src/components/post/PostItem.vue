@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-hover v-slot:default="{ hover }">
-    <v-card tile class="mx-auto" width="250" >
+    <v-card tile width="250" >
         <v-img
         :src="'http://i3a504.p.ssafy.io:8000/api/static/image/'+post.files.split(',')[0]"
         height="200px"
@@ -16,8 +16,9 @@
           </v-expand-transition></v-img>
         <v-divider></v-divider>
         <v-card-title style="text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;width:100%;overflow:hidden;">
+          <div style="width:100%;" class="card-title">
             {{post.title}}
-            
+            </div>
         </v-card-title >
 
         <v-card-subtitle class="text-left" style="height:24px;overflow:hidden;padding-bottom:0px;">
@@ -75,5 +76,11 @@ export default {
 </script>
 
 <style>
-
+.card-title{
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  word-wrap:normal;
+  width:100px;
+  overflow:hidden;
+}
 </style>

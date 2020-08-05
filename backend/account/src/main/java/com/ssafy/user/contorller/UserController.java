@@ -60,57 +60,78 @@ public class UserController {
 	@ApiOperation(value="유저 정보를 얻어온다.", response = User.class)
 	@GetMapping
 	public ResponseEntity<User> getUser(Authentication authentication){
-		String socialId = authentication.getPrincipal().toString();
-		return  new ResponseEntity(userService.getUser(oAuthService.getId(socialId)),HttpStatus.OK);
+		String userId = authentication.getPrincipal().toString();
+		return  new ResponseEntity(userService.getUser(userId),HttpStatus.OK);
 	}
 	
 	@ApiOperation(value="회원가입을 진행한다.")
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public ResponseEntity<?> insertUser(Authentication authentication,JoinPayload payload, HttpServletRequest request){
 		LocalDateTime time = LocalDateTime.now();
-		String filename = payload.getImg().getOriginalFilename();
-		//String rootPath = request.getSession().getServletContext().getRealPath("/");
-		String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
-		String attachPath = "resources/upload/";
-		
-	    String md5Hex = DigestUtils.md5DigestAsHex((time.toString()+payload.getImg().getOriginalFilename()).getBytes()).toLowerCase();
-		//String filePath = rootPath + attachPath + md5Hex + filename.substring(filename.lastIndexOf("."));
-	    String filePath = rootPath + md5Hex + filename.substring(filename.lastIndexOf("."));
-	    
-		try {
-			payload.getImg().transferTo(new File(filePath));
-		} catch (Exception e) {
-			e.printStackTrace();
+		String md5Hex="";
+		String filename="";
+		if(payload.getImg()!=null) {
+			try {
+				filename = payload.getImg().getOriginalFilename();
+				String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
+			    md5Hex = DigestUtils.md5DigestAsHex((time.toString()+payload.getImg().getOriginalFilename()).getBytes()).toLowerCase();
+			    String filePath = rootPath + md5Hex + filename.substring(filename.lastIndexOf("."));
+				payload.getImg().transferTo(new File(filePath));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		User user = new User();
-		String socialId = authentication.getPrincipal().toString();
-		user.setSocialUid(socialId);
-		user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
+		user.setSocialUid(payload.getSocialId());
+		user.setUserId(authentication.getPrincipal().toString());
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
+		if(payload.getImg()!=null)
+			user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
 		userService.insertUser(user);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 	
-	@ApiOperation(value="유저 정보를 업데이트 한다.")
-	@PutMapping
-	public ResponseEntity<?> updateUser(Authentication authentication,@RequestBody User user){
-		String socialId = authentication.getPrincipal().toString();
-		user.setUserId(oAuthService.getId(socialId));
-		userService.updateUser(user);
-		return new ResponseEntity(HttpStatus.OK);
-	}
+
 	
 	@ApiOperation(value="타인의 정보를 가져온다.")
 	@GetMapping("/{user_id}")
-	public ResponseEntity<User> getOtherUser(Authentication authentication,@PathVariable("user_id") int userId){
-		if(authentication ==null || oAuthService.getId(authentication.getPrincipal().toString())!=userId ) {
+	public ResponseEntity<User> getOtherUser(Authentication authentication,@PathVariable("user_id") String userId){
+		if(authentication ==null || authentication.getPrincipal().toString()!=userId ) {
 			User user = userService.getOtherUser(userId);
 			return new ResponseEntity(user,user==null?HttpStatus.NOT_FOUND:HttpStatus.OK);
 		}
 		return new ResponseEntity(userService.getUser(userId),HttpStatus.OK);
 	}
 	
+	@ApiOperation(value="유저정보 수정을 진행한다.")
+	@PutMapping(consumes = "multipart/form-data")
+	public ResponseEntity<?> updatetUser(Authentication authentication,JoinPayload payload, HttpServletRequest request){
+		LocalDateTime time = LocalDateTime.now();
+		String md5Hex="";
+		String filename="";
+		if(payload.getImg()!=null) {
+			try {
+				filename = payload.getImg().getOriginalFilename();
+				String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
+			    md5Hex = DigestUtils.md5DigestAsHex((time.toString()+payload.getImg().getOriginalFilename()).getBytes()).toLowerCase();
+			    String filePath = rootPath + md5Hex + filename.substring(filename.lastIndexOf("."));
+				payload.getImg().transferTo(new File(filePath));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		User user = new User();
+		user.setUserId(authentication.getPrincipal().toString());
+		user.setAddress(payload.getAddress());
+		user.setNickName(payload.getNickName());
+		user.setIntroduce(payload.getIntroduce());
+		if(payload.getImg()!=null)
+			user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
+		userService.updateUser(user);
+		return new ResponseEntity(HttpStatus.OK);
+	}
 }
