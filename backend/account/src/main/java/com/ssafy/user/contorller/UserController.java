@@ -83,7 +83,7 @@ public class UserController {
 		}
 		
 		User user = new User();
-		user.setSocialUid(payload.getSocialId());
+		user.setSocialId(payload.getSocialId());
 		user.setUserId(authentication.getPrincipal().toString());
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
