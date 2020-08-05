@@ -14,7 +14,7 @@ export default new Vuex.Store({
   state: {
     
     authorization:sessionStorage.getItem("authorization"),
-    myProfile: sessionStorage.getItem("myProfile"),
+    myProfile: sessionStorage.getItem("myProfile")?JSON.parse(sessionStorage.getItem("myProfile")):[],
     items: [],
     item: {},
     postsByUID: [],
@@ -27,10 +27,17 @@ export default new Vuex.Store({
     item(state) {
       return state.item;
     },
+    loggedIn(state){
+      if(state.myProfile!=null && state.myProfile && state.myProfile!="" && state.myProfile!="null"){
+        console.log(state.myProfile)
+        return true
+      }
+      return false
+    }
   },
   mutations: {
     SET_USERPROFILE(state, value) {
-      sessionStorage.setItem("myProfile",value)
+      sessionStorage.setItem("myProfile",JSON.stringify(value))
       state.myProfile = value
       console.log(state.myProfile)
     },

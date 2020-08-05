@@ -1,7 +1,7 @@
 <template>
     <v-row>
         <template v-for="i in len">
-            <v-col :key="i" cols="12" md="4" lg="3" xl="2">
+            <v-col :key="i" cols="12" md="4" lg="3" xl="2" align="center" >
                 <!-- <router-link :to="'/post/detail?post_id=' + posts[i-1].post_id"> -->
                 <div @click="goDetail(i)">
                 <post-item :post="posts[i-1]" />
