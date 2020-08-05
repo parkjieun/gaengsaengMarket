@@ -4,7 +4,7 @@
       <CategoryMenu :category="category" @category="openCategory"/>
     </div>
     <div id="navbar"> -->
-      <NavBar :category="category" @openForm="openForm" @openCategory="openCategory"/>
+      <NavBar v-if="!isChat" @openForm="openForm" />
     <!-- </div> -->
     
     <!-- Sizes your content based upon application components -->
@@ -13,7 +13,7 @@
       <v-container fluid> -->
 
         <!-- If using vue-router -->
-        <router-view></router-view>
+        <router-view ></router-view>
       <!-- </v-container>
     </v-main> -->
 
@@ -40,6 +40,16 @@ export default {
       dialog:false,
       category: false
       
+    }
+  },
+  created(){
+    console.log("qweqwe")
+  },
+  computed:{
+    isChat(){
+      var url = window.location.href
+      console.log(url)
+      return url.includes("chat")
     }
   },
   methods: {

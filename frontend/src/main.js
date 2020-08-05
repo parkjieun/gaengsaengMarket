@@ -16,13 +16,11 @@ Vue.config.productionTip = false
 Vue.use(Vuex)
 Vue.use(VueAxios, axios)
 Vue.use(cookies)
-  
 
 new Vue({
   created(){
-  
  Kakao.init('2d0941ae8abd795345275774180c1dc2');
-
+ 
  },
   vuetify,
   router,
