@@ -113,8 +113,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post detailPost(int post_id) throws Exception {
-		return mapper.detailPost(post_id);
+	public Post detailPost(int post_id,String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id",post_id);
+		map.put("user_id",user_id);
+		
+		return mapper.detailPost(map);
 	}
 
 	@Override

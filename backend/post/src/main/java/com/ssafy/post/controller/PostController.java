@@ -156,16 +156,17 @@ public class PostController {
 		System.out.println(query+"/"+user_id+"/"+like+"/"+type+"/"+sno);
 		
 		List<Post> list =postService.selectAllPost(query,user_id,like,type,sno);
-		System.out.println(">>>"+list);
+		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "특정 게시글 조회")
 	@RequestMapping(value ="/{post_id}", method = RequestMethod.GET)
-	public ResponseEntity<Post> detailPost(@PathVariable int post_id) throws Exception {
+	public ResponseEntity<Post> detailPost(@PathVariable int post_id, String user_id) throws Exception {
 		logger.info("-------------detailPost-----------------------------");
-
-		Post post = postService.detailPost(post_id);
+		System.out.println(post_id+"/"+user_id);
+		
+		Post post = postService.detailPost(post_id,user_id);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>post:"+post.toString());
 		return new ResponseEntity<Post>(post, HttpStatus.OK);
 	}
