@@ -37,4 +37,7 @@ public class Post {
 	//08.04
 	private String nick_name;
 	private String profile_img;
+	
+	//08.05
+	private String likeFlag;
 }
