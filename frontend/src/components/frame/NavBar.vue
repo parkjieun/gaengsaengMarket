@@ -64,7 +64,7 @@
         <v-row>
           <v-col align="center" style="margin:auto;padding:0px;">
           <div style="border-top:solid 1px rgba(0,0,0,0.1);border-bottom:solid 1px rgba(0,0,0,0.1);">
-                <category-tabs style="width:75%;height:48px;z-index: 1;" />
+                <category-tabs style="width:80%;height:48px;z-index: 1;" />
           </div>
           </v-col>
         </v-row>

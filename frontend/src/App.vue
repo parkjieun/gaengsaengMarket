@@ -17,9 +17,9 @@
       <!-- </v-container>
     </v-main> -->
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
+    <!-- <v-footer app>
+
+    </v-footer> -->
     <login-form  :dialog="dialog" @closeForm="dialog=false"/>
   </v-app>
 </template>
@@ -57,3 +57,9 @@ export default {
   
 }
 </script>
+
+<style>
+textarea{
+  resize:none;
+}
+</style>

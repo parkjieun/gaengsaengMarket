@@ -4,7 +4,7 @@
         <v-dialog v-model="dialog2" max-width="700">
             <v-card>
                 <v-card-title class="headline text-center">
-                    <div style="margin:auto;">Join us</div>
+                    <div style="margin:auto;">상점의 정보를 입력해주세요.</div>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
@@ -35,7 +35,7 @@
                             <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
                         </v-list-item>
                         <v-list-item>
-                            <v-textarea v-model="introduce" label="상점 소개"></v-textarea>
+                            <v-textarea no-resize v-model="introduce" label="상점 소개"></v-textarea>
                         </v-list-item>
                     </v-list>
                 </v-card-text>
@@ -43,10 +43,9 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="#a6e3e9" outlined="" @click="submit">
+                    <v-btn width="100%" elevation="0" tile color="#a6e3e9"  @click="submit">
                         회원가입
                     </v-btn>
-
                 </v-card-actions>
             </v-card>
         </v-dialog>
