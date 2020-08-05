@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
 import MyProfile from '@/components/user/MyProfile.vue'
 import UserProfile from '@/components/user/UserProfile.vue'
 import UserProfileUpdate from '@/components/user/UserProfileUpdate.vue'
-import HelloWorld from '@/components/HelloWorld.vue'
+
 import Layout from "@/components/layout/Layout.vue"
 import MainPage from "@/components/MainPage.vue"
 import PostCreate from '../components/post/PostCreate.vue'
@@ -12,7 +12,8 @@ import UpdateCreate from '../components/post/PostUpdate.vue'
 import PostDetail from '../components/post/Detail.vue'
 import PostList from '../components/post/List.vue'
 import CategoryPage from '@/components/page/CategoryPage.vue'
-
+import Chat from '@/components/chat/Chat.vue'
+import Chat2 from '@/components/chat/Chat2.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -77,6 +78,16 @@ const routes = [
     name: 'CategoryPage',
     component: CategoryPage
   }, 
+  {
+    path:"/chat",
+    name:"Chat",
+    component:Chat
+  },
+  {
+    path:"/inchat/:roomId",
+    name:"Chat2",
+    component:Chat2
+  }
 ]
 
 const router = new VueRouter({
