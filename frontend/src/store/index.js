@@ -17,7 +17,6 @@ export default new Vuex.Store({
     myProfile: sessionStorage.getItem("myProfile")?JSON.parse(sessionStorage.getItem("myProfile")):[],
     items: [],
     item: {},
-    postsByUID: [],
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
@@ -39,15 +38,11 @@ export default new Vuex.Store({
     SET_USERPROFILE(state, value) {
       sessionStorage.setItem("myProfile",JSON.stringify(value))
       state.myProfile = value
-      console.log(state.myProfile)
     },
     SET_AUTH(state,value){
       sessionStorage.setItem("authorization",value)
       state.authorization = value
       state.isAuthenticated = true
-    },
-    SET_POSTS_BY_UID(state, data) {
-      state.postsByUID = data
     },
     setPosts(state, payload) {
       state.items = payload;
@@ -60,9 +55,6 @@ export default new Vuex.Store({
   },
 
   actions: {
-    setUserProfile( { commit },value ) {
-      commit('SET_USERPROFILE', value)
-    },
     getMyProfile( { commit, getters } ) {
       return http_user.get('/api/user', getters.config)
       .then((res) => {
@@ -80,16 +72,6 @@ export default new Vuex.Store({
     },
     setAuth({commit},value){
       commit('SET_AUTH',value)
-    },
-    getPostsByUID( { commit }, userID) {
-      http_post.get('/api/post?user_id=' + userID)
-      .then((res) => {
-        console.log(res)
-        commit('SET_POSTS_BY_UID', res.data)
-      })
-      .catch(() => {
-        alert("에러가 발생했습니다.")
-      })
     },
     getPosts(context) {
       http_post
