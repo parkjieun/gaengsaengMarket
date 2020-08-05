@@ -100,18 +100,25 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> selectAllPost(String query, String user_id, boolean like) throws Exception {
+	public List<Post> selectAllPost(String query, String user_id, boolean like, int type, int sno) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("query",query);
 		map.put("user_id",user_id);
 		map.put("like",like);
+		System.out.println(">>>type: "+type);
+		map.put("type",type);
+		map.put("sno", sno);
 		
 		return mapper.selectAllPost(map);
 	}
 
 	@Override
-	public Post detailPost(int post_id) throws Exception {
-		return mapper.detailPost(post_id);
+	public Post detailPost(int post_id,String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id",post_id);
+		map.put("user_id",user_id);
+		
+		return mapper.detailPost(map);
 	}
 
 	@Override
@@ -152,6 +159,45 @@ public class PostServiceImpl implements PostService {
 		int flag = mapper.deletePostImg(deleteFiles);
 		
 		return flag;
+	}
+
+	@Override
+	public int insertLikePost(String post_id, String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id", post_id);
+		map.put("user_id", user_id);
+		
+		return mapper.insertLikePost(map);
+	}
+
+	@Override
+	public int deleteLikePost(String post_id, String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id", post_id);
+		map.put("user_id", user_id);
+		
+		return mapper.deleteLikePost(map);
+	}
+
+	@Override
+	public String selectLike(String post_id, String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id", post_id);
+		map.put("user_id", user_id);
+		
+		int flag = mapper.selectLike(map);
+		System.out.println("selectLike flag:"+flag);
+		String result = "";
+		
+		if(flag > 0) {
+			flag = mapper.deleteLikePost(map);
+			result = "delete";
+		}else {
+			flag = mapper.insertLikePost(map);
+			result = "insert";
+		}
+		
+		return result;
 	}
 	 
 }

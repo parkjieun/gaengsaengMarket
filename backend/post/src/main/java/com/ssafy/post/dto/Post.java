@@ -33,4 +33,11 @@ public class Post {
 	private String cate_big_id;
 	
 	private List<String> deleteFiles;
+	
+	//08.04
+	private String nick_name;
+	private String profile_img;
+	
+	//08.05
+	private String likeFlag;
 }
