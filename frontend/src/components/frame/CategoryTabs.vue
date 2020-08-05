@@ -18,8 +18,8 @@
                                 <div v-if="jndex==index">
                                     <v-card-text v-if="j==categoryBig.length" style="width:100%;text-align:center;padding:0px;border-left:solid rgba(0,0,0,0.2) 1px; ">
                                         <v-list-item v-for="(k,kndex) in categoryMid[j.cate_big_id]" :key="kndex" style="padding:0px;">
-                                            <v-btn text style="margin:auto;" width="100%" height="40px">
-                                                <div @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}})">
+                                            <v-btn @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}})" text style="margin:auto;" width="100%" height="40px">
+                                                <div >
                                                     {{k.name}}
                                                 </div>
                                             </v-btn>
@@ -27,8 +27,8 @@
                                     </v-card-text>
                                     <v-card-text v-else style="width:100%;text-align:center;padding:0px;border-left:solid rgba(0,0,0,0.2) 1px;border-right:solid rgba(0,0,0,0.2) 1px; ">
                                         <v-list-item v-for="(k,kndex) in categoryMid[j.cate_big_id]" :key="kndex" style="padding:0px;">
-                                            <v-btn text style="margin:auto;" width="100%" height="40px">
-                                                <div @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}})">
+                                            <v-btn @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}})" text style="margin:auto;" width="100%" height="40px">
+                                                <div >
                                                     {{k.name}}
                                                 </div>
                                             </v-btn>
