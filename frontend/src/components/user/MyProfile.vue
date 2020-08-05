@@ -1,7 +1,7 @@
 <template>
     <div id="myProfile">
-        <h5>마이페이지</h5>
-        <v-divider></v-divider>
+        <h3>마이페이지</h3>
+        <v-divider class="my-5"></v-divider>
         <v-row justify="center" align="center">
         <!-- profile image -->
             <v-avatar color="#a6e3e9" size="62">
@@ -60,7 +60,7 @@ export default {
         PostList
     },
     methods: {
-        ...mapActions(['getMyProfile']),
+        ...mapActions(['setUserProfile']),
         
          
         setPosts(data) {
@@ -95,10 +95,10 @@ export default {
 
     },
     computed : {
-        ...mapState(['myProfile']),
+        ...mapState(['myProfile', 'isAuthenticated']),
     },
     created() {
-        this.getMyProfile()
+        this.setUserProfile()
         .then(() => {
             httpPost.get('/api/post?user_id=' + this.myProfile.userId)
             .then((res) => {
@@ -106,22 +106,25 @@ export default {
             })
         })
     },
-    beforeMount() {
-
-    },
     mounted() {
-        
-
+        if ( !this.isAuthenticated ) {
+            alert("로그인을 해주세요")
+            this.$router.push({name: 'MainPage'})
+        }
     }
 }
 </script>
 
 <style scoped>
+#myProfile {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
 h5 {
     margin-bottom: 10px;
 }
 #postList {
-    width: 65%;
     margin-left: auto;
     margin-right: auto;
 }

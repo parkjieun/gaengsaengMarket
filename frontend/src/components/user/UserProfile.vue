@@ -1,7 +1,7 @@
 <template>
     <div id="userProfile">
-        <h5>회원정보</h5>
-        <v-divider></v-divider>
+        <h3>회원정보</h3>
+        <v-divider class="my-5"></v-divider>
         <v-row justify="center" align="center">
         <!-- profile image -->
             <v-avatar color="#a6e3e9" size="62">
@@ -58,7 +58,7 @@ export default {
         PostList
     },
     methods: {
-        ...mapActions(['getMyProfile']),
+        ...mapActions(['setUserProfile']),
         getUserProfile(userID) {
             httpUser.get('/api/user/' + userID)
             .then((res) => {
@@ -98,19 +98,22 @@ export default {
     },
     computed : {
         ...mapState(['myProfile']),
-        myPage: function() { 
-            return this.myProfile.userId == this.user.userId }
+        myPage: function() { return this.myProfile.userId == this.user.userId }
     },
     created() {
         this.getUserProfile (this.$route.params.uid)
-        this.getMyProfile()       
+        this.setUserProfile()       
     },
 }
 </script>
 
 <style scoped>
+#userProfile {
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
 #postList {
-    width: 65%;
     margin-left: auto;
     margin-right: auto;
 }
