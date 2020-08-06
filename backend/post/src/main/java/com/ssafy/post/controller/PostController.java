@@ -209,27 +209,27 @@ public class PostController {
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "좋아요 클릭")
-	@RequestMapping(value ="/like", method = RequestMethod.POST)
-	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
-		logger.info("-------------insertLikePost-----------------------------");
-
-		int flag = postService.insertLikePost(post_id, user_id);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-	}
-	
-	@ApiOperation(value = "좋아요 취소")
-	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
-		logger.info("-------------deleteLikePost-----------------------------");
-
-		int flag = postService.deleteLikePost(post_id, user_id);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-	}
+//	@ApiOperation(value = "좋아요 클릭")
+//	@RequestMapping(value ="/like", method = RequestMethod.POST)
+//	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
+//		logger.info("-------------insertLikePost-----------------------------");
+//
+//		int flag = postService.insertLikePost(post_id, user_id);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+//		
+//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+//	}
+//	
+//	@ApiOperation(value = "좋아요 취소")
+//	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
+//	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
+//		logger.info("-------------deleteLikePost-----------------------------");
+//
+//		int flag = postService.deleteLikePost(post_id, user_id);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+//		
+//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+//	}
 	
 	@ApiOperation(value = "좋아요 클릭/취소")
 	@RequestMapping(value ="/doLike", method = RequestMethod.POST)
