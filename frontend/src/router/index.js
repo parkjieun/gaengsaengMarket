@@ -11,6 +11,7 @@ import PostCreate from '../components/post/PostCreate.vue'
 import UpdateCreate from '../components/post/PostUpdate.vue'
 import PostDetail from '../components/post/Detail.vue'
 import PostList from '../components/post/List.vue'
+import CategoryPage from '@/components/page/CategoryPage.vue'
 
 Vue.use(VueRouter)
 
@@ -70,7 +71,12 @@ const routes = [
     path: "/post/list",
     name: "post-list",
     component: PostList,
-  }
+  },
+  {
+    path: '/category/:categoryNum',
+    name: 'CategoryPage',
+    component: CategoryPage
+  }, 
 ]
 
 const router = new VueRouter({

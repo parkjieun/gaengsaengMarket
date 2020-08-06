@@ -2,6 +2,7 @@ package com.ssafy.post.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.post.dto.Post;
@@ -61,11 +63,14 @@ public class PostServiceImpl implements PostService {
 		
 		//파일 업로드
 		List<String> list = new ArrayList<>();
-		//String realPath = "D:\\workspace\\post\\src\\main\\resources\\static\\image\\";
+		LocalDateTime time = LocalDateTime.now();
+		String md5Hex="";
 		
 		for (MultipartFile file : files) {
 			String originalFileName = file.getOriginalFilename();
-			String safeFile = System.currentTimeMillis() + "_" +originalFileName;
+			md5Hex = DigestUtils.md5DigestAsHex((time.toString()+originalFileName).getBytes()).toLowerCase();
+			//String safeFile = System.currentTimeMillis() + "_" +originalFileName;
+			String safeFile =  md5Hex + originalFileName.substring(originalFileName.lastIndexOf("."));
 			
 			try {
 				file.transferTo(new File(realPath + safeFile));
@@ -100,18 +105,25 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> selectAllPost(String query, String user_id, boolean like) throws Exception {
+	public List<Post> selectAllPost(String query, String user_id, boolean like, int type, int sno) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("query",query);
 		map.put("user_id",user_id);
 		map.put("like",like);
+		System.out.println(">>>type: "+type);
+		map.put("type",type);
+		map.put("sno", sno);
 		
 		return mapper.selectAllPost(map);
 	}
 
 	@Override
-	public Post detailPost(int post_id) throws Exception {
-		return mapper.detailPost(post_id);
+	public Post detailPost(int post_id,String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id",post_id);
+		map.put("user_id",user_id);
+		
+		return mapper.detailPost(map);
 	}
 
 	@Override
@@ -152,6 +164,49 @@ public class PostServiceImpl implements PostService {
 		int flag = mapper.deletePostImg(deleteFiles);
 		
 		return flag;
+	}
+
+//	@Override
+//	public int insertLikePost(String post_id, String user_id) throws Exception {
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("post_id", post_id);
+//		map.put("user_id", user_id);
+//		
+//		return mapper.insertLikePost(map);
+//	}
+
+//	@Override
+//	public int deleteLikePost(String post_id, String user_id) throws Exception {
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("post_id", post_id);
+//		map.put("user_id", user_id);
+//		
+//		return mapper.deleteLikePost(map);
+//	}
+
+	@Override
+	public String selectLike(String post_id, String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("post_id", post_id);
+		map.put("user_id", user_id);
+		
+		int flag = mapper.selectLike(map);
+		System.out.println("selectLike flag:"+flag);
+		String result = "";
+		
+		if(flag > 0) {
+			flag = mapper.deleteLikePost(map);
+			map.put("type","del");
+			mapper.updateLikePost(map);
+			result = "delete";
+		}else {
+			flag = mapper.insertLikePost(map);
+			map.put("type","ins");
+			mapper.updateLikePost(map);
+			result = "insert";
+		}
+		
+		return result;
 	}
 	 
 }

@@ -37,7 +37,7 @@ public class User {
 	@Column(nullable=false)
 	private String address;
 	@Column
-	private String socialUid;
+	private String socialId;
 	@Column
 	private String profileImg;
 	@Column

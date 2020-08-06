@@ -7,8 +7,8 @@ spring:
 
   jpa:
     database: mysql
-#    hibernate:
-#      ddl-auto: create
+    hibernate:
+      ddl-auto: create-drop
     properties:
       hibernate:
         show_sql: true
@@ -22,7 +22,7 @@ server:
 
 file:
   upload:
-    directory: /static/image/
+    directory: /home/ubuntu/static/image/
 oauth2:
   kakao:
     client-id: f37d3a404d52c03b013a84acbfad3555

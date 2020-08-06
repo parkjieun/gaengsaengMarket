@@ -1,7 +1,8 @@
 <template>
 <div>
   <v-hover v-slot:default="{ hover }">
-    <v-card tile class="mx-auto" width="250" >
+    
+    <v-card tile width="250px;" height="350" style="position:relative; min-width:250px;max-width:250px;">
         <v-img
         :src="'http://i3a504.p.ssafy.io:8000/api/static/image/'+post.files.split(',')[0]"
         height="200px"
@@ -15,30 +16,33 @@
             </div>
           </v-expand-transition></v-img>
         <v-divider></v-divider>
-        <v-card-title style="text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;width:100%;overflow:hidden;">
+        <v-card-title class="py-1" style="text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;width:100%;overflow:hidden;">
+          <h5 style="width:100%;" class="card-title text-left">
             {{post.title}}
-            
+            </h5>
         </v-card-title >
 
-        <v-card-subtitle class="text-left" style="height:24px;overflow:hidden;padding-bottom:0px;">
+        <v-card-subtitle class="py-2 text-left" style="height:24px;overflow:hidden;padding-bottom:5px; margin-bottum: 5px;">
+           <v-icon x-small>mdi-currency-krw</v-icon><span style="color:#3f696e; font-weight:bold;">{{post.price | currency}}</span>
+        </v-card-subtitle>
+        <v-card-text class="text-left" style="padding-bottom:0px;padding-top:5px;">
 
-            <v-chip style="margin-right:3px;" small v-for="tag in tags" :key="tag">
+         
+          <v-chip style="margin-right:3px;" x-small v-for="tag in tags" :key="tag">
               {{ tag }}
             </v-chip>
-        </v-card-subtitle>
-        <v-card-text class="text-right" style="padding-bottom:0px;padding-top:5px;">
-
-          {{post.price | currency}}
         </v-card-text>
-        
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn  icon>
-          <v-icon>mdi-heart</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-share-variant</v-icon>
-        </v-btn>
+      <v-card-actions style="position:absolute; bottom: 0; width:250px;">
+          <div>
+          <v-icon color="red" small class="mx-2">mdi-heart</v-icon><span class="caption"> {{post.like_cnt}} </span>
+          </div>
+          <div style="width: 75px;"></div>
+          <div >
+            <v-chip class="my-1 mx-0" small label v-if="post.deal_type !== 2" color="#a6e3e9" style="color:#3f696e; font-weight:bold;">택배</v-chip>
+            <v-chip class="my-1 mx-0" small label v-else style="color:#3f696e;">택배</v-chip>
+            <v-chip class="my-1 mx-0" small label v-if="post.deal_type !== 1" color="#a6e3e9" style="color:#3f696e; font-weight:bold;">직거래</v-chip>
+            <v-chip class="my-1 mx-0" small label v-else style="color:#3f696e;">직거래</v-chip>
+          </div>
       </v-card-actions>
     </v-card>
     </v-hover>
@@ -54,7 +58,7 @@ export default {
       }
     },
     created(){
-      console.log(`http://i3a504.p.ssafy.io:8000/api/static/image/+post.files.split(',')[0]`)
+      // console.log(`http://i3a504.p.ssafy.io:8000/api/static/image/+post.files.split(',')[0]`)
     },
     mounted(){
       this.tags = this.post.tags.split(",").slice(0,3)
@@ -75,5 +79,11 @@ export default {
 </script>
 
 <style>
-
+.card-title{
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  word-wrap:normal;
+  width:100px;
+  overflow:hidden;
+}
 </style>

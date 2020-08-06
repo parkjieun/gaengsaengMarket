@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.post.mapper.PostMapper">
-
+    
+	<update id="updateLikePost">    
+    	update post
+    	
+    	<choose>
+       		<when test='type.equals("ins") or type == "ins"'>
+		    	set like_cnt = like_cnt+1
+       		</when>
+       		<otherwise>
+		 		set like_cnt = like_cnt-1
+       		</otherwise>
+       </choose>
+    	where post_id = #{post_id}
+     </update>  
+     
+	<select id="selectLike" resultType="int">
+		select count(*) from `like` 
+		where post_id = #{post_id} AND user_id =  #{user_id}
+	</select>
+	
+	 <insert id="insertLikePost">
+    	INSERT INTO `like` (post_id, user_id) VALUES (#{post_id}, #{user_id} )
+    </insert>
+    
+    <delete id="deleteLikePost">
+    	delete from `like`
+    	where post_id = #{post_id} AND user_id =  #{user_id}
+    </delete>
+    
 	 <insert id="insertPost">
     	insert into post(title, contents, cate_mid_id, user_id, price, deal_type, deal_weak) 
     	values(#{title},#{contents},#{cate_mid_id},#{user_id},#{price},#{deal_type},#{deal_weak})
@@ -64,10 +92,13 @@
 		) t2
 		on t0.post_id = t2.post_id
 		
+		<if test="like">
 		left outer join `like` t3
 		on t0.post_id = t3.post_id
+		</if>
 		
 		where del_flag != 1 
+		
 		<if test="query!=null and !query.equals('')">
 		and (t0.post_id in (
 				    select post_id
@@ -84,17 +115,19 @@
 		       and  t3.user_id =  #{user_id}
        		</when>
        		<when test="user_id!=null and !user_id.equals('')">
-		 			and  t0.user_id =  #{user_id}
+		 		and  t0.user_id =  #{user_id}
+		 		<choose>
+		       		<when test="type == 0">
+				    	AND t0.`type` = 0
+		       		</when>
+		       		<otherwise>
+				 		AND t0.`type` = 1
+		       		</otherwise>
+		       </choose>
        		</when>
        </choose>
-		 
-		 
-	<!-- 	 <if test="user_id!=null and !user_id.equals('')">
-		 and  t0.user_id =  #{user_id}
-		 </if>
-		 <if test="like">
-		 and  t3.user_id =  #{user_id}
-		 </if> -->
+       	ORDER BY t0.create_date DESC
+       	LIMIT #{sno}, 12
 	</select>
 	
 	<select id="detailPost" resultType="Post" >
@@ -104,9 +137,18 @@
 			 , c.name AS 'cate_mid_name'
 			 , b.name AS 'cate_big_name'
 			 , b.cate_big_id AS 'cate_big_id'
-		FROM post p, category_mid c, category_big b
+			 , u.nick_name
+			 , u.profile_img
+			 
+			 <if test="user_id!=null and !user_id.equals('')">
+			 , (SELECT COUNT(*) FROM `like` WHERE post_id=#{post_id} AND user_id=#{user_id}) as likeFlag
+			 </if>
+			 
+		FROM post p, category_mid c, category_big b, user u
+		
 		WHERE p.cate_mid_id = c.cate_mid_id 
 			and b.cate_big_id = c.cate_big_id
+			and p.user_id = u.user_id
 			and p.post_id = #{post_id}
 	</select>
 	
@@ -135,6 +177,7 @@
     	</where>
     </delete>
     
+
 </mapper>
 
 
