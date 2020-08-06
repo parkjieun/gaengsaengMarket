@@ -2,6 +2,20 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.post.mapper.PostMapper">
     
+	<update id="updateLikePost">    
+    	update post
+    	
+    	<choose>
+       		<when test='type.equals("ins") or type == "ins"'>
+		    	set like_cnt = like_cnt+1
+       		</when>
+       		<otherwise>
+		 		set like_cnt = like_cnt-1
+       		</otherwise>
+       </choose>
+    	where post_id = #{post_id}
+     </update>  
+     
 	<select id="selectLike" resultType="int">
 		select count(*) from `like` 
 		where post_id = #{post_id} AND user_id =  #{user_id}
@@ -163,6 +177,7 @@
     	</where>
     </delete>
     
+
 </mapper>
 
 

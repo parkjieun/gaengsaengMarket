@@ -10,6 +10,9 @@ import axios from 'axios'
 import cookies from 'vue-cookies'
 import "vuetify/dist/vuetify.min.css"
 import GSignInButton from 'vue-google-signin-button'
+import InfiniteLoading from 'vue-infinite-loading';
+
+Vue.use(InfiniteLoading)
 Vue.use(GSignInButton)
 Vue.config.productionTip = false
 
@@ -22,6 +25,7 @@ new Vue({
  Kakao.init('2d0941ae8abd795345275774180c1dc2');
  
  },
+  InfiniteLoading,
   vuetify,
   router,
   store, 

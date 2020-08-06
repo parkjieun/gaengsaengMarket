@@ -17,7 +17,7 @@ public class Post {
 	private int type;
 	private int like_cnt;
 	private int cate_mid_id;
-	private int user_id;
+	private String user_id;
 	private int price;
 	private int del_flag;
 	private int deal_type;

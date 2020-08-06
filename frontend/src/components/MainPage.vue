@@ -13,9 +13,10 @@
                 </v-carousel>
             </v-col>
         </v-row>
-        <v-row id="postList">
+        <div id="postList" style="width:80%; margin-left:auto; margin-right:auto;"> 
             <post-list :posts="posts"/>
-        </v-row>
+        </div>
+        <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
     </v-container>
 </v-app>
 </template>
@@ -27,14 +28,16 @@ import PostList from "@/components/post/PostList.vue"
 import CategoryMenu from "@/components/frame/CategoryMenu.vue"
 import CategoryTabs from "@/components/frame/CategoryTabs.vue"
 import httpPost from "@/util/http-post"
-
+import InfiniteLoading from 'vue-infinite-loading'
 export default {
     data() {
         return {
             search: "",
             select:[],
             items: [],
-            posts: null,
+            posts: [],
+            start: 0,
+         
         }
     },
     components: {
@@ -42,6 +45,7 @@ export default {
         CategoryBar,
         CategoryMenu,
         CategoryTabs,
+        InfiniteLoading,
     },
     modules: {
         banner
@@ -55,23 +59,31 @@ export default {
         goPostCreate() {
             this.$router.push( { name: 'post-create' })
         },
+        infiniteHandler($state) {
+            console.log("스크롤")
+
+            httpPost.get("/api/post?sno=" + this.start)
+            .then(res => {
+                console.log(res)
+                if (res.data.length) {
+                    this.start += 12;
+                    this.posts.push(...res.data);
+                    $state.loaded();
+                } 
+                else {
+                    $state.complete();
+                }
+            });
+        } 
 
     },
     mounted() {
-        httpPost.get("/api/post").then(res => {
-            console.log(res.data)
-            this.posts=res.data
-        })
+   
     }
 }
 </script>
 
 <style scoped>
-#postList {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
 .tag-input span.chip {
   background-color: #1976d2;
   color: #fff;

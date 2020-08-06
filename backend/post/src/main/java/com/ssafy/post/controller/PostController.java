@@ -72,7 +72,9 @@ public class PostController {
 		//파일 업로드 & 등록
 		if( dto.getFile() != null && dto.getFile().size()!=0 ) {
 			System.out.println(">>>."+dto.getFile());
-			String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			//String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			String realPath = uploadFileDir;
+			System.out.println(">>>>>>>>>>>>>>realPath: "+ realPath);
 			flag = postService.insertPostImg(num, dto.getFile(), realPath);
 			System.out.println(">>>file flag "+flag);
 		}
@@ -177,11 +179,14 @@ public class PostController {
 			@RequestParam(value = "tag", required = false) String[] tags) throws Exception {
 		logger.info("-------------updatePost-----------------------------");
 		
-		dto.setContents(dto.getContents().replace("\n","<br>"));
+		if(dto.getContents() != null) {
+			dto.setContents(dto.getContents().replace("\n","<br>"));
+		}
 		
 		// 게시글 수정
 		int flag = postService.updatePost(dto);
-
+		
+		System.out.println("게시글 수정 : " + flag);
 		// 해쉬태그 등록
 		if (tags != null) {
 			flag = postService.updateHashtag(dto.getPost_id(), tags);
@@ -190,13 +195,15 @@ public class PostController {
  
 		// 파일 업로드 & 등록
 		if (dto.getFile() != null) {
-			String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			//String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			String realPath = uploadFileDir;
+			System.out.println(">>>>>>>>>>>>>>realPath: "+ realPath);
 			//flag = postService.updatePostImg(dto.getPost_id(), dto.getFile(), realPath, dto.getDeleteFiles());
 			flag = postService.insertPostImg(post_id, dto.getFile(), realPath);
 		}
 		
 		//파일 삭제
-		if (dto.getDeleteFiles().size()!=0 && dto.getDeleteFiles() != null) {
+		if (dto.getDeleteFiles() != null && dto.getDeleteFiles().size()!=0 ) {
 			System.out.println("삭제되는 이미지 리스트들");
 			System.out.println("getDeleteFiles >>>>"+dto.getDeleteFiles().toString());
 			postService.deletePostImg(post_id, dto.getDeleteFiles());
@@ -209,27 +216,27 @@ public class PostController {
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "좋아요 클릭")
-	@RequestMapping(value ="/like", method = RequestMethod.POST)
-	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
-		logger.info("-------------insertLikePost-----------------------------");
-
-		int flag = postService.insertLikePost(post_id, user_id);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-	}
-	
-	@ApiOperation(value = "좋아요 취소")
-	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
-		logger.info("-------------deleteLikePost-----------------------------");
-
-		int flag = postService.deleteLikePost(post_id, user_id);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-	}
+//	@ApiOperation(value = "좋아요 클릭")
+//	@RequestMapping(value ="/like", method = RequestMethod.POST)
+//	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
+//		logger.info("-------------insertLikePost-----------------------------");
+//
+//		int flag = postService.insertLikePost(post_id, user_id);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+//		
+//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+//	}
+//	
+//	@ApiOperation(value = "좋아요 취소")
+//	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
+//	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
+//		logger.info("-------------deleteLikePost-----------------------------");
+//
+//		int flag = postService.deleteLikePost(post_id, user_id);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+//		
+//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+//	}
 	
 	@ApiOperation(value = "좋아요 클릭/취소")
 	@RequestMapping(value ="/doLike", method = RequestMethod.POST)

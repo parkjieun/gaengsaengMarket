@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+
 import MyProfile from '@/components/user/MyProfile.vue'
 import UserProfile from '@/components/user/UserProfile.vue'
 import UserProfileUpdate from '@/components/user/UserProfileUpdate.vue'
-
 import Layout from "@/components/layout/Layout.vue"
 import MainPage from "@/components/MainPage.vue"
 import PostCreate from '../components/post/PostCreate.vue'

@@ -19,9 +19,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.ssafy.security.config.JwtProperties;
 import com.ssafy.model.User;
 import com.ssafy.repository.UserRepository;
-import com.ssafy.security.config.JwtProperties;
 import com.ssafy.util.JwtUtil;
 
 import io.jsonwebtoken.Claims;
@@ -70,12 +70,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
         if(token != null){
             // parse the token and validate it (decode)
-            String socialId = JWT.require(Algorithm.HMAC256(JwtProperties.SECRET.getBytes()))
+            String userId = JWT.require(Algorithm.HMAC256(JwtProperties.SECRET.getBytes()))
                     .build()
                     .verify(token.replace(JwtProperties.TOKEN_PREFIX,""))
-                    .getClaim("socialId").asString();
+                    .getClaim("userId").asString();
             
-            if(socialId != null){
+            if(userId != null){
                 return new JwtAuthenticationToken(jwtUtil.getClaims(token.substring("Bearer ".length())));
             }
             
