@@ -73,7 +73,8 @@ public class UserController {
 		if(payload.getImg()!=null) {
 			try {
 				filename = payload.getImg().getOriginalFilename();
-				String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
+				//String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
+				String rootPath = uploadFileDir;
 			    md5Hex = DigestUtils.md5DigestAsHex((time.toString()+payload.getImg().getOriginalFilename()).getBytes()).toLowerCase();
 			    String filePath = rootPath + md5Hex + filename.substring(filename.lastIndexOf("."));
 				payload.getImg().transferTo(new File(filePath));
