@@ -5,7 +5,7 @@
         <v-row justify="center" align="center">
         <!-- profile image -->
             <v-avatar color="#a6e3e9" size="62">
-                <img v-if="!!user.profileImg" :src="user.profileImg" alt="Profile-image">
+                <img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image">
                 <v-icon v-else size="40" dark>mdi-account</v-icon>
             </v-avatar>
         <!-- User Info -->
@@ -43,7 +43,7 @@ import httpUser from '@/util/http-common'
 import httpPost from '@/util/http-post'
 import axios from 'axios'
 import { mapState, mapActions } from 'vuex'
-
+const baseURL = "http://i3a504.p.ssafy.io"
 export default {
     data() {
         return {
@@ -98,7 +98,8 @@ export default {
     },
     computed : {
         ...mapState(['myProfile']),
-        myPage: function() { return this.myProfile.userId == this.user.userId }
+        myPage: function() { return this.myProfile.userId == this.user.userId },
+        imgURL: function() { return baseURL + "/static/image/account/" + this.user.profileImg }
     },
     created() {
         this.getUserProfile (this.$route.params.uid)
