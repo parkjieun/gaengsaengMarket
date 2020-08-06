@@ -86,7 +86,7 @@ export default {
         CategoryTabs,
     },
     computed: {
-        ...mapState(['authorization', 'myProfile']),
+        ...mapState(['authorization', 'myProfile', "isAuthenticated"]),
         ...mapGetters(['loggedIn'])
     },
     data() {
