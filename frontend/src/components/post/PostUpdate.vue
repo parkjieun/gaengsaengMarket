@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <v-container fluid>
-      <ValidationObserver v-slot="{ invalid }">
+      <ValidationObserver   v-slot="{ invalid }"  >
         <v-container>
-          <v-col>
+          <v-col> 
             <v-layout row justify-center align-center><h1>상품 수정</h1></v-layout>
             <v-col> <v-divider></v-divider></v-col>
           </v-col>
@@ -13,7 +13,6 @@
         <v-container
           ><v-col>
             <v-file-input multiple v-model="StandbyImgs" accept="image/*" enctype="multipart/form-data" @change="onFileChange()" label="상품 사진을 등록해 주세요" filled prepend-icon="mdi-camera"> </v-file-input>
-            <span class="error-color">{{ errors[0] }}</span>
           </v-col>
           <v-card v-show="UploadImages.length != 0 || onServerThumnailImgsUrl.length != 0">
             <v-container fluid
@@ -50,7 +49,7 @@
           <v-row>
             <v-col cols="2"><h2>제목</h2></v-col>
             <v-col>
-              <ValidationProvider rules="required|max:125"> <v-text-field v-model="title" :rules="titleRules" :counter="125" required></v-text-field> </ValidationProvider
+              <ValidationProvider v-validate.persist ="'required|max:125'"> <v-text-field v-model="title" :rules="titleRules" :counter="125" required></v-text-field> </ValidationProvider
             ></v-col>
           </v-row>
         </v-container>
@@ -58,10 +57,10 @@
           <v-row>
             <v-col cols="2"><h2>카테고리</h2> </v-col>
             <v-col cols="3">
-              <ValidationProvider rules="required"> <v-select :items="categoryBig" item-text="name" item-value="cate_big_id" v-model="seletedCateBig" ref="cateBig" :rules="categoryRules" @change="getCateMid()" placeholder="카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider
+              <ValidationProvider v-validate.persist ="'required'"> <v-select :items="categoryBig" item-text="name" item-value="cate_big_id" v-model="seletedCateBig" ref="cateBig" :rules="categoryRules" @change="getCateMid()" placeholder="카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider
             ></v-col>
             <v-col>
-              <ValidationProvider rules="required"><v-select :items="categoryMid" item-text="name" item-value="cate_mid_id" v-model="seletedCateMid" ref="cateMid" :rules="categoryRules" :disabled="!seletedCateBig ? true : false" placeholder="세부 카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider>
+              <ValidationProvider v-validate.persist ="'required'"><v-select :items="categoryMid" item-text="name" item-value="cate_mid_id" v-model="seletedCateMid" ref="cateMid" :rules="categoryRules" :disabled="!seletedCateBig ? true : false" placeholder="세부 카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider>
             </v-col>
           </v-row>
         </v-container>
@@ -69,7 +68,7 @@
           <v-row>
             <v-col cols="2"><h2>거래타입</h2></v-col>
 
-            <ValidationProvider rules="required" v-slot="{ errors }"
+            <ValidationProvider v-validate.persist ="'required'" v-slot="{ errors }"
               ><v-col cols="1">
                 <v-btn-toggle v-model="toggle_exclusive" color="#00bcd4" multiple group>
                   <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;" color="#00bcd4">택배거래</v-btn>
@@ -85,7 +84,7 @@
         <v-container>
           <v-row v-show="toggle_exclusive.includes(1)">
             <v-col cols="2"><h2>거래 가능 요일</h2></v-col>
-            <ValidationProvider rules="required" v-slot="{ errors }">
+            <ValidationProvider v-validate.persist ="'required'" v-slot="{ errors }">
               <v-col cols="1">
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
                   <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">월</v-btn>
@@ -108,7 +107,7 @@
           <v-container>
             <v-row>
               <v-col cols="2"><h2>가격</h2></v-col>
-              <ValidationProvider rules="required|min:0" v-slot="{ errors }">
+              <ValidationProvider v-validate.persist ="'required|min:0'" v-slot="{ errors }">
                 <v-col><v-text-field type="number" :rules="priceRules" v-model="price" label="가격" placeholder="가격을 입력하세요" sufix="" outlined></v-text-field> </v-col>
                 <v-col
                   ><span class="error-color">{{ errors[0] }}</span></v-col
@@ -123,7 +122,7 @@
             <h2>내용</h2>
             <br />
             <v-container>
-              <ValidationProvider rules="required|min:0" v-slot="{ errors }">
+              <ValidationProvider v-validate.persist ="'required|min:0'" v-slot="{ errors }">
                 <v-textarea v-model="contents" required outlined placeholder="내용을 입력해 주세요."></v-textarea>
                 <v-col
                   ><span class="error-color">{{ errors[0] }}</span></v-col
@@ -165,13 +164,15 @@
         </v-container>
 
         <v-form fluid>
-          <v-container>
-            <v-btn :disabled="invalid" color="cyan" @click="createHandler()">
-              수정
-            </v-btn>
-            <v-btn @click="deletePost()" color="#f96d80">
-              삭제
-            </v-btn>
+          <v-container
+            ><v-layout row justify-center align-center>
+              <v-btn :disabled="invalid" color="cyan" @click="createHandler()">
+                수정
+              </v-btn>
+              <v-btn @click="deletePost()" color="#f96d80">
+                삭제
+              </v-btn>
+            </v-layout>
           </v-container>
         </v-form>
       </ValidationObserver>
@@ -217,8 +218,8 @@ export default {
     title: "",
     contents: "",
     titleRules: [(v) => !!v || "제목을 입력해 주세요", (v) => (v && v.length <= 125) || "제목은 125자 이하여야 합니다"],
-    contentsRules: [(v) => !!v || "내용을 입력해 주세요"],
     categoryRules: [(v) => !!v || "카테고리를 선택해 주세요"],
+    priceRules: [(v) => (v && v >= 0) || "정확한 가격을 입력해 주세요"],
     categoryBig: [],
     categoryMid: [],
     seletedCateBig: "",
@@ -243,6 +244,7 @@ export default {
     });
 
     this.postId = this.$route.params.post_id; //임시
+  //  this.postId = 10036; //임시
     console.log("현재 수정페이지...포스트아이디 넘어오나" + this.postId + " / " + `${this.$route.query.post_id}`);
     axios.get("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId).then(({ data }) => {
       console.log("오는 전체데이터");
@@ -262,7 +264,7 @@ export default {
         this.toggle_exclusive.push(1);
       }
       let imgs = data.files.split(",");
-      for (let img of imgs) { 
+      for (let img of imgs) {
         this.onServerThumnailImgsUrl.push("http://i3a504.p.ssafy.io:8000/api/static/image/" + img);
       }
       this.price = data.price;
@@ -274,12 +276,10 @@ export default {
         this.items.push({ text: splitTags[i], color: this.colors[i] });
       }
 
-      let sum = 0;
-      sum = data.deal_weak;
-      //요일
+      let sum = data.deal_weak;
       for (let i in sum.toString(2)) {
         if (sum.toString(2)[i] == 1) {
-          this.toggle_weekend.push(sum.toString(2).length - i -1);
+          this.toggle_weekend.push(sum.toString(2).length - i - 1);
           //console.log("["+i+"]째 요일은 값이 들어가 있어요");
         }
       }
@@ -306,7 +306,7 @@ export default {
     },
   },
 
-  methods: {
+  methods: { 
     deletePost() {
       axios
         .delete("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId, {
@@ -369,7 +369,12 @@ export default {
       const text = hasValue(itemText);
       const query = hasValue(queryText);
 
-      return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1;
+      return (
+        text
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toString().toLowerCase()) > -1
+      );
     },
     createHandler() {
       // const token = window.sessionStorage.getItem("jwt-auth-token");
@@ -445,6 +450,9 @@ export default {
 };
 </script>
 <style scoped>
+.error-color {
+  color: red;
+}
 .v-card.on-hover {
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
