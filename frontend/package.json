@@ -10,11 +10,8 @@
     "axios": "^0.19.2",
     "compass-mixins-fixed": "^1.0.1",
     "core-js": "^3.6.5",
-
     "sockjs-client": "^1.5.0",
-
     "vee-validate": "^3.3.8",
-
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
     "vue-cookies": "^1.7.3",
