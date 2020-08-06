@@ -274,12 +274,11 @@ export default {
         this.items.push({ text: splitTags[i], color: this.colors[i] });
       }
 
-      let sum = Number(data.deal_weak)
-
+      let sum = data.deal_weak
       //요일
       for (let i in sum.toString(2)) {
         if (sum.toString(2)[i] == 1) {
-          this.toggle_weekend.push(i);
+          this.toggle_weekend.push(sum.toString(2).length - i -1);
           //console.log("["+i+"]째 요일은 값이 들어가 있어요");
         }
       }
