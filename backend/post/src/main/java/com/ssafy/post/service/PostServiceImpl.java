@@ -61,7 +61,6 @@ public class PostServiceImpl implements PostService {
 		
 		//파일 업로드
 		List<String> list = new ArrayList<>();
-		//String realPath = "D:\\workspace\\post\\src\\main\\resources\\static\\image\\";
 		
 		for (MultipartFile file : files) {
 			String originalFileName = file.getOriginalFilename();
