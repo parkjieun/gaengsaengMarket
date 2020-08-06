@@ -11,7 +11,7 @@
                                         <v-icon size="5rem">mdi-account</v-icon>
                                     </v-avatar>
                                     <v-avatar size="10rem" v-ripple v-else class="mb-3">
-                                        <img :src="'http://i3a504.p.ssafy.io:8003'+profileImg" v-if="!change" alt="avatar">
+                                        <img :src="'http://i3a504.p.ssafy.io/static/image/account/'+profileImg" v-if="!change" alt="avatar">
                                         <img :src="avatar.imageURL" v-else alt="avatar">
                                     </v-avatar>
                                 </div>
