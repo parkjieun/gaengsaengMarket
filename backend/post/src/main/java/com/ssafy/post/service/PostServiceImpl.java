@@ -2,6 +2,7 @@ package com.ssafy.post.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.post.dto.Post;
@@ -61,10 +63,14 @@ public class PostServiceImpl implements PostService {
 		
 		//파일 업로드
 		List<String> list = new ArrayList<>();
+		LocalDateTime time = LocalDateTime.now();
+		String md5Hex="";
 		
 		for (MultipartFile file : files) {
 			String originalFileName = file.getOriginalFilename();
-			String safeFile = System.currentTimeMillis() + "_" +originalFileName;
+			md5Hex = DigestUtils.md5DigestAsHex((time.toString()+originalFileName).getBytes()).toLowerCase();
+			//String safeFile = System.currentTimeMillis() + "_" +originalFileName;
+			String safeFile =  md5Hex + originalFileName.substring(originalFileName.lastIndexOf("."));
 			
 			try {
 				file.transferTo(new File(realPath + safeFile));
