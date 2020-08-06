@@ -1,4 +1,5 @@
 <template>
+<v-app>
     <v-container justify="center" align="center">
       <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; ">
          <div style="font-size:12px; height:28px; ">
@@ -73,7 +74,7 @@
                       찜하기
                   </v-col>
                   <v-col style="border-right: 1.5px solid #f2f3f6; text-align:center">
-                    <div><img calss="txt_btn" :src="require(`@/assets/post/chat.png`)"></div>
+                    <div @click="createRoom"><img calss="txt_btn" :src="require(`@/assets/post/chat.png`)"></div>
                     연락하기
                   </v-col>
                   <v-col style="text-align:center">
@@ -140,11 +141,12 @@
         </v-row>
 
     </v-container>
+</v-app>
 </template>
 
 <script> 
 import { mapGetters } from 'vuex';
-
+import httpChat from "@/util/http-chat"
 
 export default {
  
@@ -194,6 +196,24 @@ export default {
         this.$store.dispatch('setPostlike', {user_id:this.item.user_id , post_id: this.item.post_id});
       }
     },
+            goChat() {
+
+            let routeData = this.$router.resolve('/chat');
+            window.open(routeData.href,  "a", "width=400, height=600, left=100, top=50");
+
+        },
+                createRoom(){
+
+            var params = new URLSearchParams();
+            params.append("receiverId", this.item.user_id);
+            httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
+                .then(
+                    response => {
+                        this.goChat()
+                    }
+                )
+
+        },
   },
  data () {
    return {

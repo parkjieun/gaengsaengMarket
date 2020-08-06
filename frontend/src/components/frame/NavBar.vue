@@ -69,6 +69,8 @@
             </div>
         </v-col>
     </v-row>
+    
+
     </div>
 
 </template>
@@ -101,6 +103,7 @@ export default {
     methods: {
     openForm(){
       this.$emit("openForm")
+      // this.dialog=true
     },
 
         goPostCreate() {
@@ -172,4 +175,5 @@ a {
 i.v-icon {
     color: #00263b;
 }
+
 </style>

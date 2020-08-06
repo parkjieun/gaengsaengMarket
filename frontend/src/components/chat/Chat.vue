@@ -1,29 +1,28 @@
 <template>
-    <div class="container" id="app" v-cloak>
-        <div class="row">
-            <div class="col-md-12">
-                <h3>채팅방 리스트</h3>
-            </div>
-        </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text">방제목</label>
-            </div>
-            <input type="text" class="form-control" v-model="receiverId" v-on:keyup.enter="createRoom">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
-            </div>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" v-on:click="enterRoom(item.roomId)">
-                {{item.roomId}}
-            </li>
-        </ul>
-    </div>
+<div class="container" id="app" v-cloak>
+    <v-list subheader>
+        <v-list-item v-for="item in chatrooms" :key="item.roomId" @click="enterRoom(item.roomId)">
+
+            <v-list-item-avatar>
+                <!-- <v-img :src="item.avatar"></v-img> -->
+                <v-icon>mdi-account</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+                <v-list-item-title v-text="item.roomName"></v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-icon>
+                <v-icon :color="'deep-purple accent-4'">mdi-chat</v-icon>
+            </v-list-item-icon>
+
+        </v-list-item>
+    </v-list>
+
+</div>
 </template>
 
 <script>
 import httpChat from "@/util/http-chat"
+import http from "@/util/http-common"
 export default {
 
     data() {
@@ -37,15 +36,52 @@ export default {
     },
     methods: {
         findAllRoom: function () {
-            httpChat.get('/api/chat/room',{headers:{Authorization: this.$store.state.authorization}}).then(response => {
-                this.chatrooms = response.data;
+            httpChat.get('/api/chat/room', {
+                headers: {
+                    Authorization: this.$store.state.authorization
+                }
+            }).then(response => {
+                this.getJoinMember(response.data)
             });
         },
-        createRoom: function () {
+        getJoinMember(data) {
+
+            data.forEach(element => {
+                httpChat.get('/api/chat/room/' + element.roomId, {
+                    headers: {
+                        Authorization: this.$store.state.authorization
+                    }
+                }).then(res => {
+                    
+                    const joinData = res.data
+                    joinData.forEach(ele => {
+                        if (ele.userId !== this.$store.state.myProfile.userId) {
+                            
+                            http.get('/api/user/' + ele.userId).then(res2 => {
+                                
+                                element['roomName'] = res2.data.nickName
+                                
+                                this.chatrooms.push(element)
+                            })
+                            console.log(element)
+                            
+                        }
+                    })
+
+                })
+            });
+
+        },
+
+        createRoom() {
 
             var params = new URLSearchParams();
             params.append("receiverId", this.receiverId);
-            httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
+            httpChat.post('/api/chat/room', params, {
+                    headers: {
+                        Authorization: this.$store.state.authorization
+                    }
+                })
                 .then(
                     response => {
                         alert(response.data.name + "방 개설에 성공하였습니다.")
@@ -58,9 +94,14 @@ export default {
                 });
 
         },
-        enterRoom(roomId){
-            
-            this.$router.push({name:"Chat2",params:{roomId:roomId}})
+        enterRoom(roomId) {
+
+            this.$router.push({
+                name: "Chat2",
+                params: {
+                    roomId: roomId
+                }
+            })
         }
     }
 }

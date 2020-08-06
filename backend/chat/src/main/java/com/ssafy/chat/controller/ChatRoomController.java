@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.chat.model.ChatMessage;
 import com.ssafy.chat.model.ChatRoom;
+import com.ssafy.chat.model.ChatRoomJoin;
 import com.ssafy.chat.repository.ChatRoomRepository;
 import com.ssafy.chat.service.ChatService;
 
@@ -56,5 +57,10 @@ public class ChatRoomController {
 	@GetMapping("/{roomId}")
 	public ResponseEntity<List<ChatMessage>> getMessage(Authentication authentication,@PathVariable String roomId) {
 		return new ResponseEntity(chatService.getMessage(roomId),HttpStatus.OK);
+	}
+	
+	@GetMapping("/room/{roomId}")
+	public ResponseEntity<List<ChatRoomJoin>> getRoomMember(Authentication authentication,@PathVariable String roomId){
+		return new ResponseEntity(chatService.getRoomMember(roomId),HttpStatus.OK);
 	}
 }

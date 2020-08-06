@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 
 import com.ssafy.chat.model.ChatMessage;
 import com.ssafy.chat.model.ChatRoom;
@@ -59,5 +60,13 @@ public class ChatService {
     public List<ChatMessage> getMessage(String roomId){
     	return chatRepository.findAllByRoomId(roomId);
     }
+
+	public void saveMessage(ChatMessage message) {
+		chatRepository.save(message);
+	}
+
+	public List<ChatRoomJoin> getRoomMember(String roomId) {
+		return chatRoomJoinRepository.findAllByRoomId(roomId);
+	}
 	
 }

@@ -1,5 +1,6 @@
 package com.ssafy.chat.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,10 +38,14 @@ public class ChatController {
 
 	@MessageMapping("/chat/message/{roomId}")
 	@SendTo("/sub/chat/room/{roomId}")
-	public Message message(@RequestBody Message message,@DestinationVariable String roomId) {
-		System.out.println(message);
-		messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+	public ChatMessage message(@RequestBody ChatMessage message,@DestinationVariable String roomId) {
+		
+		message.setCreateDate(new Date());
+		message.setRoomId(roomId);
+		chatService.saveMessage(message);
+//		messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
 		return message;
+		
 	}
 
 

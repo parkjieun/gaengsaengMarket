@@ -27,4 +27,6 @@ public class ChatMessage {
     private String content; // 메시지
 	@Column
     private Date createDate;
+	@Column
+	private boolean isRead;
 }
