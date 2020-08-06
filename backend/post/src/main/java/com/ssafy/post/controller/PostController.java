@@ -179,11 +179,14 @@ public class PostController {
 			@RequestParam(value = "tag", required = false) String[] tags) throws Exception {
 		logger.info("-------------updatePost-----------------------------");
 		
-		dto.setContents(dto.getContents().replace("\n","<br>"));
+		if(dto.getContents() != null) {
+			dto.setContents(dto.getContents().replace("\n","<br>"));
+		}
 		
 		// 게시글 수정
 		int flag = postService.updatePost(dto);
-
+		
+		System.out.println("게시글 수정 : " + flag);
 		// 해쉬태그 등록
 		if (tags != null) {
 			flag = postService.updateHashtag(dto.getPost_id(), tags);
@@ -200,7 +203,7 @@ public class PostController {
 		}
 		
 		//파일 삭제
-		if (dto.getDeleteFiles().size()!=0 && dto.getDeleteFiles() != null) {
+		if (dto.getDeleteFiles() != null && dto.getDeleteFiles().size()!=0 ) {
 			System.out.println("삭제되는 이미지 리스트들");
 			System.out.println("getDeleteFiles >>>>"+dto.getDeleteFiles().toString());
 			postService.deletePostImg(post_id, dto.getDeleteFiles());
