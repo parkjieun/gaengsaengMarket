@@ -13,7 +13,7 @@
 						</div>
 						<span class="timestamp"><span class="username">Name</span>&bull;<span class="posttime">Now</span></span>
 					</div>
-					<img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/:8003'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
+					<img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
 				</div>
 			</article>
             
