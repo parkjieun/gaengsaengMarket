@@ -46,7 +46,7 @@ public class CategoryController {
 	public ResponseEntity<List<CategoryBig>> selectAllCategoryBig() throws Exception {
 		logger.info("-------------selectAllCategoryBig-----------------------------");
 		List<CategoryBig> list =categoryService.selectAllCategoryBig();
-		System.out.println(">>>"+list);
+		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<CategoryBig>>(list, HttpStatus.OK);
 	}
 	
@@ -55,7 +55,7 @@ public class CategoryController {
 	public ResponseEntity<List<CategoryMid>> selectAllCategoryMid(@PathVariable("category_big_id") String category_big_id) throws Exception {
 		logger.info("-------------selectAllCategoryMid-----------------------------");
 		List<CategoryMid> list =categoryService.selectAllCategoryMid(category_big_id);
-		System.out.println(">>>"+list);
+		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<CategoryMid>>(list, HttpStatus.OK);
 	}
  
@@ -65,7 +65,7 @@ public class CategoryController {
 			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
 		logger.info("-------------selectCategoryPost-----------------------------");
 		List<Post> list =categoryService.selectCategoryPost(category_mid, sno);
-		System.out.println(">>>"+list);
+		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);
 	}
 }

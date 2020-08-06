@@ -72,7 +72,9 @@ public class PostController {
 		//파일 업로드 & 등록
 		if( dto.getFile() != null && dto.getFile().size()!=0 ) {
 			System.out.println(">>>."+dto.getFile());
-			String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			//String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			String realPath = uploadFileDir;
+			System.out.println(">>>>>>>>>>>>>>realPath: "+ realPath);
 			flag = postService.insertPostImg(num, dto.getFile(), realPath);
 			System.out.println(">>>file flag "+flag);
 		}
