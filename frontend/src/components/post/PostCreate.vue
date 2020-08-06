@@ -245,7 +245,7 @@ export default {
       });
     },
   },
-  methods: {
+  methods: { 
     updateTags() {
             this.$nextTick(() => {
                 const i = this.search.indexOf("#")
