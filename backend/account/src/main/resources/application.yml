@@ -22,7 +22,7 @@ server:
 
 file:
   upload:
-    directory: /static/image/
+    directory: /home/ubuntu/static/image/account/
 oauth2:
   kakao:
     client-id: f37d3a404d52c03b013a84acbfad3555

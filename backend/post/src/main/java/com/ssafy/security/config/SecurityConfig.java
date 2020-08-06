@@ -28,6 +28,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.ssafy.security.filter.JwtAuthenticationFilter;
 import com.ssafy.util.JwtUtil;
+
 import javax.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 
@@ -52,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/oauth/**").permitAll()
 		.antMatchers("/resources/upload/*").permitAll()
 		.antMatchers("/static/image/*").permitAll()
-		.antMatchers(HttpMethod.GET,"/api/user/").permitAll()
 		.antMatchers(HttpMethod.GET,"/**").permitAll()
 		.anyRequest().authenticated()
 		.and()

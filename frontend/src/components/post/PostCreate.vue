@@ -1,237 +1,193 @@
 <template>
   <v-app>
     <v-container fluid>
-      <v-container>
-        <v-col>
-          <h1>상품 등록</h1>
-          <v-col> <v-divider></v-divider></v-col>
-        </v-col>
-      </v-container>
-      <br />
-      <br />
-      <v-container
-        ><v-col>
-          <v-file-input
-            multiple
-            v-model="StandbyImgs"
-            accept="image/*"
-            @change="onFileChange()"
-            label="상품 사진을 등록해 주세요"
-            filled
-            prepend-icon="mdi-camera"
-          >
-          </v-file-input>
-        </v-col>
-        <v-card v-show="UploadImages.length != 0">
-          <v-container fluid
-            ><v-row>
-              <template v-for="i in UploadImages.length">
-                <v-col :key="i" cols="12" md="4">
-                  <v-hover v-slot:default="{ hover }">
-                    <v-card
-                      :elevation="hover ? 12 : 2"
-                      :class="{ 'on-hover': hover }"
-                    >
-                      <v-img
-                        :src="thumnailImgsUrl[i - 1]"
-                        :lazy-src="thumnailImgsUrl[i - 1]"
-                        @click="removeImage(i)"
-                        height="225px"
-                      >
-                      </v-img>
-                      <div class="align-self">
-                        <v-icon color="red darken-2">mdi-close</v-icon>
-                      </div>
-                    </v-card>
-                  </v-hover>
-                </v-col>
-              </template>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-container>
-      <v-container>
-        <v-row>
-          <v-col cols="2"><h2>제목</h2></v-col>
+      <ValidationObserver v-slot="{ invalid }">
+        <v-container>
           <v-col>
-            <v-text-field
-              v-model="title"
-              :rules="titleRules"
-              :counter="125"
-              label="제목을 입력해주세요"
-              required
-            ></v-text-field>
+            <v-layout row justify-center align-center><h1>상품 등록</h1></v-layout>
+            <v-col> <v-divider></v-divider></v-col>
           </v-col>
-        </v-row>
-      </v-container>
-      <v-container>
-        <v-row>
-          <v-col cols="2"><h2>카테고리</h2> </v-col>
-          <v-col cols="3">
-            <v-select
-              :items="categoryBig"
-              item-text="name"
-              item-value="cate_big_id"
-              v-model="seletedCateBig"
-              ref="cateBig"
-              :rules="categoryRules"
-              @change="getCateMid()"
-              placeholder="카테고리를 선택 해주세요"
-              outlined
-              required
-            ></v-select>
+        </v-container>
+        <br />
+        <br />
+        <v-container
+          ><v-col>
+            <ValidationProvider rules="required" v-slot="{ errors }">
+              <v-file-input multiple v-model="StandbyImgs" accept="image/*" @change="onFileChange()" label="상품 사진을 등록해주세요." ref="inputImg" filled prepend-icon="mdi-camera" required> </v-file-input>
+              <span class="error-color">{{ errors[0] }}</span>
+            </ValidationProvider>
           </v-col>
-          <v-col>
-            <v-select
-              :items="categoryMid"
-              item-text="name"
-              item-value="cate_mid_id"
-              v-model="seletedCateMid"
-              ref="cateMid"
-              :rules="categoryRules"
-              :disabled="!seletedCateBig ? true : false"
-              placeholder="세부 카테고리를 선택 해주세요"
-              outlined
-              required
-            ></v-select>
-          </v-col>
-        </v-row>
-      </v-container>
-      <v-container>
-        <v-row>
-          <v-col cols="2"><h2>거래타입</h2></v-col>
-          <v-col cols="1">
-            <v-btn-toggle
-              v-model="toggle_exclusive"
-              color="#00bcd4"
-              multiple
-              group
-            >
-              <v-btn
-                style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                color="#00bcd4"
-                >택배거래</v-btn
-              >
-              <v-btn
-                style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                color="#00bcd4"
-                >직거래</v-btn
-              >
-            </v-btn-toggle>
-          </v-col>
-        </v-row>
-      </v-container>
-      <br />
-      <v-form v-model="valid" fluid>
+          <v-card v-show="UploadImages.length != 0">
+            <v-container fluid
+              ><v-row>
+                <template v-for="i in UploadImages.length">
+                  <v-col :key="i" cols="12" md="4">
+                    <v-hover v-slot:default="{ hover }">
+                      <v-card @click="removeImage(i)" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
+                        <v-img :src="thumnailImgsUrl[i - 1]" :lazy-src="thumnailImgsUrl[i - 1]" height="225px"> </v-img>
+
+                        <v-layout row justify-center align-center> <v-icon justify="center" color="red darken-2">mdi-close</v-icon> </v-layout>
+                      </v-card>
+                    </v-hover>
+                  </v-col>
+                </template>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-container>
         <v-container>
           <v-row>
-            <v-col cols="2"><h2>가격</h2></v-col>
-            <v-col
-              ><v-text-field
-                v-model="price"
-                label="가격"
-                placeholder="가격을 입력하세요"
-                outlined
-              ></v-text-field>
-            </v-col> </v-row
-          ><v-col> <v-divider></v-divider></v-col>
+            <v-col cols="2"><h2>제목</h2></v-col>
+            <v-col>
+              <ValidationProvider rules="required|max:125"> <v-text-field v-model="title" :rules="titleRules" :counter="125" label="제목을 입력해주세요" required></v-text-field> </ValidationProvider>
+            </v-col>
+          </v-row>
         </v-container>
-      </v-form>
-
-      <v-form v-model="valid" fluid>
         <v-container>
-          <h2>내용</h2>
-          <br />
+          <v-row>
+            <v-col cols="2"><h2>카테고리</h2> </v-col>
+            <v-col cols="3">
+              <ValidationProvider rules="required"> <v-select :items="categoryBig" item-text="name" item-value="cate_big_id" v-model="seletedCateBig" ref="cateBig" :rules="categoryRules" @change="getCateMid()" placeholder="카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider
+            ></v-col>
+            <v-col>
+              <ValidationProvider rules="required"> <v-select :items="categoryMid" item-text="name" item-value="cate_mid_id" v-model="seletedCateMid" ref="cateMid" :rules="categoryRules" :disabled="!seletedCateBig ? true : false" placeholder="세부 카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider
+            ></v-col>
+          </v-row>
+        </v-container>
+        <v-container>
+          <v-row>
+            <v-col cols="2"><h2>거래타입</h2></v-col>
+
+            <ValidationProvider rules="required" v-slot="{ errors }"
+              ><v-col cols="1">
+                <v-btn-toggle v-model="toggle_exclusive" color="#00bcd4" multiple group>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4" color="#00bcd4">택배거래</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4" color="#00bcd4">직거래</v-btn>
+                </v-btn-toggle>
+              </v-col>
+              <v-col
+                ><span class="error-color">{{ errors[0] }}</span></v-col
+              >
+            </ValidationProvider>
+          </v-row>
+        </v-container>
+        <v-container>
+          <v-row v-show="toggle_exclusive.includes(1)">
+            <v-col cols="2"><h2>거래 가능 요일</h2></v-col>
+            <ValidationProvider rules="required" v-slot="{ errors }">
+              <v-col cols="1">
+                <v-btn-toggle v-model="toggle_weekend" multiple group>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">월</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">화</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">수</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">목</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">금</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">토</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">일</v-btn>
+                </v-btn-toggle>
+              </v-col>
+              <v-col
+                ><span class="error-color">{{ errors[0] }}</span></v-col
+              >
+            </ValidationProvider>
+          </v-row>
+        </v-container>
+        <v-form fluid>
           <v-container>
-            <v-textarea
-              v-model="contents"
-              :rules="contentsRules"
-              required
-              outlined
-              placeholder="내용을 입력해 주세요."
-              @change="test()"
-            ></v-textarea>
+            <v-row>
+              <v-col cols="2"><h2>가격</h2></v-col>
+              <ValidationProvider rules="required|min:0" v-slot="{ errors }">
+                <v-col><v-text-field type="number" :rules="priceRules" v-model="price" label="가격" placeholder="가격을 입력하세요" sufix="" outlined></v-text-field> </v-col>
+                <v-col
+                  ><span class="error-color">{{ errors[0] }}</span></v-col
+                >
+              </ValidationProvider> </v-row
+            ><v-col> <v-divider></v-divider></v-col>
           </v-container>
+        </v-form>
+
+        <v-form fluid>
+          <v-container>
+            <h2>내용</h2>
+            <br />
+            <v-container>
+              <ValidationProvider rules="required|min:0" v-slot="{ errors }">
+                <v-textarea v-model="contents" required outlined placeholder="내용을 입력해 주세요."></v-textarea>
+                <v-col
+                  ><span class="error-color">{{ errors[0] }}</span></v-col
+                >
+              </ValidationProvider>
+            </v-container>
+            <v-col> <v-divider></v-divider></v-col>
+          </v-container>
+        </v-form>
+
+          <v-container>
+          <h2>태그</h2>
+          <br />
+          <v-col>
+            <v-combobox v-model="model" :filter="filter" :hide-no-data="!search" :items="items" :search-input.sync="search" hide-selected label="Search for an option" multiple small-chips solo>
+              <template v-slot:selection="{ attrs, item, parent, selected }">
+                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} `" :input-value="selected" label small>
+                  <span class="pr-2">
+                    {{ item.text }}
+                  </span>
+                  <v-icon small @click="parent.selectItem(item)">x</v-icon>
+                </v-chip>
+              </template>
+              <template v-slot:item="{ index, item }">
+                <v-text-field v-if="editing === item" v-model="editing.text" autofocus flat background-color="transparent" hide-details solo @keyup.enter="edit(index, item)"></v-text-field>
+                <v-chip v-else :color="`${item.color}  `" dark label small>
+                  {{ item.text }}
+                </v-chip>
+                <v-spacer></v-spacer>
+                <v-list-item-action @click.stop>
+                  <v-btn icon @click.stop.prevent="edit(index, item)">
+                    <v-icon>{{ editing !== item ? "mdi-pencil" : "mdi-check" }}</v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </template>
+            </v-combobox>
+          </v-col>
           <v-col> <v-divider></v-divider></v-col>
         </v-container>
-      </v-form>
 
-      <v-container>
-        <h2>태그</h2>
-        <br />
-        <v-col>
-          <v-combobox
-            v-model="model"
-            :filter="filter"
-            :hide-no-data="!search"
-            :items="items"
-            :search-input.sync="search"
-            hide-selected
-            label="Search for an option"
-            multiple
-            small-chips
-            solo
-          >
-            <template v-slot:selection="{ attrs, item, parent, selected }">
-              <v-chip
-                v-if="item === Object(item)"
-                v-bind="attrs"
-                :color="`${item.color} `"
-                :input-value="selected"
-                label
-                small
-              >
-                <span class="pr-2">
-                  {{ item.text }}
-                </span>
-                <v-icon small @click="parent.selectItem(item)">x</v-icon>
-              </v-chip>
-            </template>
-            <template v-slot:item="{ index, item }">
-              <v-text-field
-                v-if="editing === item"
-                v-model="editing.text"
-                autofocus
-                flat
-                background-color="transparent"
-                hide-details
-                solo
-                placeholder="태그를 입력해주세요."
-                @keyup.enter="edit(index, item)"
-              ></v-text-field>
-              <v-chip v-else :color="`${item.color}  `" dark label small>
-                {{ item.text }}
-              </v-chip>
-              <v-spacer></v-spacer>
-              <v-list-item-action @click.stop>
-                <v-btn icon @click.stop.prevent="edit(index, item)">
-                  <v-icon>{{
-                    editing !== item ? "mdi-pencil" : "mdi-check"
-                  }}</v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </template>
-          </v-combobox>
-        </v-col>
-        <v-col> <v-divider></v-divider></v-col>
-      </v-container>
-
-      <v-form v-model="valid" fluid>
-        <v-container>
-          <v-btn :disabled="!valid" color="cyan" @click="createHandler()">
-            등록
-          </v-btn>
-        </v-container>
-      </v-form>
+        <v-form fluid>
+          <v-container
+            ><v-layout row justify-center align-center>
+              <v-btn :disabled="invalid" color="cyan" @click="createHandler()">
+                등록
+              </v-btn></v-layout
+            >
+          </v-container>
+        </v-form>
+      </ValidationObserver>
     </v-container>
   </v-app>
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"; 
+import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
+import { min, max, required } from "vee-validate/dist/rules";
 import { mapState } from 'vuex';
-
+extend("required", {
+  ...required,
+  message: " * 반드시 입력해야하는 항목입니다.",
+});
+extend("min", {
+  ...min,
+  message: "{length}글자 이상으로 입력해주세요.",
+});
+extend("max", {
+  ...max,
+  message: "{length}글자 이하로 입력해주세요.",
+}); 
 export default {
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   data: () => ({
     price: "",
     StandbyImgs: [], //파일 선택시 고르는 이미지들
@@ -239,15 +195,12 @@ export default {
     UploadImages: [], //서버에 보낼 최종적인 이미지 리스트
     userImage: "",
     toggle_exclusive: [0, 1],
-    valid: false,
+    toggle_weekend: [0, 1, 2, 3, 4, 5, 6],
     title: "",
     contents: "",
-    titleRules: [
-      (v) => !!v || "제목을 입력해 주세요",
-      (v) => (v && v.length <= 125) || "제목은 125자 이하여야 합니다",
-    ],
-    contentsRules: [(v) => !!v || "내용을 입력해 주세요"],
+    titleRules: [(v) => !!v || "제목을 입력해 주세요", (v) => (v && v.length <= 125) || "제목은 125자 이하여야 합니다"],
     categoryRules: [(v) => !!v || "카테고리를 선택해 주세요"],
+    priceRules: [(v) => (v && v >= 0) || "정확한 가격을 입력해 주세요"],
     categoryBig: [],
     categoryMid: [],
     seletedCateBig: "",
@@ -268,11 +221,9 @@ export default {
     inputTags: [],
   }),
   created() {
-    axios
-      .get("http://i3a504.p.ssafy.io:8000/api/post/category/category_big")
-      .then(({ data }) => {
-        this.categoryBig = data;
-      });
+    axios.get("http://i3a504.p.ssafy.io:8000/api/post/category/category_big").then(({ data }) => {
+      this.categoryBig = data;
+    });
   },
   watch: {
     model(val, prev) {
@@ -294,20 +245,29 @@ export default {
       });
     },
   },
-
-  methods: {
-    test() {
-      console.log(this.contents);
-    },
+  methods: { 
+    updateTags() {
+            this.$nextTick(() => {
+                const i = this.search.indexOf("#")
+                console.log(i)
+                if(i!==-1){
+                    const hashtag = this.search.slice(-(this.search.length-i)+1)
+                    if(hashtag.length>1){
+                        this.select.push(hashtag)
+                    }
+                }
+                // this.select.push(...this.search.split(","));
+                
+                this.$nextTick(() => {
+                    if(i!==-1)
+                        this.search = this.search.slice(0,i);
+                });
+            });
+        },
     getCateMid() {
-      axios
-        .get(
-          "http://i3a504.p.ssafy.io:8000/api/post/category/category_mid/" +
-            this.seletedCateBig
-        )
-        .then(({ data }) => {
-          this.categoryMid = data;
-        });
+      axios.get("http://i3a504.p.ssafy.io:8000/api/post/category/category_mid/" + this.seletedCateBig).then(({ data }) => {
+        this.categoryMid = data;
+      });
     },
     removeImage(i) {
       this.UploadImages.splice(i - 1, 1);
@@ -318,10 +278,7 @@ export default {
       if (this.UploadImages.length >= 10 || this.StandbyImgs.length > 10) {
         alert("이미지는 10개 이하 까지 올릴 수 있습니다.");
         this.StandbyImgs = [];
-      } else if (
-        this.UploadImages.length <= 10 &&
-        this.StandbyImgs.length <= 10
-      ) {
+      } else if (this.UploadImages.length <= 10 && this.StandbyImgs.length <= 10) {
         for (let Standbyimg of this.StandbyImgs) {
           this.UploadImages.push(Standbyimg);
           this.thumnailImgsUrl.push(URL.createObjectURL(Standbyimg)); //현재 페이지에 임시로 띄우기 위한 url
@@ -377,11 +334,17 @@ export default {
       formData.append("user_id", this.$store.state.myProfile.userId); //임시
       formData.append("price", this.price);
       formData.append("deal_type", deal_type1);
-      console.log("등록 버튼 클릭후:" + this.UploadImages);
+
+      //선택한 요일
+      let sum = 0;
+      for (let i in this.toggle_weekend) {
+        sum += 1 << this.toggle_weekend[i];
+      }
+      formData.append("deal_weak", sum);
+
       axios
         .post(
-          "http://i3a504.p.ssafy.io:8000/api/post?" +
-            querystring.stringify({ tag: this.inputTags }),
+          "http://i3a504.p.ssafy.io:8000/api/post?" + querystring.stringify({ tag: this.inputTags }),
           formData,
 
           {
@@ -432,19 +395,11 @@ export default {
 };
 </script>
 <style scoped>
+.error-color {
+  color: red;
+}
 .v-card.on-hover {
   opacity: 0.6;
   transition: opacity 0.3s ease-in-out;
 }
-
-.show-btns {
-  color: rgb(97, 74, 74) !important;
-}
-.align-self {
-  display: baseline;
-}
-/* .v-btn.btn_style_dealType{
-  border:10px solid red; 
-  color: blue;
-} */
 </style>
