@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import cookies from 'vue-cookies'
 import http_user from '@/util/http-common'
-import Axios from 'axios'
 import http_post from '@/util/http-post'
 import router from '../router';
 
@@ -12,12 +10,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    
     authorization:sessionStorage.getItem("authorization"),
-    myProfile: sessionStorage.getItem("myProfile"),
+    isAuthenticated: sessionStorage.getItem("isAuthenticated"),
+    myProfile: sessionStorage.getItem("myProfile")?JSON.parse(sessionStorage.getItem("myProfile")):[],
     items: [],
     item: {},
-    postsByUID: [],
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
@@ -27,20 +24,24 @@ export default new Vuex.Store({
     item(state) {
       return state.item;
     },
+    loggedIn(state){
+      if(state.myProfile!=null && state.myProfile && state.myProfile!="" && state.myProfile!="null"){
+        console.log(state.myProfile)
+        return true
+      }
+      return false
+    }
   },
   mutations: {
     SET_USERPROFILE(state, value) {
-      sessionStorage.setItem("myProfile",value)
+      sessionStorage.setItem("myProfile",JSON.stringify(value))
       state.myProfile = value
-      console.log(state.myProfile)
     },
     SET_AUTH(state,value){
       sessionStorage.setItem("authorization",value)
+      sessionStorage.setItem("isAuthenticated", true)
       state.authorization = value
       state.isAuthenticated = true
-    },
-    SET_POSTS_BY_UID(state, data) {
-      state.postsByUID = data
     },
     setPosts(state, payload) {
       state.items = payload;
@@ -53,10 +54,7 @@ export default new Vuex.Store({
   },
 
   actions: {
-    setUserProfile( { commit },value ) {
-      commit('SET_USERPROFILE', value)
-    },
-    getMyProfile( { commit, getters } ) {
+    setUserProfile( { commit, getters } ) {
       return http_user.get('/api/user', getters.config)
       .then((res) => {
         console.log("내 정보", res)
@@ -73,16 +71,6 @@ export default new Vuex.Store({
     },
     setAuth({commit},value){
       commit('SET_AUTH',value)
-    },
-    getPostsByUID( { commit }, userID) {
-      http_post.get('/api/post?user_id=' + userID)
-      .then((res) => {
-        console.log(res)
-        commit('SET_POSTS_BY_UID', res.data)
-      })
-      .catch(() => {
-        alert("에러가 발생했습니다.")
-      })
     },
     getPosts(context) {
       http_post

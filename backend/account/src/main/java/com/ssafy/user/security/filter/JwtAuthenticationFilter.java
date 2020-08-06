@@ -70,12 +70,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
         if(token != null){
             // parse the token and validate it (decode)
-            String socialId = JWT.require(Algorithm.HMAC256(JwtProperties.SECRET.getBytes()))
+            String userId = JWT.require(Algorithm.HMAC256(JwtProperties.SECRET.getBytes()))
                     .build()
                     .verify(token.replace(JwtProperties.TOKEN_PREFIX,""))
-                    .getClaim("socialId").asString();
+                    .getClaim("userId").asString();
             
-            if(socialId != null){
+            if(userId != null){
                 return new JwtAuthenticationToken(jwtUtil.getClaims(token.substring("Bearer ".length())));
             }
             

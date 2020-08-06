@@ -173,10 +173,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "axios"; 
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { min, max, required } from "vee-validate/dist/rules";
-
+import { mapState } from 'vuex';
 extend("required", {
   ...required,
   message: " * 반드시 입력해야하는 항목입니다.",
@@ -188,7 +188,7 @@ extend("min", {
 extend("max", {
   ...max,
   message: "{length}글자 이하로 입력해주세요.",
-});
+}); 
 export default {
   components: {
     ValidationProvider,
@@ -389,6 +389,15 @@ export default {
         });
     },
   },
+  computed: {
+    ...mapState(['isAuthenticated'])
+  },
+  mounted() {
+    if ( !this.isAuthenticated ) {
+      alert("로그인을 해주세요")
+      this.$router.push({name: 'MainPage'})
+    }
+  }
 };
 </script>
 <style scoped>

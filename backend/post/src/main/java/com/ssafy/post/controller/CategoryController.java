@@ -12,11 +12,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod; 
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController; 
  
 import com.ssafy.post.dto.CategoryBig;
-import com.ssafy.post.dto.CategoryMid; 
+import com.ssafy.post.dto.CategoryMid;
+import com.ssafy.post.dto.Post;
 import com.ssafy.post.service.CategoryService;
   
 
@@ -44,7 +46,7 @@ public class CategoryController {
 	public ResponseEntity<List<CategoryBig>> selectAllCategoryBig() throws Exception {
 		logger.info("-------------selectAllCategoryBig-----------------------------");
 		List<CategoryBig> list =categoryService.selectAllCategoryBig();
-		System.out.println(">>>"+list);
+		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<CategoryBig>>(list, HttpStatus.OK);
 	}
 	
@@ -53,8 +55,17 @@ public class CategoryController {
 	public ResponseEntity<List<CategoryMid>> selectAllCategoryMid(@PathVariable("category_big_id") String category_big_id) throws Exception {
 		logger.info("-------------selectAllCategoryMid-----------------------------");
 		List<CategoryMid> list =categoryService.selectAllCategoryMid(category_big_id);
-		System.out.println(">>>"+list);
+		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<CategoryMid>>(list, HttpStatus.OK);
 	}
  
+	@ApiOperation(value = "카테고리 전체 조회")
+	@RequestMapping(value ="/{category_mid}",  method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> selectCategoryPost(@PathVariable("category_mid") String category_mid,
+			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
+		logger.info("-------------selectCategoryPost-----------------------------");
+		List<Post> list =categoryService.selectCategoryPost(category_mid, sno);
+		//System.out.println(">>>"+list);
+		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);
+	}
 }

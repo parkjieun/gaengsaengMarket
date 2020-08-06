@@ -26,8 +26,8 @@ import lombok.ToString;
 @ToString
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int userId;
+	@Column(length = 33, nullable = false)
+	private String userId;
 	@Column
 	private String nickName;
 	@Column
@@ -37,7 +37,7 @@ public class User {
 	@Column(nullable=false)
 	private String address;
 	@Column
-	private String socialUid;
+	private String socialId;
 	@Column
 	private String profileImg;
 	@Column
