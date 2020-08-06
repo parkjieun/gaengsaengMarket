@@ -4,8 +4,21 @@
     <section id="myd" class="chatbox">
 		<section class="chat-window">
 			<article v-for="message in messages" :key="message.messageId" :class="message.userId==myProfile.userId?'msg-self':'msg-remote'" class="msg-container" id="msg-0" >
-				<div class="msg-box">
+				<div v-if="message.userId==myProfile.userId" class="msg-box">
 					<div class="flr">
+						<div class="messages">
+							<p class="msg" id="msg-1">
+								{{message.content}}
+							</p>
+						</div>
+						<span class="timestamp"><span class="username">{{myProfile.nickName}}</span>&bull;<span class="posttime">Now</span></span>
+					</div>
+					<img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
+				</div>
+                <div v-else class="msg-box">
+                    <img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
+					<div class="flr">
+
 						<div class="messages">
 							<p class="msg" id="msg-1">
 								{{message.content}}
@@ -13,7 +26,7 @@
 						</div>
 						<span class="timestamp"><span class="username">Name</span>&bull;<span class="posttime">Now</span></span>
 					</div>
-					<img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
+					
 				</div>
 			</article>
             
@@ -64,13 +77,16 @@ export default {
         ...mapState(['myProfile'])
     },
     methods: {
-        findRoom: function () {
+        findRoom(){
             httpChat.get('/api/chat/' + this.roomId, {
                 headers: {
                     Authorization: this.$store.state.authorization
                 }
             }).then(response => {
+                console.log(response)
                 this.messages = response.data;
+            }).catch(res=>{
+                console.log(res)
             });
         },
         sendMessage: function () {
