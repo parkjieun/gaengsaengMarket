@@ -262,8 +262,8 @@ export default {
         this.toggle_exclusive.push(1);
       }
       let imgs = data.files.split(",");
-      for (let img of imgs) {
-        this.onServerThumnailImgsUrl.push("http://i3a504.p.ssafy.io/static/image/post/" + img);
+      for (let img of imgs) { 
+        this.onServerThumnailImgsUrl.push("http://i3a504.p.ssafy.io:8000/api/static/image/" + img);
       }
       this.price = data.price;
       this.userId = data.user_id;
@@ -274,12 +274,12 @@ export default {
         this.items.push({ text: splitTags[i], color: this.colors[i] });
       }
 
-      let sum = Number(data.deal_weak)
-
+      let sum = 0;
+      sum = data.deal_weak;
       //요일
       for (let i in sum.toString(2)) {
         if (sum.toString(2)[i] == 1) {
-          this.toggle_weekend.push(i);
+          this.toggle_weekend.push(sum.toString(2).length - i -1);
           //console.log("["+i+"]째 요일은 값이 들어가 있어요");
         }
       }
