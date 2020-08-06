@@ -12,10 +12,8 @@
         <br />
         <v-container
           ><v-col>
-            <ValidationProvider rules="required" v-slot="{ errors }">
-              <v-file-input multiple v-model="StandbyImgs" accept="image/*" enctype="multipart/form-data" @change="onFileChange()" label="상품 사진을 등록해 주세요" filled prepend-icon="mdi-camera"> </v-file-input>
-              <span class="error-color">{{ errors[0] }}</span>
-            </ValidationProvider>
+            <v-file-input multiple v-model="StandbyImgs" accept="image/*" enctype="multipart/form-data" @change="onFileChange()" label="상품 사진을 등록해 주세요" filled prepend-icon="mdi-camera"> </v-file-input>
+            <span class="error-color">{{ errors[0] }}</span>
           </v-col>
           <v-card v-show="UploadImages.length != 0 || onServerThumnailImgsUrl.length != 0">
             <v-container fluid
@@ -37,9 +35,9 @@
                     <v-hover v-slot:default="{ hover }">
                       <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
                         <v-img :src="onServerThumnailImgsUrl[j - 1]" :lazy-src="onServerThumnailImgsUrl[j - 1]" @click="removeImageToServer(j)" height="225px"> </v-img>
-                        <div class="align-self">
+                        <v-layout row justify-center align-center>
                           <v-icon color="red darken-2">mdi-close</v-icon>
-                        </div>
+                        </v-layout>
                       </v-card>
                     </v-hover>
                   </v-col>
@@ -52,7 +50,7 @@
           <v-row>
             <v-col cols="2"><h2>제목</h2></v-col>
             <v-col>
-              <ValidationProvider rules="required|max:125"> <v-text-field v-model="title" :rules="titleRules" :counter="125" label="제목을 입력해주세요" required></v-text-field> </ValidationProvider
+              <ValidationProvider rules="required|max:125"> <v-text-field v-model="title" :rules="titleRules" :counter="125" required></v-text-field> </ValidationProvider
             ></v-col>
           </v-row>
         </v-container>
@@ -74,8 +72,8 @@
             <ValidationProvider rules="required" v-slot="{ errors }"
               ><v-col cols="1">
                 <v-btn-toggle v-model="toggle_exclusive" color="#00bcd4" multiple group>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4" color="#00bcd4">택배거래</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4" color="#00bcd4">직거래</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;" color="#00bcd4">택배거래</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;" color="#00bcd4">직거래</v-btn>
                 </v-btn-toggle>
               </v-col>
               <v-col
@@ -90,13 +88,13 @@
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-col cols="1">
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">월</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">화</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">수</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">목</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">금</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">토</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">일</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">월</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">화</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">수</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">목</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">금</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">토</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">일</v-btn>
                 </v-btn-toggle>
               </v-col>
               <v-col
@@ -276,6 +274,8 @@ export default {
         this.items.push({ text: splitTags[i], color: this.colors[i] });
       }
 
+      let sum = Number(data.deal_weak)
+
       //요일
       for (let i in sum.toString(2)) {
         if (sum.toString(2)[i] == 1) {
@@ -369,12 +369,7 @@ export default {
       const text = hasValue(itemText);
       const query = hasValue(queryText);
 
-      return (
-        text
-          .toString()
-          .toLowerCase()
-          .indexOf(query.toString().toLowerCase()) > -1
-      );
+      return text.toString().toLowerCase().indexOf(query.toString().toLowerCase()) > -1;
     },
     createHandler() {
       // const token = window.sessionStorage.getItem("jwt-auth-token");
