@@ -12,7 +12,7 @@
             <div v-if="item.files" style="border: 1px solid #CCCCCC;"> 
                   <v-carousel height="400px"  delimiter-icon="mdi-minus" :show-arrows="false">
                     <v-carousel-item v-for="(file,i) in item.files.split(',')" :key="i"   >
-                        <img :src="'http://i3a504.p.ssafy.io:8000/api/static/image/'+file" style="height:400px;width:100%">
+                        <img :src="'http://i3a504.p.ssafy.io/static/image/post/'+file" style="height:400px;width:100%">
                     </v-carousel-item>
                   </v-carousel>
               </div>
@@ -117,7 +117,7 @@
               <div style=" border-bottom:2px solid #cfcfcf;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
                 <div style="padding-top:20px">
                   <v-avatar color="#a6e3e9" size="85" @click="goUserProfile">
-                    <img :src="'http://i3a504.p.ssafy.io:8003'+item.profile_img" >
+                    <img :src="'http://i3a504.p.ssafy.io/static/image/account/'+item.profile_img" >
                 </v-avatar>
                 </div>
                 <div style="padding-top:10px; color:#72787f" @click="goUserProfile">
@@ -297,5 +297,5 @@ position: relative;
 }
 /* .v-application--wrap{
   min-height: 10vh !important;
-} */
+}  */
 </style>

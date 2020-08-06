@@ -89,8 +89,10 @@ public class UserController {
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
-		if(payload.getImg()!=null)
-			user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
+		if(payload.getImg()!=null) {
+			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
+		//	user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
+		}
 		userService.insertUser(user);
 		return new ResponseEntity(HttpStatus.OK);
 	}
@@ -116,7 +118,8 @@ public class UserController {
 		if(payload.getImg()!=null) {
 			try {
 				filename = payload.getImg().getOriginalFilename();
-				String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
+				//String rootPath = request.getSession().getServletContext().getRealPath(uploadFileDir);
+				String rootPath = uploadFileDir;
 			    md5Hex = DigestUtils.md5DigestAsHex((time.toString()+payload.getImg().getOriginalFilename()).getBytes()).toLowerCase();
 			    String filePath = rootPath + md5Hex + filename.substring(filename.lastIndexOf("."));
 				payload.getImg().transferTo(new File(filePath));
@@ -130,8 +133,10 @@ public class UserController {
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
-		if(payload.getImg()!=null)
-			user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
+		if(payload.getImg()!=null) {
+			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
+			//user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
+		}
 		userService.updateUser(user);
 		return new ResponseEntity(HttpStatus.OK);
 	}
