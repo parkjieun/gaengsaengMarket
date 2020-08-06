@@ -39,8 +39,9 @@ export default new Vuex.Store({
     },
     SET_AUTH(state,value){
       sessionStorage.setItem("authorization",value)
-      sessionStorage.setItem('isAuthenticated', true)
+      sessionStorage.setItem("isAuthenticated", true)
       state.authorization = value
+      state.isAuthenticated = true
     },
     setPosts(state, payload) {
       state.items = payload;
