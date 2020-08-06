@@ -12,7 +12,7 @@
             <div v-if="item.files" style="border: 1px solid #CCCCCC;"> 
                   <v-carousel height="400px"  delimiter-icon="mdi-minus" :show-arrows="false">
                     <v-carousel-item v-for="(file,i) in item.files.split(',')" :key="i"   >
-                        <img :src="'http://i3a504.p.ssafy.io:8000/api/static/image/'+file" style="height:400px;width:100%">
+                        <img :src="'http://i3a504.p.ssafy.io/static/image/post/'+file" style="height:400px;width:100%">
                     </v-carousel-item>
                   </v-carousel>
               </div>
