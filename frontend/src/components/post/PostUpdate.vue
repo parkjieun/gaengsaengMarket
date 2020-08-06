@@ -262,7 +262,7 @@ export default {
         this.toggle_exclusive.push(1);
       }
       let imgs = data.files.split(",");
-      for (let img of imgs) {http://i3a504.p.ssafy.io:8000/api/static/image
+      for (let img of imgs) { 
         this.onServerThumnailImgsUrl.push("http://i3a504.p.ssafy.io:8000/api/static/image/" + img);
       }
       this.price = data.price;
