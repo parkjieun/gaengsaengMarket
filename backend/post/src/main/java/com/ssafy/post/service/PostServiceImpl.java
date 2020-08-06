@@ -61,7 +61,6 @@ public class PostServiceImpl implements PostService {
 		
 		//파일 업로드
 		List<String> list = new ArrayList<>();
-		//String realPath = "D:\\workspace\\post\\src\\main\\resources\\static\\image\\";
 		
 		for (MultipartFile file : files) {
 			String originalFileName = file.getOriginalFilename();
@@ -161,23 +160,23 @@ public class PostServiceImpl implements PostService {
 		return flag;
 	}
 
-	@Override
-	public int insertLikePost(String post_id, String user_id) throws Exception {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("post_id", post_id);
-		map.put("user_id", user_id);
-		
-		return mapper.insertLikePost(map);
-	}
+//	@Override
+//	public int insertLikePost(String post_id, String user_id) throws Exception {
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("post_id", post_id);
+//		map.put("user_id", user_id);
+//		
+//		return mapper.insertLikePost(map);
+//	}
 
-	@Override
-	public int deleteLikePost(String post_id, String user_id) throws Exception {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("post_id", post_id);
-		map.put("user_id", user_id);
-		
-		return mapper.deleteLikePost(map);
-	}
+//	@Override
+//	public int deleteLikePost(String post_id, String user_id) throws Exception {
+//		HashMap<String, Object> map = new HashMap<String, Object>();
+//		map.put("post_id", post_id);
+//		map.put("user_id", user_id);
+//		
+//		return mapper.deleteLikePost(map);
+//	}
 
 	@Override
 	public String selectLike(String post_id, String user_id) throws Exception {
@@ -191,9 +190,13 @@ public class PostServiceImpl implements PostService {
 		
 		if(flag > 0) {
 			flag = mapper.deleteLikePost(map);
+			map.put("type","del");
+			mapper.updateLikePost(map);
 			result = "delete";
 		}else {
 			flag = mapper.insertLikePost(map);
+			map.put("type","ins");
+			mapper.updateLikePost(map);
 			result = "insert";
 		}
 		

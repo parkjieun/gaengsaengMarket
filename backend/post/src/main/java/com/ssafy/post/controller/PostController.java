@@ -72,7 +72,9 @@ public class PostController {
 		//파일 업로드 & 등록
 		if( dto.getFile() != null && dto.getFile().size()!=0 ) {
 			System.out.println(">>>."+dto.getFile());
-			String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			//String realPath = req.getSession().getServletContext().getRealPath(uploadFileDir);
+			String realPath = uploadFileDir;
+			System.out.println(">>>>>>>>>>>>>>realPath: "+ realPath);
 			flag = postService.insertPostImg(num, dto.getFile(), realPath);
 			System.out.println(">>>file flag "+flag);
 		}
@@ -209,27 +211,27 @@ public class PostController {
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}
 	
-	@ApiOperation(value = "좋아요 클릭")
-	@RequestMapping(value ="/like", method = RequestMethod.POST)
-	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
-		logger.info("-------------insertLikePost-----------------------------");
-
-		int flag = postService.insertLikePost(post_id, user_id);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-	}
-	
-	@ApiOperation(value = "좋아요 취소")
-	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
-		logger.info("-------------deleteLikePost-----------------------------");
-
-		int flag = postService.deleteLikePost(post_id, user_id);
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-	}
+//	@ApiOperation(value = "좋아요 클릭")
+//	@RequestMapping(value ="/like", method = RequestMethod.POST)
+//	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
+//		logger.info("-------------insertLikePost-----------------------------");
+//
+//		int flag = postService.insertLikePost(post_id, user_id);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+//		
+//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+//	}
+//	
+//	@ApiOperation(value = "좋아요 취소")
+//	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
+//	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
+//		logger.info("-------------deleteLikePost-----------------------------");
+//
+//		int flag = postService.deleteLikePost(post_id, user_id);
+//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+//		
+//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+//	}
 	
 	@ApiOperation(value = "좋아요 클릭/취소")
 	@RequestMapping(value ="/doLike", method = RequestMethod.POST)
