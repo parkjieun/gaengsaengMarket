@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
-
 import MyProfile from '@/components/user/MyProfile.vue'
 import UserProfile from '@/components/user/UserProfile.vue'
 import UserProfileUpdate from '@/components/user/UserProfileUpdate.vue'
@@ -91,7 +89,6 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
