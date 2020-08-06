@@ -4,7 +4,7 @@
     
     <v-card tile width="250px;" height="350" style="position:relative; min-width:250px;max-width:250px;">
         <v-img
-        :src="'http://i3a504.p.ssafy.io:8000/api/static/image/'+post.files.split(',')[0]"
+        :src="'http://i3a504.p.ssafy.io/static/image/post/'+post.files.split(',')[0]"
         height="200px"
         ><v-expand-transition>
             <div

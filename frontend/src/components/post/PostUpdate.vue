@@ -265,7 +265,7 @@ export default {
       }
       let imgs = data.files.split(",");
       for (let img of imgs) {
-        this.onServerThumnailImgsUrl.push("http://i3a504.p.ssafy.io:8000/api/static/image/" + img);
+        this.onServerThumnailImgsUrl.push("http://i3a504.p.ssafy.io/static/image/post/" + img);
       }
       this.price = data.price;
       this.userId = data.user_id;
