@@ -1,6 +1,17 @@
 <template>
 <v-app>
-
+<v-btn
+                  color="rgba(166,227,233,1)"
+                  
+                  small
+                  fixed
+                  top
+                  left
+                  fab
+                  @click="chatList"
+                >
+                  <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
     <section id="myd" class="chatbox">
 		<section class="chat-window">
 			<article v-for="message in messages" :key="message.messageId" :class="message.userId==myProfile.userId?'msg-self':'msg-remote'" class="msg-container" id="msg-0" >
@@ -11,12 +22,12 @@
 								{{message.content}}
 							</p>
 						</div>
-						<span class="timestamp"><span class="username">{{myProfile.nickName}}</span>&bull;<span class="posttime">Now</span></span>
+						<span class="timestamp"><span class="username">{{myProfile.nickName}}</span>&bull;<span class="posttime">{{message.createDate | processingDate}}</span></span>
 					</div>
 					<img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
 				</div>
                 <div v-else class="msg-box">
-                    <img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+myProfile.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
+                    <img class="user-img" id="user-0" :src="myProfile.profileImg?'http://i3a504.p.ssafy.io/static/image/account/'+patner.profileImg:'https://static.thenounproject.com/png/3069450-200.png'" />
 					<div class="flr">
 
 						<div class="messages">
@@ -24,7 +35,7 @@
 								{{message.content}}
 							</p>
 						</div>
-						<span class="timestamp"><span class="username">Name</span>&bull;<span class="posttime">Now</span></span>
+						<span class="timestamp"><span class="username">{{patner.nickName}}</span>&bull;<span class="posttime">{{message.createDate | processingDate}}</span></span>
 					</div>
 					
 				</div>
@@ -72,9 +83,10 @@ export default {
         this.stomp = Stomp.over(this.socket);
         this.findRoom();
         this.connect()
+        
     },
     computed:{
-        ...mapState(['myProfile'])
+        ...mapState(['myProfile','patner'])
     },
     methods: {
         findRoom(){
@@ -83,20 +95,31 @@ export default {
                     Authorization: this.$store.state.authorization
                 }
             }).then(response => {
-                console.log(response)
+                
                 this.messages = response.data;
+                
             }).catch(res=>{
-                console.log(res)
+                
             });
+            
+            setTimeout(res=>{
+                window.scrollTo(0,document.body.scrollHeight)
+            },100)
         },
         sendMessage: function () {
-            this.stomp.send("/pub/chat/message/" + this.roomId, JSON.stringify({
-                userId: this.userId,
-                content: this.text
-            }), {});
+            if(this.text!==""){
+                this.stomp.send("/pub/chat/message/" + this.roomId, JSON.stringify({
+                    userId: this.userId,
+                    content: this.text
+                }), {});
 
-            this.text = '';
-            window.scrollTo(0,document.body.scrollHeight)
+                this.text = '';
+                
+                setTimeout(res=>{
+                    window.scrollTo(0,document.body.scrollHeight)
+                },50)
+
+            }
         },
         recvMessage: function (recv) {
             this.messages.push({
@@ -121,7 +144,16 @@ export default {
             })
 
         },
-
+        chatList(){
+            this.$router.push({name:"Chat"})
+        }
+    },
+    filters:{
+        processingDate(value){
+            const date = new Date(value)
+            
+            return date.getHours()+":"+date.getMinutes();
+        }
     }
 }
 </script>
@@ -163,6 +195,7 @@ body {
     flex: auto;
     max-height: calc(100% - 60px);
     background: rgba(92, 92, 92, 0.377);
+    
     
 }
 .chat-input {
@@ -224,6 +257,7 @@ body {
     max-width: 80%;
     width: auto;
     float: left;
+    word-break:break-all;
     box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24);
 }
 .user-img {
