@@ -52,6 +52,7 @@ export default {
             profileImg: null,
             avatar:null,
             change:false,
+            img:null,
         }
     },
     components:{
@@ -83,11 +84,15 @@ export default {
         submit() {
             const frm = new FormData();
             frm.append("nickName", this.nickName)
+            console.log(this.img)
             if (this.img !== null) {
                 frm.append("img", this.img)
             }
             frm.append("introduce", this.introduce)
             frm.append("address", this.address)
+            
+            for (var pair of frm.entries()) { console.log(pair[0]+ ', ' + pair[1]); }
+
             http.put("/api/user", frm, {
                     headers: {
                         Authorization: this.$store.state.authorization,
