@@ -83,8 +83,8 @@ export default {
         submit() {
             const frm = new FormData();
             frm.append("nickName", this.nickName)
-            if (this.profileImg !== null) {
-                frm.append("img", this.profileImg)
+            if (this.img !== null) {
+                frm.append("img", this.img)
             }
             frm.append("introduce", this.introduce)
             frm.append("address", this.address)

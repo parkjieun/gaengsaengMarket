@@ -32,6 +32,9 @@
                             <v-text-field v-model="nickName" :rules="rules" label="닉네임" required></v-text-field>
                         </v-list-item>
                         <v-list-item>
+                            <v-text-field v-model="phoneNumber" label="핸드폰번호" required></v-text-field>
+                        </v-list-item>
+                        <v-list-item>
                             <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
                         </v-list-item>
                         <v-list-item>
@@ -68,6 +71,7 @@ export default {
             nickName: "",
             address: "",
             introduce: "",
+            phoneNumber:"",
             img: null,
             rules: [
                 value => (value && value.length <= 10) || "10자 이내로 입력해주세요"
