@@ -124,7 +124,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .nochat{
     margin-top:50%;
     margin-bottom:auto;
