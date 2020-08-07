@@ -1,5 +1,5 @@
 <template>
-<v-app id="inspire">
+<v-app>
     <div>
         <v-tabs class="tabs " hide-slider grow v-model="tab" background-color="#fff"  style="" >
             <!-- <v-tabs-slider></v-tabs-slider> -->
@@ -11,7 +11,7 @@
             </v-tab>
 
             <v-tab-item v-if="index!==0" v-for="(i,index) in categoryBig" :key="index" :value="'tab-' + index">
-                <v-card  @mouseover="inCard" class="elevation-2" @mouseout="outCard" flat tile style="position:absolute;z-index: 91;height:300px;width:800px;background-color: rgba( 255, 255, 255, 1 );width:100%;">
+                <v-card  @mouseover="inCard" class="elevation-2" @mouseout="outCard" flat tile style="position:absolute;z-index: 91;height:300px;background-color: rgba( 255, 255, 255, 1 );width:100%;">
                     <div style="margin-top:35px;">
                         <v-row style="width:100%;" align="center">
                             <v-col v-for="(j,jndex) in categoryBig" :key="jndex" style="padding:0px;margin-left:0px;margin-right:0px;">
@@ -123,5 +123,7 @@ export default {
     border-bottom:solid 2px #A6e3e9 !important;
     color:rgba(166,227,233,1) !important;
 }
-
+.v-application--wrap{
+    min-height: 100px !important;
+}
 </style>

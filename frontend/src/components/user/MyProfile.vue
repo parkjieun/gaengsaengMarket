@@ -5,7 +5,7 @@
         <v-row justify="center" align="center">
         <!-- profile image -->
             <v-avatar color="#a6e3e9" size="62">
-                <img v-if="!!myProfile.profileImg" :src="myProfile.profileImg" alt="Profile-image">
+                <img v-if="!!myProfile.profileImg" :src="imgURL" alt="Profile-image">
                 <v-icon v-else size="40" dark>mdi-account</v-icon>
             </v-avatar>
         <!-- User Info -->
@@ -44,7 +44,7 @@ import PostList from '@/components/post/PostList.vue'
 import axios from 'axios'
 import { mapState, mapActions } from 'vuex'
 import httpPost from '@/util/http-post'
-
+const baseURL = "http://i3a504.p.ssafy.io"
 export default {
     data() {
         return {
@@ -96,6 +96,7 @@ export default {
     },
     computed : {
         ...mapState(['myProfile', 'isAuthenticated']),
+        imgURL: function() { return baseURL + "/static/image/account/" + this.myProfile.profileImg }
     },
     created() {
         this.setUserProfile()
