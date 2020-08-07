@@ -3,6 +3,7 @@
   <v-hover v-slot:default="{ hover }">
     
     <v-card tile width="250px;" height="350" style="position:relative; min-width:250px;max-width:250px;">
+      <div v-if="post.type===1">
         <v-img
         :src="'http://i3a504.p.ssafy.io/static/image/post/'+post.files.split(',')[0]"
         height="200px"
@@ -15,6 +16,23 @@
             >
             </div>
           </v-expand-transition></v-img>
+      </div>
+      <div v-else style="position: relateve;">
+        
+        <v-img
+        :src="'http://i3a504.p.ssafy.io/static/image/post/'+post.files.split(',')[0]"
+        height="200px" style="filter:brightness(50%);"
+        ><v-expand-transition>
+            <div
+              v-if="hover"
+
+              class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 white--text"
+              style="height: 100%;opacity:0.5;"
+            >
+            </div>
+          </v-expand-transition></v-img>
+        <h4 style="position:absolute; top:90px; color:white; width:250px; background:black; padding:5px; opacity: 0.8;">판매완료</h4>
+      </div>
         <v-divider></v-divider>
         <v-card-title class="py-1" style="text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;width:100%;overflow:hidden;">
           <h5 style="width:100%;" class="card-title text-left">
@@ -59,22 +77,23 @@ export default {
     },
     created(){
       // console.log(`http://i3a504.p.ssafy.io:8000/api/static/image/+post.files.split(',')[0]`)
+      
     },
     mounted(){
       this.tags = this.post.tags.split(",").slice(0,3)
     },
-      filters: {
+    filters: {
       currency: function (value) {
           var num = new Number(value);
           return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
       },
       watch:{
         post(val){
-          
           console.log(this.tags)
         }
-      }
-  },
+    },
+
+  }
 }
 </script>
 
