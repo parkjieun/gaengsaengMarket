@@ -78,7 +78,7 @@ export default {
           })
           // 판매 완료 상품
           this.soldOutPosts = posts.filter(function(post) {
-              return post.type === 2
+              return post.type === 0
           }) 
         },
         
