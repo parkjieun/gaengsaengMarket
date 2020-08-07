@@ -1,5 +1,9 @@
 <template>
 <div class="container" id="app" v-cloak>
+<div class="nochat" v-if="chatrooms.length==0">
+    진행중인 채팅이 없습니다.
+</div>
+    <div v-else>
     <v-list subheader>
         <v-list-item v-for="item in chatrooms" :key="item.roomId" @click="enterRoom(item.roomId)">
 
@@ -16,7 +20,7 @@
 
         </v-list-item>
     </v-list>
-
+    </div>
 </div>
 </template>
 
@@ -45,7 +49,6 @@ export default {
             });
         },
         getJoinMember(data) {
-
             data.forEach(element => {
                 httpChat.get('/api/chat/room/' + element.roomId, {
                     headers: {
@@ -95,7 +98,21 @@ export default {
 
         },
         enterRoom(roomId) {
+            httpChat.get('/api/chat/room/' + roomId, {
+                    headers: {
+                        Authorization: this.$store.state.authorization
+                    }
+                }).then(res => {
+                    const joinData = res.data
+                    joinData.forEach(ele => {
+                        if (ele.userId !== this.$store.state.myProfile.userId) {
+                            http.get('/api/user/' + ele.userId).then(res2 => {
+                                this.$store.dispatch("setPatner",res2.data.userId)
+                            })
+                        }
+                    })
 
+                })
             this.$router.push({
                 name: "Chat2",
                 params: {
@@ -108,5 +125,14 @@ export default {
 </script>
 
 <style>
-
+.nochat{
+    margin-top:50%;
+    margin-bottom:auto;
+    font-weight: bold;
+    font-size:30px;
+}
+.container{
+    width:100%;
+    height: 100%;
+}
 </style>
