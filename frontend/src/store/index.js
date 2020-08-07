@@ -13,6 +13,7 @@ export default new Vuex.Store({
     authorization:sessionStorage.getItem("authorization"),
     isAuthenticated: sessionStorage.getItem("isAuthenticated"),
     myProfile: sessionStorage.getItem("myProfile")?JSON.parse(sessionStorage.getItem("myProfile")):[],
+    patner:{},
     items: [],
     item: {},
   },
@@ -50,7 +51,9 @@ export default new Vuex.Store({
     setPost(state, payload) {
       state.item = payload;
     },
-    
+    setPatner(state,value){
+      state.patner = value
+    }
   },
 
   actions: {
@@ -105,6 +108,11 @@ export default new Vuex.Store({
       .catch(() => {
         alert('삭제시 에러가 발생했습니다.');
       })
-		},
+    },
+    setPatner({commit}, userId){
+      http_user.get("/api/user/"+userId).then(res=>{
+        commit("setPatner",res.data)
+      })
+    }
   },
 })
