@@ -22,7 +22,8 @@
     <select id="selectReply" resultType="Reply">
 		select *
 		from reply
-		where post_id = #{post_id}
+		where post_id = #{post_id} 	and del_flag = 0
+		order BY create_date desc
 	</select>
     
 </mapper>
