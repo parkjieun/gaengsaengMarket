@@ -1,35 +1,20 @@
 package com.ssafy.post.controller;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Pattern.Flag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.post.dto.BasicResponse;
-import com.ssafy.post.dto.Post;
 import com.ssafy.post.dto.Reply;
-import com.ssafy.post.service.PostService;
 import com.ssafy.post.service.ReplyService;
 
 import io.swagger.annotations.Api;
@@ -51,16 +36,18 @@ public class ReplyController {
 
 	@ApiOperation(value = "댓글 등록")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<String> insertReply(@RequestBody Reply dto) throws Exception {
+	public ResponseEntity<Reply> insertReply(@RequestBody Reply dto) throws Exception {
 		logger.info("-------------insertReply-----------------------------");
 		System.out.println(">>>>>>>>"+dto.toString());
-		int flag = replyService.insertReply(dto);
-
-		if (flag == 0) {
-			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
-		}
 		
-		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
+		//댓글 등록
+		int reply_id = replyService.insertReply(dto);
+		System.out.println(">>>>>>>>>>reply_id: "+reply_id);
+		
+		//추가한 dto 받아오기
+		Reply reply = replyService.selectOneReply(reply_id);
+		
+		return new ResponseEntity<Reply>(reply, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "댓글 삭제")

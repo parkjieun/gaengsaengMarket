@@ -17,5 +17,7 @@ public interface ReplyService {
 
 	public List<Reply>  selectReply(int post_id) throws Exception;
 
+	public Reply selectOneReply(int reply_id) throws Exception;
+
 
 }
