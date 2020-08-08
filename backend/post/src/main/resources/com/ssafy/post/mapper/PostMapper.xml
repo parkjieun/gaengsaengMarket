@@ -120,9 +120,10 @@
 		       		<when test="type == 0">
 				    	AND t0.`type` = 0
 		       		</when>
-		       		<otherwise>
-				 		AND t0.`type` = 1
-		       		</otherwise>
+		       		<when test="type == 1">
+				    	AND t0.`type` = 1
+		       		</when>
+		       		
 		       </choose>
        		</when>
        </choose>
