@@ -53,6 +53,14 @@ export default new Vuex.Store({
     },
     setPatner(state,value){
       state.patner = value
+    },
+    LOGOUT(state){
+      state.myProfile=""
+      state.isAuthenticated=false
+      state.authorization=""
+      sessionStorage.removeItem("myProfile")
+      sessionStorage.removeItem("isAuthenticated")
+      sessionStorage.removeItem("authorization")
     }
   },
 
@@ -118,6 +126,9 @@ export default new Vuex.Store({
       http_user.get("/api/user",getters.config).then(res=>{
         commit("SET_USERPROFILE",res.data)
       })
+    },
+    logout({commit}){
+      commit("LOGOUT")
     }
   },
 })
