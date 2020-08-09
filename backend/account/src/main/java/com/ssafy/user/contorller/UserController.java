@@ -89,6 +89,7 @@ public class UserController {
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
+		user.setPhone(payload.getPhone());
 		if(payload.getImg()!=null) {
 			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
 		//	user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
@@ -112,7 +113,9 @@ public class UserController {
 	@ApiOperation(value="유저정보 수정을 진행한다.")
 	@PutMapping(consumes = "multipart/form-data")
 	public ResponseEntity<?> updatetUser(Authentication authentication,JoinPayload payload, HttpServletRequest request){
+		String userId = authentication.getPrincipal().toString();
 		LocalDateTime time = LocalDateTime.now();
+		
 		String md5Hex="";
 		String filename="";
 		if(payload.getImg()!=null) {
@@ -128,12 +131,10 @@ public class UserController {
 			}
 		}
 		
-		User user = new User();
-		user.setUserId(authentication.getPrincipal().toString());
+		User user = userService.getUser(userId).get();
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
-		
 		if(payload.getImg()!=null) {
 			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
 			//user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));

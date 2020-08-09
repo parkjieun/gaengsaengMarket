@@ -16,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, String>{
 	public User findBySocialId(String userId);
 	@Query(value="select user_id from user where social_id = :socialId",nativeQuery=true)
 	public String findId(@Param("socialId") String socialId);
-
+	
 }
