@@ -113,6 +113,11 @@ export default new Vuex.Store({
       http_user.get("/api/user/"+userId).then(res=>{
         commit("setPatner",res.data)
       })
+    },
+    getMyProfile({commit , getters}){
+      http_user.get("/api/user",getters.config).then(res=>{
+        commit("SET_USERPROFILE",res.data)
+      })
     }
   },
 })
