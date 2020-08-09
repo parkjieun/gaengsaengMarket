@@ -8,11 +8,15 @@
         </div>
 
         <div v-else style="width:100%;position:absolute;right:2%;" class="text-right d-none d-sm-block">
+            <v-btn text small class="my-0" @click="goPostCreate">
+                <v-icon small class="nav-icon">mdi-cart</v-icon>판매하기
+            </v-btn>
             <v-btn text small class="my-0" @click="goMyProfile">
                 <v-icon small>mdi-account</v-icon>내 정보
             </v-btn>
-            <v-btn text small class="my-0" @click="goPostCreate">
-                <v-icon small class="nav-icon">mdi-cart</v-icon>판매하기
+            
+            <v-btn text small class="my-0" @click="logout">
+                <v-icon small class="nav-icon">mdi-account-off</v-icon>로그아웃
             </v-btn>
 
         </div>
@@ -153,6 +157,9 @@ export default {
             let routeData = this.$router.resolve('/chat');
             window.open(routeData.href,  "a", "width=400, height=600, left=100, top=50");
 
+        },
+        logout(){
+            this.$store.dispatch("logout")
         }
     },
 
