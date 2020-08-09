@@ -42,7 +42,8 @@ public class User {
 	private String profileImg;
 	@Column
 	private int pointVal;
-	
+	@Column
+	private String phone;
 	@PrePersist
 	public void preProcessing() {
 		this.createDate = LocalDateTime.now();
