@@ -16,6 +16,7 @@ export default new Vuex.Store({
     patner:{},
     items: [],
     item: {},
+    replys: [],
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
@@ -24,6 +25,9 @@ export default new Vuex.Store({
     },
     item(state) {
       return state.item;
+    },
+    replys(state) {
+      return state.replys;
     },
     loggedIn(state){
       if(state.myProfile!=null && state.myProfile && state.myProfile!="" && state.myProfile!="null"){
@@ -50,6 +54,9 @@ export default new Vuex.Store({
 
     setPost(state, payload) {
       state.item = payload;
+    },
+    setReplys(state, payload) {
+      state.replys = payload;
     },
     setPatner(state,value){
       state.patner = value
@@ -90,6 +97,16 @@ export default new Vuex.Store({
         .get(payload)
         .then(({ data }) => {
            context.commit('setPost', data);
+        })
+        .catch(() => {
+          alert('에러가 발생했습니다.');
+        })
+    },
+    getReplys(context, payload) {
+      http_post
+        .get(payload)
+        .then(({ data }) => {
+           context.commit('setReplys', data);
         })
         .catch(() => {
           alert('에러가 발생했습니다.');
