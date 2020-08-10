@@ -34,7 +34,7 @@ detectionName = {
     'wineglass': ' 와인잔',
     'cup': '컵 ',
     'fork': '포크 ',
-    'knife': '나이크 ',
+    'knife': '나이프 ',
     'spoon': '수저 ',
     'bowl': '그릇(bowl) ',
     'banana': '바나나 ',
@@ -152,7 +152,7 @@ def extract_tags(image_path):
         resultTags.append(detect_color(final))
         # To be done - Smoothening the edges
         if label[bigN] in detectionName:
-            resultTags.append(label[bigN])
+            resultTags.append(detectionName[label[bigN]])
 
         #print("검출된것이 0 이상일때 최종적으로 서버에 보내질 태그들 : ", resultTags)
 
