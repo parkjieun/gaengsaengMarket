@@ -19,7 +19,7 @@
 		from post t0
 		
 		left outer join (
-		    select post_id, max(img_url) as files
+		    select post_id, min(img_url) as files
 		    from post_img
 		    group by post_id
 		) t1
@@ -33,11 +33,9 @@
 		) t2
 		on t0.post_id = t2.post_id
 		
-		left outer join `like` t3
-		on t0.post_id = t3.post_id
-		
 		where del_flag != 1 
-			AND cate_mid_id=#{category_mid}
+		
+		AND cate_mid_id=#{category_mid}
 		
 		ORDER BY t0.create_date DESC
        	LIMIT #{sno}, 12
