@@ -29,7 +29,7 @@
             <v-tab @click="allProduct()">판매 수</v-tab>
             <v-tab @click="onSale()">판매 중</v-tab>
             <v-tab @click="soldOut()">판매 완료</v-tab>
-            <v-tab v-if="myPage">찜한 글</v-tab>
+            <v-tab v-if="myPage" @click="likePost()">찜한 글</v-tab>
         </v-tabs>
 
         <!-- product list -->
@@ -51,6 +51,7 @@ export default {
             allPosts: [],
             onSalePosts: [],
             soldOutPosts: [],
+            likePosts: [],
             user: null,
         }
     },
@@ -69,6 +70,13 @@ export default {
                 })
             })
         },
+        getLikePosts(userId) {
+            httpPost.get('/api/post?sno=0&like=true&user_id='+userId)
+            .then((res) => {
+                console.log(res)
+                this.likePosts = res.data
+            })
+        },
         setPosts(posts) {
           this.allPosts = posts
           this.showPosts = this.allPosts
@@ -80,6 +88,10 @@ export default {
           this.soldOutPosts = posts.filter(function(post) {
               return post.type === 0
           }) 
+        },
+        likePost() {
+            this.showPosts = this.likePosts
+
         },
         
         allProduct() {
@@ -118,6 +130,8 @@ export default {
         
         this.getUserProfile (this.$route.params.uid)
         this.setUserProfile()
+        this.getLikePosts(this.$route.params.uid)
+        
     },
     watch:{
         '$route'(){
