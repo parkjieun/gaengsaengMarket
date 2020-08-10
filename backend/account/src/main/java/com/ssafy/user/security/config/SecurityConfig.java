@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers("/oauth/**").permitAll()
 		.antMatchers("/resources/upload/*").permitAll()
 		.antMatchers("/static/image/*").permitAll()
-		.antMatchers("/api/user/**").permitAll()
+		.antMatchers(HttpMethod.GET,"/api/user/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.cors()
