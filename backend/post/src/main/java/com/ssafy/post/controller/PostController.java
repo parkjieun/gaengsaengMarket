@@ -147,7 +147,7 @@ public class PostController {
 	@ApiOperation(value = "게시글 전체 조회")
 	@RequestMapping( method = RequestMethod.GET)
 	public ResponseEntity<List<Post>> selectAllPost(String query, String user_id, boolean like, 
-			@RequestParam(value = "type",required = false, defaultValue = "1" ) int type,
+			@RequestParam(value = "type",required = false, defaultValue = "3" ) int type,
 			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
 		logger.info("-------------selectAllPost-----------------------------");
 		System.out.println(query+"/"+user_id+"/"+like+"/"+type+"/"+sno);

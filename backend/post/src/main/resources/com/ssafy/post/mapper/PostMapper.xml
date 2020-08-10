@@ -123,7 +123,6 @@
 		       		<when test="type == 1">
 				    	AND t0.`type` = 1
 		       		</when>
-		       		
 		       </choose>
        		</when>
        </choose>
