@@ -123,8 +123,9 @@ export default {
         goMyProfile() {
             if (this.isAuthenticated) {
                 this.$router.push({
-                    name: 'MyProfile'
+                    name: 'UserProfile',params:{uid:this.$store.state.myProfile.userId}
                 })
+                
             } else {
                 alert("로그인을 해주세요")
             }
