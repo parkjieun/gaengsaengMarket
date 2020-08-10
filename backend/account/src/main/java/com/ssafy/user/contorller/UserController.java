@@ -150,7 +150,6 @@ public class UserController {
 		int pointVal = payload.get("pointVal");
 		System.out.println("point"+pointVal);
 		String userId = authentication.getPrincipal().toString();
-		
 		User user = userService.getUser(userId).get();
 		user.setPointVal(user.getPointVal() + pointVal);
 		userService.updateUser(user);
