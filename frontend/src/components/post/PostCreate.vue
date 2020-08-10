@@ -122,7 +122,7 @@
           </v-container>
         </v-form>
 
-          <v-container>
+        <v-container>
           <h2>태그</h2>
           <br />
           <v-col>
@@ -167,10 +167,10 @@
 </template>
 
 <script>
-import axios from "axios"; 
+import axios from "axios";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { min, max, required } from "vee-validate/dist/rules";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 extend("required", {
   ...required,
   message: " * 반드시 입력해야하는 항목입니다.",
@@ -182,7 +182,7 @@ extend("min", {
 extend("max", {
   ...max,
   message: "{length}글자 이하로 입력해주세요.",
-}); 
+});
 export default {
   components: {
     ValidationProvider,
@@ -247,23 +247,22 @@ export default {
   },
   methods: { 
     updateTags() {
-            this.$nextTick(() => {
-                const i = this.search.indexOf("#")
-                console.log(i)
-                if(i!==-1){
-                    const hashtag = this.search.slice(-(this.search.length-i)+1)
-                    if(hashtag.length>1){
-                        this.select.push(hashtag)
-                    }
-                }
-                // this.select.push(...this.search.split(","));
-                
-                this.$nextTick(() => {
-                    if(i!==-1)
-                        this.search = this.search.slice(0,i);
-                });
-            });
-        },
+      this.$nextTick(() => {
+        const i = this.search.indexOf("#");
+        console.log(i);
+        if (i !== -1) {
+          const hashtag = this.search.slice(-(this.search.length - i) + 1);
+          if (hashtag.length > 1) {
+            this.select.push(hashtag);
+          }
+        }
+        // this.select.push(...this.search.split(","));
+
+        this.$nextTick(() => {
+          if (i !== -1) this.search = this.search.slice(0, i);
+        });
+      });
+    },
     getCateMid() {
       axios.get("http://i3a504.p.ssafy.io:8000/api/post/category/category_mid/" + this.seletedCateBig).then(({ data }) => {
         this.categoryMid = data;
@@ -285,7 +284,112 @@ export default {
           console.log("서버에 들어갈 이미지:" + Standbyimg);
         }
         console.log(this.UploadImages);
+        
+        //opencv 이미지 넣은 갯수만큼 분석
+
+        let formData = new FormData();
+        for (let StandbyImg of this.StandbyImgs) {
+          formData.append("file", StandbyImg);
+        }
+
+        axios
+          .put("http://i3a504.p.ssafy.io:8002/imgUpload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(({ data }) => {
+            console.log("전송후 가져오는 데이터:" + data);
+            this.tempimgtags = data;
+
+            let splitTags = data.split(",");
+            if (splitTags.length != 0) {
+              for (let i in splitTags) {
+                this.inputTags.push(splitTags[i]);
+                this.model.push({ text: splitTags[i], color: this.colors[i] });
+                this.items.push({ text: splitTags[i], color: this.colors[i] });
+                if(!splitTags[i].includes("색")){
+                  this.distingishCategory(splitTags[i])
+                }
+              }
+            }
+          });
       }
+    },distingishCategory(detectName){
+        //패션잡화 
+        let bag = ["핸드백", "백팩", "수트케이스"]
+        let accessories = ["넥타이"]
+        //디지털 가전
+        let mobile = ["핸드폰"]
+        let home_appliances = ["티비", "전자렌지", "오븐","토스터기","싱크대","냉장고", "헤어드라이기", "시계"]
+        let peripheral = ["마우스", "리모콘", "키보드"]
+        let book = ["책"]
+        //도서 티켓 취미 애완
+        let kidult = ["프리스비", "자전거", "차", "오토바이", "비행기", "버스", "열차", "트럭", "보트", "신호등"
+        ,"곰인형", "연", "스포츠볼"]
+        //생활 문구 가구 식품
+        let daily_necessities = ["칫솔", "가위", "우산", "화분", "꽃병"]
+        let furniture = ["벤치", "의자", "침대", "식탁", "쇼파"]
+        let kitchen_utensils = ["병", "와인잔", "컵", "포크", "나이프", "수저", "그릇"]
+        let food = ["바나나", "사과", "샌드위치", "오렌지", "브로콜리", "당근", "핫도그", "피자",
+        "도넛", "케이크"]
+
+        let categories = [bag, accessories, mobile, home_appliances, peripheral, book,
+        kidult, daily_necessities, furniture, kitchen_utensils, food]
+
+        for (let i in categories){
+          for(let j of categories[j]){
+            if(detectName.includes(j)){
+              switch(i){
+                case 0:
+                  this.seletedCateBig = 10004
+                  this.seletedCateMid = 10004
+                  break
+                case 1:
+                  this.seletedCateBig = 10004
+                  this.seletedCateMid = 10008 //악세서리
+                  break
+                case 2:
+                  this.seletedCateBig = 10007
+                  this.seletedCateMid = 10021 //핸드폰
+                  break
+                case 3:
+                  this.seletedCateBig = 10007
+                  this.seletedCateMid = 10022 //가전제품
+                  break
+                case 4:
+                  this.seletedCateBig = 10007
+                  this.seletedCateMid = 10024 //주변기기
+                  break
+                case 5:
+                  this.seletedCateBig = 10007
+                  this.seletedCateMid = 10025 //책
+                  break
+                case 6:
+                  this.seletedCateBig = 10008
+                  this.seletedCateMid = 10026 //취미 키덜트
+                  break
+                case 7:
+                  this.seletedCateBig = 10009
+                  this.seletedCateMid = 10028 //생활용품
+                  break
+                case 8:
+                  this.seletedCateBig = 10009
+                  this.seletedCateMid = 10029 //가구
+                  break
+                case 9:
+                  this.seletedCateBig = 10009
+                  this.seletedCateMid = 10030 //주방용품
+                  break
+                case 10:
+                  this.seletedCateBig = 10009
+                  this.seletedCateMid = 10004 // 식품
+                  break
+              }
+            }
+          }
+        }
+        
     },
     edit(index, item) {
       if (!this.editing) {
@@ -384,14 +488,14 @@ export default {
     },
   },
   computed: {
-    ...mapState(['isAuthenticated'])
+    ...mapState(["isAuthenticated"]),
   },
   mounted() {
-    if ( !this.isAuthenticated ) {
-      alert("로그인을 해주세요")
-      this.$router.push({name: 'MainPage'})
+    if (!this.isAuthenticated) {
+      alert("로그인을 해주세요");
+      this.$router.push({ name: "MainPage" });
     }
-  }
+  },
 };
 </script>
 <style scoped>
