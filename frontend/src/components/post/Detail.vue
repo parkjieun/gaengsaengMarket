@@ -2,7 +2,7 @@
 <v-app>
     <v-container justify="center" align="center">
       <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; ">
-         <div style="font-size:12px; height:28px; ">
+         <div style="font-size:12px; height:28px; font-weight:550 ">
            <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{item.cate_big_name }} 
            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)"> {{item.cate_mid_name }} 
@@ -35,8 +35,8 @@
                   <img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/like_click.png`)"> {{item.like_cnt }}
                   <span style="margin:0 10px 0 10px"> | </span> 
                   <img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/dateTime.png`)">
-                  <span v-if="item.update_date != null"> {{item.update_date }}</span>
-                  <span v-else> {{item.create_date }}</span>
+                  <span v-if="item.update_date != null"> {{$moment(item.update_date).format('YYYY-MM-DD')}}</span>
+                  <span v-else> {{$moment(item.create_date).format('YYYY-MM-DD')}} </span>
               </div>
 
               <div>
@@ -48,11 +48,7 @@
                   <span style="color:#6E47EE" v-else>택배/직거래</span>
                 
                   <span style="color:#6E47EE" v-if="item.deal_weak != 0">
-                    (
-                      <span v-for="(day,i) in week" :key="i"  v-show="item.deal_weak/day.count == 1">
-                        <span>{{day.name}} </span>
-                      </span>
-                    )
+                    ( {{day}} )
                   </span>
                 </div>
               </div>
@@ -78,7 +74,7 @@
                     <div @click="createRoom"><img calss="txt_btn" :src="require(`@/assets/post/chat.png`)"></div>
                     연락하기
                   </v-col>
-                  <v-col style="text-align:center">
+                  <v-col style="text-align:center"  @click="openDialog">
                     <div><img calss="txt_btn" :src="require(`@/assets/post/card.png`)"></div>
                     바로구매
                   </v-col>
@@ -109,7 +105,9 @@
 
               <v-tab-item>
                 <v-card flat>
-                  <v-card-text style=" text-align:left; color:#212121">서비스 준비 중 입니다. </v-card-text>
+                  <v-card-text style=" text-align:left; color:#212121">
+                      <post-reply/>
+                  </v-card-text>
                 </v-card>
               </v-tab-item>
             </v-tabs>
@@ -118,10 +116,11 @@
               <div style=" border-bottom:2px solid #cfcfcf;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
                 <div style="padding-top:20px">
                   <v-avatar color="#a6e3e9" size="85" @click="goUserProfile">
-                    <img :src="'http://i3a504.p.ssafy.io/static/image/account/'+item.profile_img" >
+                    <img v-if="!!item.profile_img"  :src="`http://i3a504.p.ssafy.io/static/image/account/${item.profile_img}`" >
+                    <v-icon v-else size="85" dark>mdi-account</v-icon>
                 </v-avatar>
                 </div>
-                <div style="padding-top:10px; color:#72787f" @click="goUserProfile">
+                <div style="padding-top:10px; color:#72787f; font-weight:550" @click="goUserProfile">
                 {{item.nick_name}} 
                 </div>
             </v-col>
@@ -139,6 +138,25 @@
           </v-col>
         </v-row>
 
+      <!-- <v-btn color="primary" dark @click.native.stop="dialog = true">Open Dialog</v-btn> -->
+      
+      <v-dialog v-model="dialog" max-width="300">
+      <v-card>
+        <v-card-title style="height:50px;font-size:15px !important;font-weight:550;border-bottom:1px solid rgb(220, 219, 228)">거래방법 선택</v-card-title>
+        <v-card-text style="padding:0px">
+          <div v-if="item.deal_type == 1 || item.deal_type == 3">
+            <v-divider></v-divider>
+            <v-btn color="green darken-1"  style="width:100%;font-size:20px !important;height:80px;font-weight:550" text @click.native="dialog = false"  @click="goDelivery()">택배거래</v-btn>
+          </div>
+         
+          <div v-if="item.deal_type == 2 || item.deal_type == 3">
+            <v-divider></v-divider>
+            <v-btn color="green darken-1" style="width:100%;font-size:20px !important;height:80px; font-weight:550" text @click.native="dialog = false" @click="goDirect()">직거래 </v-btn>
+          </div>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    
     </v-container>
 </v-app>
 </template>
@@ -148,23 +166,44 @@ import { mapGetters } from 'vuex';
 
 import httpChat from "@/util/http-chat"
 import http_post from "@/util/http-post"
+import PostReply from '@/components/post/PostReply.vue'
 
+import Vue from 'vue' 
+import vueMoment from 'vue-moment' 
+Vue.use(vueMoment)
 
 export default {
  
   name: 'post-detail',
   computed: {
     ...mapGetters(['item']),
+    day(){
+      let weekCnt = this.item.deal_weak;
+      let days ="";
+      let week= [{ name: "월", count: 1},{ name: "화",count: 2},{name: "수", count: 4},{ name: "목", count: 8}, 
+                  { name: "금",count: 16},{name: "토",count: 32},{name: "일", count: 64}]
+
+      for(let i=6; i>=0; i--){
+
+        if(weekCnt >= week[i].count){
+            weekCnt -= week[i].count
+            days +=week[i].name + " "
+        }
+      }
+      //console.log(days);
+
+      return days;
+    }
   },
   
   created() {
-    this.myProfile = this.$store.state.myProfile.userId;
-
+   // this.myProfile = this.$store.state.myProfile.userId;
+    this.myProfile = "bf4477387476d3ceff52ecbdeb64ab20" //삭제
     console.log(">>>>>>>"+`${this.$route.query.post_id}`);
     console.dir("this.myProfile:" + this.myProfile);
  
 
-    if(this.myProfile != "undefined"){
+    if(this.myProfile != "undefined" && (this.myProfile != undefined) ){
       this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile}`);
     }else{
       this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}`);
@@ -172,6 +211,24 @@ export default {
     //console.log("title "+ this.item.title);
   },
   methods: {
+    goDelivery(){
+      alert("택배거래");
+      //this.dialog = false;
+    },
+    goDirect(){
+      alert("직거래");
+      //this.dialog = false;
+    },
+    openDialog(){
+      if(this.myProfile == undefined){
+        alert('로그인 해주세요');
+      }else{
+        this.dialog = true;
+        //새창 
+        //let routeData = this.$router.resolve({name: 'PostBuy', params: { uid : this.item.user_id }});
+        //window.open(routeData.href, '_blank');
+      }
+    },
     ConfirmDelete(post_id)
     {
       var x = confirm("해당 글을 삭제 하시겠습니까?");
@@ -194,8 +251,6 @@ export default {
       this.$router.push({name: 'UserProfile', params: { uid : this.item.user_id }} )
     },
     goPostLike(){
-      //alert('클릭22222');
-
       //로그인 안했으면
       if(this.myProfile == undefined){
           alert('로그인 해주세요');
@@ -253,38 +308,13 @@ export default {
  data () {
    return {
       myProfile : null,
-      week: [
-          {
-              name: "일",
-              count: 1
-          },
-          {
-              name: "월",
-              count: 10
-          },
-          {
-              name: "화",
-              count: 100
-          },
-          {
-              name: "수",
-              count: 1000
-          },
-          {
-              name: "목",
-              count: 10000
-          },
-          {
-              name: "금",
-              count: 100000
-          },
-          {
-              name: "토",
-              count: 1000000
-          }
-      ],
+      dialog: false
+
     }
  },
+  components: {
+    PostReply,
+  },
   filters: {
       currency (value) {
           var num = new Number(value);
