@@ -31,7 +31,7 @@ export default {
         isChat() {
             var url = window.location.href
             console.log(url)
-            return url.includes("chat")
+            return url.includes("chat") || url.includes("point")
         }
     },
     methods: {
