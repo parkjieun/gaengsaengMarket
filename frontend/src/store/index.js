@@ -27,10 +27,12 @@ export default new Vuex.Store({
     },
     loggedIn(state){
       if(state.myProfile!=null && state.myProfile && state.myProfile!="" && state.myProfile!="null"){
-        console.log(state.myProfile)
         return true
       }
       return false
+    },
+    myPoint(state){
+      return state.myProfile.pointVal
     }
   },
   mutations: {
