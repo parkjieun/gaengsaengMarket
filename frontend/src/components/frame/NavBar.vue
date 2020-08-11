@@ -14,7 +14,7 @@
             <v-btn text small class="my-0" @click="goMyProfile">
                 <v-icon small>mdi-account</v-icon>내 정보
             </v-btn>
-            
+
             <v-btn text small class="my-0" @click="logout">
                 <v-icon small class="nav-icon">mdi-account-off</v-icon>로그아웃
             </v-btn>
@@ -38,7 +38,7 @@
         </div>
 
     </v-app-bar>
-    
+
     <v-row id="nav">
         <v-col align="center">
             <div style="">
@@ -73,14 +73,15 @@
             </div>
         </v-col>
     </v-row>
-    
 
-    </div>
-
+</div>
 </template>
 
 <script>
-import {mapState,mapGetters} from 'vuex'
+import {
+    mapState,
+    mapGetters
+} from 'vuex'
 import LoginForm from "@/components/user/LoginForm.vue"
 import CategoryTabs from "@/components/frame/CategoryTabs.vue"
 export default {
@@ -105,10 +106,10 @@ export default {
         console.log("asdfasdf")
     },
     methods: {
-    openForm(){
-      this.$emit("openForm")
-      // this.dialog=true
-    },
+        openForm() {
+            this.$emit("openForm")
+            // this.dialog=true
+        },
 
         goPostCreate() {
             if (this.isAuthenticated) {
@@ -123,9 +124,11 @@ export default {
         goMyProfile() {
             if (this.isAuthenticated) {
                 this.$router.push({
-                    name: 'UserProfile',params:{uid:this.$store.state.myProfile.userId}
+                    name: 'UserProfile',
+                    params: {
+                        uid: this.$store.state.myProfile.userId
+                    }
                 })
-                
             } else {
                 alert("로그인을 해주세요")
             }
@@ -155,11 +158,16 @@ export default {
             });
         },
         goChat() {
-            let routeData = this.$router.resolve('/chat');
-            window.open(routeData.href,  "a", "width=400, height=600, left=100, top=50");
+            if (this.isAuthenticated) {
+                let routeData = this.$router.resolve('/chat');
+                window.open(routeData.href, "a", "width=400, height=600, left=100, top=50");
+            } else {
+                alert("로그인을 해주세요")
+            }
+            
 
         },
-        logout(){
+        logout() {
             this.$store.dispatch("logout")
         }
     },
@@ -183,5 +191,4 @@ a {
 i.v-icon {
     color: #00263b;
 }
-
 </style>
