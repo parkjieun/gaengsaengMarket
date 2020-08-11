@@ -11,12 +11,12 @@
         <v-row style="padding:30px 0px 50px;">
           <v-col cols="5">
             <div v-if="item.files" style="border: 1px solid #CCCCCC;"> 
-                  <v-carousel height="400px"  delimiter-icon="mdi-minus" :show-arrows="false">
-                    <v-carousel-item v-for="(file,i) in item.files.split(',')" :key="i"   >
-                        <img :src="'http://i3a504.p.ssafy.io/static/image/post/'+file" style="height:400px;width:100%">
-                    </v-carousel-item>
-                  </v-carousel>
-              </div>
+                <v-carousel height="400px"  delimiter-icon="mdi-minus" :show-arrows="false">
+                  <v-carousel-item v-for="(file,i) in item.files.split(',')" :key="i"   >
+                      <img :src="'http://i3a504.p.ssafy.io/static/image/post/'+file" style="height:400px;width:100%">
+                  </v-carousel-item>
+                </v-carousel>
+            </div>
           </v-col>
 
           <v-col cols="7">
@@ -66,7 +66,7 @@
 
               <div style="font-weight: 600px;font-size:13px; margin-right:10px;height:56px; color:#555555;   display: flex;">
                   <v-col style="border-right: 1.5px solid #f2f3f6; text-align:center"  @click="goPostLike">
-                    <div v-if="item.likeFlag==1"><img calss="txt_btn" :src="require(`@/assets/post/fullheart.png`)"></div>
+                    <div v-if="item.likeFlag==1 || likeFlag"><img calss="txt_btn" :src="require(`@/assets/post/fullheart.png`)"></div>
                     <div v-else><img calss="txt_btn" :src="require(`@/assets/post/emptyheart.png`)"></div>
                       찜하기
                   </v-col>
@@ -128,41 +128,186 @@
        
         <v-divider></v-divider>
 
-   
-        <v-row v-if="myProfile != undefined" >  
-          <v-col cols="12" style="text-align:right"  v-show="item.user_id ==  myProfile" >    
+        <v-row v-if="myProfile != null" >  
+          <v-col cols="12" style="text-align:right"  v-show="item.user_id ==  myProfile.userId" >    
               <v-btn class="ma-2" tile outlined color="success" @click="goPostUpdate">
               <v-icon left>mdi-pencil</v-icon> 수정하기
             </v-btn>
-            <!-- <v-btn class="ma-2" tile color="#FFE6EB" dark @click="ConfirmDelete(item.post_id)">삭제</v-btn> -->
           </v-col>
         </v-row>
 
-      <!-- <v-btn color="primary" dark @click.native.stop="dialog = true">Open Dialog</v-btn> -->
-      
-      <v-dialog v-model="dialog" max-width="300">
-      <v-card>
-        <v-card-title style="height:50px;font-size:15px !important;font-weight:550;border-bottom:1px solid rgb(220, 219, 228)">거래방법 선택</v-card-title>
-        <v-card-text style="padding:0px">
-          <div v-if="item.deal_type == 1 || item.deal_type == 3">
-            <v-divider></v-divider>
-            <v-btn color="green darken-1"  style="width:100%;font-size:20px !important;height:80px;font-weight:550" text @click.native="dialog = false"  @click="goDelivery()">택배거래</v-btn>
-          </div>
-         
-          <div v-if="item.deal_type == 2 || item.deal_type == 3">
-            <v-divider></v-divider>
-            <v-btn color="green darken-1" style="width:100%;font-size:20px !important;height:80px; font-weight:550" text @click.native="dialog = false" @click="goDirect()">직거래 </v-btn>
-          </div>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-    
+        <!--거래방법 선택 dialog start -->
+        <v-dialog v-model="dealdialog" max-width="300">
+          <v-card>
+            <v-card-title style="height:50px;font-size:15px !important;font-weight:550;border-bottom:1px solid rgb(220, 219, 228)">거래방법 선택</v-card-title>
+            <v-card-text style="padding:0px">
+              <div v-if="item.deal_type == 1 || item.deal_type == 3">
+                <v-divider></v-divider>
+                <v-btn color="green darken-1"  style="width:100%;font-size:20px !important;height:80px;font-weight:550" text @click.native="dealdialog = false"  @click="goDelivery()">택배거래</v-btn>
+              </div>
+            
+              <div v-if="item.deal_type == 2 || item.deal_type == 3">
+                <v-divider></v-divider>
+                <v-btn color="green darken-1" style="width:100%;font-size:20px !important;height:80px; font-weight:550" text @click.native="dealdialog = false" @click="goDirect()">직거래 </v-btn>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!--거래방법 선택 dialog end -->
+
+        <!--택배거래 dialog start -->
+        <v-dialog v-model="deliverydialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title style="float:right;padding-top:24px">
+              <img calss="txt_btn" :src="require(`@/assets/post/close.png`)" @click="deliverydialog = false">
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col  cols="12" >
+                      <span class="headline" style="font-size:1.125rem !important;font-weight:bold;color:#000">바로구매 (택배거래)</span>
+                  </v-col>
+
+                  <v-col cols="12" >
+                    <div style=" float: left;margin-right:15px">
+                      <img v-if="item.files" :src="'http://i3a504.p.ssafy.io/static/image/post/'+item.files.split(',')[0]" style="height:50px;width:50px">  
+                    </div>
+                    <div  style=" float: left;">
+                      <div style="color:#1E1D29;font-weight:550">{{item.title }}  </div>
+                      <div>{{item.price | currency}}원</div>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12">
+                    <v-radio-group v-model="addrselect" row  v-on:change="addrchange">
+                      <v-radio
+                        label="기존 주소"
+                        color="primary"
+                        value="defaultAddr"
+                      ></v-radio>
+                      <v-radio
+                        label="새 주소"
+                        color="primary"
+                        value="newAddr"
+                      ></v-radio>
+                    </v-radio-group>
+                    <v-text-field label="배송지" ref="addr" v-model="addr" required :readonly="addrIsActive" ></v-text-field>
+                  </v-col>
+                  
+                  <v-col cols="12" sm="6"  >
+                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('point')" :class="{pay_selected: pointIsActive}">갱생포인트</v-btn>
+                  </v-col>
+                  <v-col cols="12" sm="6" >
+                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('bank')" :class="{pay_selected: bankIsActive}">무통장입금</v-btn>
+                  </v-col>
+
+                  <v-col cols="12"  sm="9" v-if="pointIsActive">
+                      <v-text-field label="포인트 입력"  ref="point" required type="number" v-model="point" :rules="[rules.pointcnt]" ></v-text-field>
+                      <small>사용 가능 포인트  {{myProfile.pointVal}}P</small>  
+                  </v-col>
+
+                  <v-col cols="12" sm="3" v-if="pointIsActive" >
+                    <v-btn  style="float:left"  @click="pointAllUse(myProfile.pointVal, item.price)" >전액사용</v-btn>
+                  </v-col>
+
+                  <v-col cols="12" v-if="bankIsActive"> 
+                    <span style="color:#000">무통장입금(가상계좌) 안내</span>
+                    <br><br>
+                    가상계좌를 발급 받아 결제금액을 입금할 수 있는 서비스입니다.
+                  </v-col>
+                  
+                  <v-divider></v-divider> 
+
+                  <v-col cols="12"> 
+                     <v-btn block color="primary" dark @click="paySubmit"> 구매하기 </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!--택배거래 dialog end -->
+
+
+        <!--직거래 dialog start -->
+        <v-dialog v-model="directdialog" persistent max-width="600px">
+          <v-card>
+            <v-card-title style="float:right;padding-top:24px">
+              <img calss="txt_btn" :src="require(`@/assets/post/close.png`)" @click="directdialog = false">
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col  cols="12" >
+                      <span class="headline" style="font-size:1.125rem !important;font-weight:bold;color:#000">바로구매 (택배거래)</span>
+                  </v-col>
+
+                  <v-col cols="12" >
+                    <div style=" float: left;margin-right:15px">
+                      <img v-if="item.files" :src="'http://i3a504.p.ssafy.io/static/image/post/'+item.files.split(',')[0]" style="height:50px;width:50px">  
+                    </div>
+                    <div  style=" float: left;">
+                      <div style="color:#1E1D29;font-weight:550">{{item.title }}  </div>
+                      <div>{{item.price | currency}}원</div>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12">
+                    <v-radio-group v-model="addr2select" row  v-on:change="addr2change">
+                      <v-radio
+                        label="장소1"
+                        color="primary"
+                        value="postAddr"
+                      ></v-radio>
+                      <v-radio
+                        label="장소2"
+                        color="primary"
+                        value="userAddr"
+                      ></v-radio>
+                    </v-radio-group>
+                    <v-text-field label="직거래 장소"  v-model="addr2" required readonly ></v-text-field>
+                  </v-col>
+                  
+                  <!-- <v-col cols="12" sm="6"  >
+                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('point')" :class="{pay_selected: pointIsActive}">갱생포인트</v-btn>
+                  </v-col>
+                  <v-col cols="12" sm="6" >
+                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('bank')" :class="{pay_selected: bankIsActive}">무통장입금</v-btn>
+                  </v-col>
+
+                  <v-col cols="12"  sm="9" v-if="pointIsActive">
+                      <v-text-field label="포인트 입력"  ref="point" required type="number" v-model="point" :rules="[rules.pointcnt]" ></v-text-field>
+                      <small>사용 가능 포인트  {{myProfile.pointVal}}P</small>  
+                  </v-col>
+
+                  <v-col cols="12" sm="3" v-if="pointIsActive" >
+                    <v-btn  style="float:left"  @click="pointAllUse(myProfile.pointVal, item.price)" >전액사용</v-btn>
+                  </v-col>
+
+                  <v-col cols="12" v-if="bankIsActive"> 
+                    <span style="color:#000">무통장입금(가상계좌) 안내</span>
+                    <br><br>
+                    가상계좌를 발급 받아 결제금액을 입금할 수 있는 서비스입니다.
+                  </v-col>
+                   -->
+                  <v-divider></v-divider> 
+
+                  <v-col cols="12"> 
+                     <v-btn block color="primary" dark @click="paySubmit"> 거래하기 </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!--직거래 dialog end -->
+        
     </v-container>
 </v-app>
 </template>
 
 <script> 
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import httpChat from "@/util/http-chat"
 import http_post from "@/util/http-post"
@@ -177,6 +322,7 @@ export default {
   name: 'post-detail',
   computed: {
     ...mapGetters(['item']),
+    ...mapState(['myProfile']),
     day(){
       let weekCnt = this.item.deal_weak;
       let days ="";
@@ -190,74 +336,55 @@ export default {
             days +=week[i].name + " "
         }
       }
-      //console.log(days);
+      return days.split('').reverse().join('');
+    },
+    likeFlag(){
+      console.log("==========likeFlag=========");
 
-      return days;
-    }
+      if(this.myProfile != ""){
+        console.log("디테일에서 로그인 성공시");
+        //likeflag 받아오기 & 주소 받아오기
+        this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile.userId}`);
+        this.addr = this.myProfile.address;
+        this.addr2 = this.item.addr;
+      }
+    },
   },
-  
   created() {
-   // this.myProfile = this.$store.state.myProfile.userId;
-    this.myProfile = "bf4477387476d3ceff52ecbdeb64ab20" //삭제
-    console.log(">>>>>>>"+`${this.$route.query.post_id}`);
-    console.dir("this.myProfile:" + this.myProfile);
- 
-
-    if(this.myProfile != "undefined" && (this.myProfile != undefined) ){
-      this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile}`);
-    }else{
+    if(this.myProfile == null || this.myProfile == ""){
       this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}`);
+    }else{
+      this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile.userId}`);
+      this.addr = this.myProfile.address;
+      this.addr2 = this.item.addr;
     }
-    //console.log("title "+ this.item.title);
   },
   methods: {
     goDelivery(){
-      alert("택배거래");
-      //this.dialog = false;
+       this.deliverydialog = true;
     },
     goDirect(){
-      alert("직거래");
-      //this.dialog = false;
+      this.directdialog = true;
     },
     openDialog(){
-      if(this.myProfile == undefined){
+      if(this.myProfile == null || this.myProfile == ""){
         alert('로그인 해주세요');
       }else{
-        this.dialog = true;
-        //새창 
-        //let routeData = this.$router.resolve({name: 'PostBuy', params: { uid : this.item.user_id }});
-        //window.open(routeData.href, '_blank');
+        this.dealdialog = true;
       }
-    },
-    ConfirmDelete(post_id)
-    {
-      var x = confirm("해당 글을 삭제 하시겠습니까?");
-      if (x)
-        return this.delete(post_id);
-      else 
-        return false;
-    },   
-		delete(post_id) {
-			//this.deletePost()
-       //this.$router.push({name: this.constants.URL_TYPE.POST.MAIN})
-       this.$store.dispatch('deletePost', `/api/post/`+post_id, );
-       this.$router.push('/post/list');
     },
     goPostUpdate(){ 
       this.$router.push({ name: 'post-update', params: { post_id:  Number(this.$route.query.post_id)} } )
     },
     goUserProfile(){
-      //console.dir(">>>>>>>>>>>goUserProfile: "+this.item.user_id)
       this.$router.push({name: 'UserProfile', params: { uid : this.item.user_id }} )
     },
     goPostLike(){
       //로그인 안했으면
-      if(this.myProfile == undefined){
+      if(this.myProfile == null || this.myProfile == ""){
           alert('로그인 해주세요');
       }else{
-        console.dir("goPostLike post_id>>>>>>>>>>"+this.myProfile+"/"+this.item.post_id);
-       
-        http_post.post('/api/post/doLike?user_id=' +this.myProfile +'&post_id=' + this.item.post_id, {}, 
+        http_post.post('/api/post/doLike?user_id=' +this.myProfile.userId +'&post_id=' + this.item.post_id, {}, 
             {
                 headers: {
                   Authorization: this.$store.state.authorization,
@@ -266,7 +393,6 @@ export default {
             }
         )
         .then(({ data }) => {
-          console.log("data:"+data);
           var msg;
 
           if (data === 'insert') {
@@ -286,30 +412,127 @@ export default {
         })
       }
     },
-            goChat() {
+    goChat() {
+      let routeData = this.$router.resolve('/chat');
+      window.open(routeData.href,  "a", "width=400, height=600, left=100, top=50");
+    },
+    createRoom(){
+      if(this.myProfile == null || this.myProfile == ""){
+          alert('로그인 해주세요');
+      }else{
+        var params = new URLSearchParams();
+        params.append("receiverId", this.item.user_id);
+        httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
+            .then(
+                response => {
+                    this.goChat()
+                }
+            )
+      }
+    },
+    addrchange(){
+      if(this.addrselect == "newAddr"){
+        //readonly 제거
+        this.addrIsActive=false;
+        this.addr = "";
+      }else{
+        //readonly 추가
+        this.addrIsActive=true;
+        this.addr = this.myProfile.address;
+      }
+    },
+    addr2change(){
+      if(this.addr2select == "userAddr"){
+        this.addr2 = this.item.address;
+      }else{
+        this.addr2 = this.item.addr;
+      }
+    },
+    payIsActive(flag){
+      if(flag=="point"){
+        this.pointIsActive=true;
+        this.bankIsActive=false;
+      }else{
+        this.pointIsActive=false;
+        this.bankIsActive=true;
+        this.point=null;
+      }
+    },
+    pointAllUse(myPoint, itemPrice){
+      console.log(myPoint+"/"+itemPrice);
+      if(myPoint < itemPrice ){
+        this.point=myPoint;
+      }else{
+        this.point=itemPrice;
+      }
+    },
+    paySubmit(){
+      //주소 빈값아닌지 검사
+      if(this.addr == ""){
+         this.$refs.addr.focus();
+         return false;
+      }
+      // 포인트 입력시 빈값 아닌지 검사.
+      else if(this.pointIsActive == true){
+        if(this.point < this.item.price ){
+          this.$refs.point.focus();
+          return false;
+        }
+        else if(this.point > this.item.price){
+          this.point = this.item.price;
+        }
+      }
 
-            let routeData = this.$router.resolve('/chat');
-            window.open(routeData.href,  "a", "width=400, height=600, left=100, top=50");
+      //보내기
+      this.buyAction();
+      this.deliverydialog = false
 
-        },
-                createRoom(){
+    },
+    buyAction(){
+      //업데이트
+      http_post.put('/api/post/buy?user_id=' +this.myProfile.userId +'&post_id=' + this.item.post_id + '&price=' + this.point, {}, 
+            {
+                headers: {
+                  Authorization: this.$store.state.authorization,
+                  'Content-Type': 'application/json'
+              }
+            }
+      )
+      .then(({ data }) => {
+        var msg;
 
-            var params = new URLSearchParams();
-            params.append("receiverId", this.item.user_id);
-            httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
-                .then(
-                    response => {
-                        this.goChat()
-                    }
-                )
+        if (data === 'success') {
+            msg = '구매가 완료되었습니다.';
 
-        },
+          }else{
+            msg = '구매가 실패되었습니다.';
+          }
+        alert(msg);
+        //this.myProfile.pointVal -= this.item.price;
+
+      })
+      .catch(() => {
+        alert('에러가 발생했습니다?');
+      })
+    },
   },
  data () {
    return {
-      myProfile : null,
-      dialog: false
-
+      dealdialog: false,
+      directdialog: false,
+      deliverydialog: false,
+      addr:null,
+      addrselect:'defaultAddr',
+      addr2:null,
+      addr2select:'postAddr',
+      addrIsActive:true,
+      pointIsActive:true,
+      bankIsActive:false,
+      point:null, 
+      rules: {   
+        pointcnt: v => v >= this.item.price ||`${this.item.price- v}P 부족합니다`,
+      },
+      
     }
  },
   components: {
@@ -348,7 +571,8 @@ position: relative;
 .txt_btn{
   width:30px; height:30px; margin-right:5px;
 }
-/* .v-application--wrap{
-  min-height: 10vh !important;
-}  */
+.pay_selected{
+  border:1.5px solid black;
+  font-weight:550
+}
 </style>
