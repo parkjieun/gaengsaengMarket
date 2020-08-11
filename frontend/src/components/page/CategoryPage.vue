@@ -30,8 +30,6 @@ export default {
             start: 0,
             categoryBig: '',
             categoryMid: '',
-            categoryBigList: [],
-            categoryBigId: null,
         }
     },
     watch: {
@@ -43,19 +41,16 @@ export default {
             this.start = 0,
             this.categoryMid = '',
             this.categoryBig = '',
-            this.categoryBigList = [],
-            this.categoryBigId = null,
             this.$refs.InfiniteLoading.stateChanger.reset();
             this.getCategory(this.$route.params.categoryNum)
         },
         infiniteHandler($state) {
-            console.log("스크롤")
             httpPost.get(`/api/post/category/${this.$route.params.categoryNum}?sno=` + this.start)
             .then(res => {
-                console.log(res)
-                if (res.data.length) {
+                const data = res.data.slice(1,res.data.length)
+                if (data.length) {
                     this.start += 12;
-                    this.posts.push(...res.data);
+                    this.posts.push(...data);
                     $state.loaded();
                 } 
                 else {
@@ -65,25 +60,12 @@ export default {
         },
         getCategory(categoryId) {
             // 카테고리 저장
-            httpPost.get('/api/post/category/category_big')
+            httpPost.get(`/api/post/category/${categoryId}?sno=0`)
             .then(res => {
-                this.categoryBigList = res.data
-                for (var i = 0; i < res.data.length; i++) {
-                    if (this.categoryMid) {
-                        break;
-                    }
-                    httpPost.get('/api/post/category/category_mid/' + res.data[i].cate_big_id)
-                    .then(mid => {
-                        for (var j = 0; j < mid.data.length; j++) {    
-                            if (mid.data[j].cate_mid_id == categoryId) {
-                                this.categoryMid = mid.data[j].name
-                                this.categoryBigId = mid.data[j].cate_big_id
-                                break;
-                            }
-                        }      
-                    })   
-                }    
-            })  
+                this.categoryMid = res.data[0].cate_mid_name
+                this.categoryBig = res.data[0].cate_big_name
+            });      
+           
         }
 
     },
@@ -91,9 +73,6 @@ export default {
         this.getCategory(this.$route.params.categoryNum)
              
     },
-    mounted() {
-
-    }
 }
 </script>
 
