@@ -32,7 +32,6 @@ public interface PostMapper {
 
 	public int deleteHashtag(int post_id)  throws Exception;
 
-	//public int deletePostImg(List<String> deleteFiles) throws Exception;
 	public int deletePostImg(List<String> deleteFiles) throws Exception;
 
 	public int insertLikePost(HashMap<String, Object> map) throws Exception;
@@ -42,4 +41,8 @@ public interface PostMapper {
 	public int selectLike(HashMap<String, Object> map) throws Exception;
 
 	public void updateLikePost(HashMap<String, Object> map) throws Exception;
+	
+	public int updatePostType(int post_id) throws Exception;
+	
+	public int updatePoint(HashMap<String, Object> map) throws Exception;
 }
