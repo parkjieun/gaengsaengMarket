@@ -37,7 +37,7 @@
             </div>
             <div>
               {{reply.contents}}  
-              <v-btn text small v-show="reply.user_id == userId " @click="ReplyConfirmDelete(reply.reply_id)"  style="float:right;color:#888888;font-weight:550;">
+              <v-btn text small v-show="reply.user_id == myProfile.userId " @click="ReplyConfirmDelete(reply.reply_id)"  style="float:right;color:#888888;font-weight:550;">
                 <img style="margin-right:4px;width:15px" :src="require(`@/assets/post/del.png`)">삭제
               </v-btn>
             </div>
@@ -50,7 +50,7 @@
 
 
 <script> 
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import http_post from "@/util/http-post"
 
 import Vue from 'vue' 
@@ -61,7 +61,6 @@ export default {
   data () {
    return {
       message : "",
-      userId : null,
       postId: `${this.$route.query.post_id}`,
       rules: {   
         length: len => v => (v || '').length <= len || `${len}자 이내로 작성해주세요.`,
@@ -69,37 +68,31 @@ export default {
     }
   },
   created() {
-    //this.userId= this.$store.state.myProfile.userId 
-    this.userId= "bf4477387476d3ceff52ecbdeb64ab20" //삭제
     this.$store.dispatch('getReplys', `/api/post/reply?post_id=${this.$route.query.post_id}`)
   },
   computed: {
-   ...mapGetters(['replys']),
+    ...mapGetters(['replys']),
+    ...mapState(['myProfile']),
   },
   methods:{
     submitReply(){
-      //alert();
-      if(this.userId == "undefined" || this.userId == undefined){
+      if(this.myProfile == null || this.myProfile == ""){
         alert("로그인해주세요");
       }else{
         if(this.message.length == 0 || this.message.length > 10){
             this.$refs.message.focus();
         }else{
 
-          http_post.post('/api/post/reply',{contents : this.message, user_id:this.userId,post_id:this.postId }, 
+          http_post.post('/api/post/reply',{contents : this.message, user_id:this.myProfile.userId,post_id:this.postId }, 
               {
                   headers: {
-                    //Authorization: this.$store.state.authorization, 
-                    //삭제
-                    Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI0NzFhZGJhOTQxNjhjNjU3OWRkNjdiNjJlN2ZiZTlkOSJ9.e9LyXH2t0SZGhKhhFSYroyHXup6A_7mi3SNI0ew6b28", 
+                    Authorization: this.$store.state.authorization, 
                 }
               }
           )
           .then(({ data }) => {
-            console.log("data:"+data.create_date);
             if(data != null){
               this.message = "";
-              //표에 추가, 이미지, 닉네임, 내용, 생성일, user_id, reply_id
                 this.replys.unshift({
                   reply_id: data.reply_id,
                   nick_name: data.nick_name,
@@ -129,27 +122,20 @@ export default {
         return false;
     },
     goReplyDel(reply_id){
-
       console.log(">> "+reply_id);
 
       http_post.delete('/api/post/reply?reply_id='+reply_id, 
             {
                 headers: {
-                  //Authorization: this.$store.state.authorization,
-                   //삭제
-                  Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI0NzFhZGJhOTQxNjhjNjU3OWRkNjdiNjJlN2ZiZTlkOSJ9.e9LyXH2t0SZGhKhhFSYroyHXup6A_7mi3SNI0ew6b28", 
+                  Authorization: this.$store.state.authorization,
               }
             }
       )
       .then(({ data }) => {
-          console.log("data:"+data);
             if(data == "success"){
               this.message = "";
-              //console.log(this.replys);
-              //console.dir(this.replys.findIndex(i => i.reply_id == reply_id));
               this.replys.splice(this.replys.findIndex(i => i.reply_id == reply_id),1);
             }
-
       })
       .catch(() => {
           alert('에러가 발생했습니다?');
