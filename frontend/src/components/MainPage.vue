@@ -1,12 +1,14 @@
 <template>
 <v-app>
-    <v-container fluid>
-       
+    <v-container fluid style="padding-top:0px;">
         <v-row align="center">
-            <v-col cols="10" align="center" style="margin:auto;">
-                <category-tabs style="height:48px;z-index: 1;" />
-                <v-carousel style="z-index:5;" delimiter-icon="mdi-minus" height="200px" cycle hide-delimiter-background :show-arrows="false">
+            <v-col align="center" style="margin:auto;padding:0px;">
+                <v-carousel style="z-index:5;" delimiter-icon="mdi-minus" height="250px" cycle hide-delimiter-background :show-arrows="false">
                     <v-carousel-item src="../assets/banners/banner.png">
+                    </v-carousel-item>
+                    <v-carousel-item src="https://media.bunjang.co.kr/images/nocrop/494869579.jpg">
+                    </v-carousel-item>
+                    <v-carousel-item src="https://media.bunjang.co.kr/images/nocrop/485696213.jpg">
                     </v-carousel-item>
                 </v-carousel>
             </v-col>
@@ -45,29 +47,7 @@ export default {
         banner
     },
     methods: {
-        searchItem() {
-            alert("검색 미구현!")
-            this.search=""
-            console.log(this.search)
-        },
-        updateTags() {
-            this.$nextTick(() => {
-                const i = this.search.indexOf("#")
-                console.log(i)
-                if(i!==-1){
-                    const hashtag = this.search.slice(-(this.search.length-i)+1)
-                    if(hashtag.length>1){
-                        this.select.push(hashtag)
-                    }
-                }
-                // this.select.push(...this.search.split(","));
-                
-                this.$nextTick(() => {
-                    if(i!==-1)
-                        this.search = this.search.slice(0,i);
-                });
-            });
-        },
+
 
         goMyProfile() {
             this.$router.push({ name: 'MyProfile' })

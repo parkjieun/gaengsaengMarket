@@ -17,7 +17,7 @@ public class Post {
 	private int type;
 	private int like_cnt;
 	private int cate_mid_id;
-	private int user_id;
+	private String user_id;
 	private int price;
 	private int del_flag;
 	private int deal_type;
@@ -33,4 +33,11 @@ public class Post {
 	private String cate_big_id;
 	
 	private List<String> deleteFiles;
+	
+	//08.04
+	private String nick_name;
+	private String profile_img;
+	
+	//08.05
+	private String likeFlag;
 }
