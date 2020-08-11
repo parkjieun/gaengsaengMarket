@@ -58,12 +58,16 @@ public class CategoryController {
 	}
  
 	@ApiOperation(value = "카테고리 전체 조회")
-	@RequestMapping(value ="/{category_mid}",  method = RequestMethod.GET)
-	public ResponseEntity<List<Post>> selectCategoryPost(@PathVariable("category_mid") String category_mid,
+	@RequestMapping(value ="/{category_mid_id}",  method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> selectCategoryPost(@PathVariable("category_mid_id") String category_mid_id,
 			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
 		logger.info("-------------selectCategoryPost-----------------------------");
-		List<Post> list =categoryService.selectCategoryPost(category_mid, sno);
-		//System.out.println(">>>"+list);
+		List<Post> list =categoryService.selectCategoryPost(category_mid_id, sno);
+		Post p = categoryService.selectCateName(category_mid_id);
+//		System.out.println("p:    "+p.toString());
+		list.add(0, p);
+		System.out.println(">>>"+list);
+		
 		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);
 	}
 }
