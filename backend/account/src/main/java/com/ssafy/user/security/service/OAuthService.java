@@ -23,23 +23,22 @@ public class OAuthService {
 	private final String KAKAO_URL="https://kapi.kakao.com/v2/user/me";
 	private final String GOOGLE_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 	public boolean isOlder(String accessToken,String platform) {
-		return userRepository.existsBySocialUid(getIdByOAuth(accessToken,platform));
-		
+		return userRepository.existsBySocialId(getSocialIdByOAuth(accessToken,platform));
 	}
 	
-	public String getIdByOAuth(String accessToken,String platform) {
+	public String getSocialIdByOAuth(String accessToken,String platform) {
 		
 		ResponseEntity<?> re =null;
 		RestTemplate rt = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
-		String userId=null;
+		String socialId=null;
 		
 		if(platform.equals("kakao")) {
 			headers.add("Authorization", "Bearer " + accessToken);
 			re = rt.exchange(KAKAO_URL,HttpMethod.GET,new HttpEntity<String>(headers),String.class);
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(re.getBody().toString());
-			userId = element.getAsJsonObject().get("id").getAsString();
+			socialId = element.getAsJsonObject().get("id").getAsString();
 		} 
 		else if(platform.equals("google")) {
 			UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(GOOGLE_URL)
@@ -47,24 +46,24 @@ public class OAuthService {
 			re = rt.exchange(builder.toUriString(),HttpMethod.GET,new HttpEntity<String>(headers),String.class);
 			JsonParser parser = new JsonParser();
 			JsonElement element = parser.parse(re.getBody().toString());
-			userId = element.getAsJsonObject().get("sub").getAsString();
+			socialId = element.getAsJsonObject().get("sub").getAsString();
 		}
 		
-		return userId;
+		return socialId;
 	}
 
-	public int getId(String accessToken, String platform) {
+	public String getId(String accessToken, String platform) {
 		// TODO Auto-generated method stub
-		return userRepository.findId(getIdByOAuth(accessToken, platform));
+		return userRepository.findId(getSocialIdByOAuth(accessToken, platform));
 	}
 	
-	public int getId(String socialId) {
+	public String getId(String socialId) {
 		if(socialId==null) {
-			return -1;
+			return "";
 		}
-		Integer id = userRepository.findId(socialId);
+		String id = userRepository.findId(socialId);
 		if(id==null)
-			return -1;
+			return "";
 		return id;
 	}
 }

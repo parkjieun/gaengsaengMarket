@@ -33,8 +33,8 @@ public class UserService {
 
 
 
-	public Optional<User> getUser(int user_id){
-		return  userRepository.findById(user_id);
+	public Optional<User> getUser(String userId){
+		return  userRepository.findById(userId);
 	}
 	
 
@@ -46,14 +46,14 @@ public class UserService {
 		return userRepository.save(user);
 	} 
 	
-	public User getOtherUser(int user_id) {
-		Optional<User> oUser = userRepository.findById(user_id);
+	public User getOtherUser(String userId) {
+		Optional<User> oUser = userRepository.findById(userId);
 		
 		if(oUser.isEmpty()) return null;
 		User user = oUser.get();
 		user.setAddress("");
-		user.setPointVal(0);
-		user.setSocialUid("");
+		user.setPointVal(-1);
+		user.setSocialId("");
 		return user;
 	}
 

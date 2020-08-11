@@ -44,7 +44,7 @@
 
       </v-dialog>
     </v-row>
-    <join-form :dialog2="dialog2" @closeForm="closeForm"/>
+    <join-form :socialId="socialId" :dialog2="dialog2" @closeForm="closeForm"/>
   </v-app>
 </template>
 
@@ -64,7 +64,8 @@ export default {
       dialog2:false,
       googleSignInParams: {
         client_id: '97688771694-ndsidcu77ad92a118jb594cvk2hpr45s.apps.googleusercontent.com'
-      }
+      },
+      socialId:"",
     }
   },
   methods:{
@@ -75,13 +76,15 @@ export default {
     onGoogleSignInSuccess (googleUser) {
       var vue = this
       const accessToken = googleUser.getAuthResponse(true).access_token
+      
       http.post("/oauth/authorization/google",{},{headers:{accessToken:accessToken}}).then(res=>{
         const data = res.data
+        this.setSocialId(data.socialId)
+        console.log(data)
         vue.$store.dispatch("setAuth","Bearer "+data.accessToken)
         if(data.isOlder=="true"){
           vue.closeForm()
           http.get("/api/user",{headers: { Authorization: vue.authorization }}).then(res=>{
-
             vue.$store.dispatch("setUserProfile",res.data)
             console.log(res)
           })
@@ -96,13 +99,14 @@ export default {
     kakaoLogin(){
       var joinForm = this.joinForm
       var vue = this
+      var setSocialId = this.setSocialId
       Kakao.Auth.login({
         success: function(response) {
-          console.log(response)
+          
           http.post("/oauth/authorization/kakao",{},{headers:{accessToken:response.access_token}}).then(res=>{
             const data = res.data
             vue.$store.dispatch("setAuth","Bearer "+data.accessToken)
-            console.log(data)
+            setSocialId(data.socialId)
             if(data.isOlder=="true"){
               vue.closeForm()
               http.get("/api/user",{headers: { Authorization: vue.authorization }}).then(res=>{
@@ -110,7 +114,6 @@ export default {
                 console.log(res)
               })
             }else{
-              
               joinForm()
             }
           })
@@ -124,6 +127,9 @@ export default {
       this.$emit("closeForm")
       this.dialog2=true
     },
+    setSocialId(value){
+      this.socialId=value
+    }
 
   },
   computed:{
