@@ -81,55 +81,29 @@ public class PostController {
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}   
 	
-//	@ApiOperation(value = "게시글 작성 테스트")	
-//	@RequestMapping(value = "/test", method = RequestMethod.POST)
-//	public ResponseEntity<String> insertPost2(HttpServletRequest req, Post dto, int gubun) throws Exception {
-//		logger.info("-------------insertPost2-----------------------------");
-//		System.out.println(">>>>>>>>>>>getFile: "+dto.getFile());
-//		int flag= 0;
-//		//파일 업로드 & 등록
-//		if(dto.getFile().size()!=0 && dto.getFile() != null) {
-//			System.out.println(">>>."+dto.getFile());
-//			if(gubun ==1 ) {
-//				String realPath = "/home/front/s03p12a504/backend/post/src/main/webapp"+uploadFileDir;
-//				flag = postService.insertPostImg(dto.getPost_id(), dto.getFile(), realPath);
-//			}else if(gubun ==2) {
-//				String realPath =  req.getSession().getServletContext().getRealPath(uploadFileDir);
-//				flag = postService.insertPostImg(dto.getPost_id(), dto.getFile(), realPath);
-//			}
-//			
-//		}
-//		
-//		if (flag == 0) {
-//			return new ResponseEntity<String>(FAIL, HttpStatus.NOT_FOUND);
-//		}
-//		
-//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-//	}
-	  
 	
-	@ApiOperation(value = "멀티파일 업로드 테스트")
-	@RequestMapping(value = "/upload", method = RequestMethod.POST) //@RequestParam("file")  List<MultipartFile> files
-	public List<String> upload( Post dto) throws Exception {
-		
-		List<String> list = new ArrayList<>();
-		String path = "D:\\workspace\\post\\src\\main\\webapp\\WEB-INF\\";
-				
-		for (MultipartFile file : dto.getFile()) {
-			String originalFileName = file.getOriginalFilename();
-			String safeFile = path + System.currentTimeMillis() + "_" +originalFileName;
-			
-			try {
-				file.transferTo(new File(safeFile));
-			}catch(IllegalStateException e) {
-				e.printStackTrace();
-			}catch(IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		return list;
-	}
+//	@ApiOperation(value = "멀티파일 업로드 테스트")
+//	@RequestMapping(value = "/upload", method = RequestMethod.POST) //@RequestParam("file")  List<MultipartFile> files
+//	public List<String> upload( Post dto) throws Exception {
+//		
+//		List<String> list = new ArrayList<>();
+//		String path = "D:\\workspace\\post\\src\\main\\webapp\\WEB-INF\\";
+//				
+//		for (MultipartFile file : dto.getFile()) {
+//			String originalFileName = file.getOriginalFilename();
+//			String safeFile = path + System.currentTimeMillis() + "_" +originalFileName;
+//			
+//			try {
+//				file.transferTo(new File(safeFile));
+//			}catch(IllegalStateException e) {
+//				e.printStackTrace();
+//			}catch(IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		
+//		return list;
+//	}
 
 	@ApiOperation(value = "게시글 삭제")
 	@RequestMapping(value ="/{post_id}", method = RequestMethod.DELETE)
@@ -211,31 +185,10 @@ public class PostController {
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}
 	
-//	@ApiOperation(value = "좋아요 클릭")
-//	@RequestMapping(value ="/like", method = RequestMethod.POST)
-//	public ResponseEntity<String> insertLikePost(String post_id, String user_id) throws Exception {
-//		logger.info("-------------insertLikePost-----------------------------");
-//
-//		int flag = postService.insertLikePost(post_id, user_id);
-//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-//		
-//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-//	}
-//	
-//	@ApiOperation(value = "좋아요 취소")
-//	@RequestMapping(value ="/like", method = RequestMethod.DELETE)
-//	public ResponseEntity<String> deleteLikePost(String post_id, String user_id) throws Exception {
-//		logger.info("-------------deleteLikePost-----------------------------");
-//
-//		int flag = postService.deleteLikePost(post_id, user_id);
-//		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
-//		
-//		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
-//	}
 	
 	@ApiOperation(value = "좋아요 클릭/취소")
 	@RequestMapping(value ="/doLike", method = RequestMethod.POST)
-	public ResponseEntity<String> doLike(String post_id, String user_id) throws Exception {
+	public ResponseEntity<String> doLike(int post_id, String user_id) throws Exception {
 		logger.info("-------------doLike-----------------------------");
 
 		String result = postService.selectLike(post_id, user_id);
@@ -243,6 +196,18 @@ public class PostController {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>result:"+result);
 		
 		return new ResponseEntity<String>(result, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "바로구매")
+	@RequestMapping(value ="/buy", method = RequestMethod.PUT)
+	public ResponseEntity<String> doBuy(int post_id, String user_id, int price) throws Exception {
+		logger.info("-------------doBuy-----------------------------");
+
+		int flag = postService.updatePostType(post_id, price, user_id);
+		
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
+		
+		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}
 		
 }

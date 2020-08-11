@@ -178,6 +178,17 @@
     	</where>
     </delete>
     
+    <update id="updatePostType">
+		update post
+       	set type = 0
+    	where post_id = #{post_id}
+   </update>
+    
+   <update id="updatePoint">
+		update user
+    	set point_val = (point_val- #{price})
+    	where user_id = #{user_id}
+   </update>
 
 </mapper>
 
