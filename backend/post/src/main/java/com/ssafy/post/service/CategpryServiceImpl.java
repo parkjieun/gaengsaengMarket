@@ -39,5 +39,10 @@ public class CategpryServiceImpl implements CategoryService {
 		return mapper.selectCategoryPost(map);
 	}
 
+	@Override
+	public Post selectCateName(String category_mid_id) throws Exception {
+		return  mapper.selectCateName(category_mid_id);
+	}
+	
 
 }

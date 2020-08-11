@@ -40,4 +40,7 @@ public class Post {
 	
 	//08.05
 	private String likeFlag;
+	
+	//08.06
+	private String addr;
 }
