@@ -13,6 +13,7 @@ import CategoryPage from '@/components/page/CategoryPage.vue'
 import Chat from '@/components/chat/Chat.vue'
 import Chat2 from '@/components/chat/Chat2.vue'
 import Point from '@/components/page/Point.vue'
+import SearchPage from '@/components/page/SearchPage.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -91,7 +92,12 @@ const routes = [
     path:"/point",
     name:"Point",
     component:Point
-  }
+  },
+  {
+    path:"/search/:keyword",
+    name: "SearchPage",
+    component: SearchPage
+  },
 ]
 
 const router = new VueRouter({

@@ -47,6 +47,7 @@
                 </router-link>
             </div>
         </v-col>
+        <!-- search -->
         <v-col cols="5">
             <v-flex>
                 <v-combobox multiple v-model="select" color="#a6e3e9" @keydown.enter="searchItem" chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="상품 및 #해시태그를 입력해 주세요" :search-input.sync="search" @keyup.space="updateTags">
@@ -103,7 +104,6 @@ export default {
         }
     },
     created() {
-        console.log("asdfasdf")
     },
     methods: {
         openForm() {
@@ -135,7 +135,8 @@ export default {
 
         },
         searchItem() {
-            alert("검색 미구현!")
+            const keyword = this.select.join('&')
+            this.$router.push({ name: 'SearchPage', params: { keywords: this.select, keyword: keyword} })
             this.search = ""
             this.select = []
             console.log(this.search)
