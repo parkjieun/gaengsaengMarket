@@ -336,61 +336,77 @@ export default {
 
         let categories = [bag, accessories, mobile, home_appliances, peripheral, book,
         kidult, daily_necessities, furniture, kitchen_utensils, food]
-
+        //console.log("넘어온값 detectName :" + detectName)
+        //console.log("categories 배열 출력 " + categories)
         for (let i in categories){
-          for(let j of categories[j]){
+          for(let j of categories[i]){
+            //console.log("for문 도는중 i, j :  "+ i + " / " + j)
             if(detectName.includes(j)){
-              switch(i){
+              //console.log("for문 도는중 검출했어 i, j :  "+ i + " / " + j)
+              switch(Number(i)){
                 case 0:
                   this.seletedCateBig = 10004
-                  this.seletedCateMid = 10004
+                  this.getCateMid()
+                  this.seletedCateMid = 10006
                   break
                 case 1:
                   this.seletedCateBig = 10004
+                  this.getCateMid()
                   this.seletedCateMid = 10008 //악세서리
                   break
                 case 2:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10021 //핸드폰
                   break
                 case 3:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10022 //가전제품
                   break
                 case 4:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10024 //주변기기
                   break
                 case 5:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10025 //책
                   break
                 case 6:
                   this.seletedCateBig = 10008
+                  this.getCateMid()
                   this.seletedCateMid = 10026 //취미 키덜트
                   break
                 case 7:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10028 //생활용품
                   break
                 case 8:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10029 //가구
                   break
                 case 9:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10030 //주방용품
                   break
                 case 10:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10004 // 식품
                   break
+                default:
+                  return
               }
             }
           }
         }
         
-    },
+    }, 
     edit(index, item) {
       if (!this.editing) {
         this.editing = item;
