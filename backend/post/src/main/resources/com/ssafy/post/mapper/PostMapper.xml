@@ -139,6 +139,7 @@
 			 , b.cate_big_id AS 'cate_big_id'
 			 , u.nick_name
 			 , u.profile_img
+			 , u.address
 			 
 			 <if test="user_id!=null and !user_id.equals('')">
 			 , (SELECT COUNT(*) FROM `like` WHERE post_id=#{post_id} AND user_id=#{user_id}) as likeFlag
