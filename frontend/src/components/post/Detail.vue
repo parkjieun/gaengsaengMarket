@@ -268,28 +268,6 @@
                     <v-text-field label="직거래 장소"  v-model="addr2" required readonly ></v-text-field>
                   </v-col>
                   
-                  <!-- <v-col cols="12" sm="6"  >
-                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('point')" :class="{pay_selected: pointIsActive}">갱생포인트</v-btn>
-                  </v-col>
-                  <v-col cols="12" sm="6" >
-                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('bank')" :class="{pay_selected: bankIsActive}">무통장입금</v-btn>
-                  </v-col>
-
-                  <v-col cols="12"  sm="9" v-if="pointIsActive">
-                      <v-text-field label="포인트 입력"  ref="point" required type="number" v-model="point" :rules="[rules.pointcnt]" ></v-text-field>
-                      <small>사용 가능 포인트  {{myProfile.pointVal}}P</small>  
-                  </v-col>
-
-                  <v-col cols="12" sm="3" v-if="pointIsActive" >
-                    <v-btn  style="float:left"  @click="pointAllUse(myProfile.pointVal, item.price)" >전액사용</v-btn>
-                  </v-col>
-
-                  <v-col cols="12" v-if="bankIsActive"> 
-                    <span style="color:#000">무통장입금(가상계좌) 안내</span>
-                    <br><br>
-                    가상계좌를 발급 받아 결제금액을 입금할 수 있는 서비스입니다.
-                  </v-col>
-                   -->
                   <v-divider></v-divider> 
 
                   <v-col cols="12"> 
@@ -300,8 +278,9 @@
             </v-card-text>
           </v-card>
         </v-dialog>
+        {{getN}}
         <!--직거래 dialog end -->
-        
+        <!-- {{getN}} -->
     </v-container>
 </v-app>
 </template>
@@ -345,18 +324,23 @@ export default {
         console.log("디테일에서 로그인 성공시");
         //likeflag 받아오기 & 주소 받아오기
         this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile.userId}`);
-        this.addr = this.myProfile.address;
-        this.addr2 = this.item.addr;
+        // this.addr = this.myProfile.address;
+        // this.addr2 = this.item.addr;
       }
     },
+    getN () { 
+        console.log("???????????"+ this.$store.getters.getN)
+        this.addr = this.$store.getters.getN.address; 
+        this.addr2 = this.item.addr;
+      }
   },
   created() {
     if(this.myProfile == null || this.myProfile == ""){
       this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}`);
     }else{
       this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile.userId}`);
-      this.addr = this.myProfile.address;
-      this.addr2 = this.item.addr;
+      // this.addr = this.myProfile.address;
+      // this.addr2 = this.item.addr;
     }
   },
   methods: {
@@ -544,7 +528,11 @@ export default {
           return num.toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,")
       }
   },
-
+  watch:{
+    getN2 (value) { 
+        console.log("##############"+ value)
+      }
+  }
 
 };
 
