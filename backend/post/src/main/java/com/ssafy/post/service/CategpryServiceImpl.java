@@ -43,6 +43,15 @@ public class CategpryServiceImpl implements CategoryService {
 	public Post selectCateName(String category_mid_id) throws Exception {
 		return  mapper.selectCateName(category_mid_id);
 	}
+
+	@Override
+	public List<Post> selectCategoryPostByBig(String cate_big_id, int sno) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cate_big_id",cate_big_id);
+		map.put("sno", sno);
+		
+		return mapper.selectCategoryPostByBig(map);
+	}
 	
 
 }
