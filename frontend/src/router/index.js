@@ -12,6 +12,8 @@ import PostList from '../components/post/List.vue'
 import CategoryPage from '@/components/page/CategoryPage.vue'
 import Chat from '@/components/chat/Chat.vue'
 import Chat2 from '@/components/chat/Chat2.vue'
+import Point from '@/components/page/Point.vue'
+import SearchPage from '@/components/page/SearchPage.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -85,12 +87,30 @@ const routes = [
     path:"/inchat/:roomId",
     name:"Chat2",
     component:Chat2
-  }
+  },
+  {
+    path:"/point",
+    name:"Point",
+    component:Point
+  },
+  {
+    path:"/search/:keyword",
+    name: "SearchPage",
+    component: SearchPage
+  },
 ]
 
 const router = new VueRouter({
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+    else {
+      return {x: 0, y: 0}
+    }
+  }
 })
 
 export default router

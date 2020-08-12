@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -89,6 +90,7 @@ public class UserController {
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
+		user.setPhone(payload.getPhone());
 		if(payload.getImg()!=null) {
 			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
 		//	user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
@@ -112,7 +114,9 @@ public class UserController {
 	@ApiOperation(value="유저정보 수정을 진행한다.")
 	@PutMapping(consumes = "multipart/form-data")
 	public ResponseEntity<?> updatetUser(Authentication authentication,JoinPayload payload, HttpServletRequest request){
+		String userId = authentication.getPrincipal().toString();
 		LocalDateTime time = LocalDateTime.now();
+		
 		String md5Hex="";
 		String filename="";
 		if(payload.getImg()!=null) {
@@ -128,12 +132,10 @@ public class UserController {
 			}
 		}
 		
-		User user = new User();
-		user.setUserId(authentication.getPrincipal().toString());
+		User user = userService.getUser(userId).get();
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
-		
 		if(payload.getImg()!=null) {
 			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
 			//user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
@@ -141,4 +143,17 @@ public class UserController {
 		userService.updateUser(user);
 		return new ResponseEntity(HttpStatus.OK);
 	}
+	
+	@ApiOperation("포인트를 충전한다.")
+	@PatchMapping("/point/payment")
+	public ResponseEntity<?> updatePoint(Authentication authentication,@RequestBody HashMap<String, Integer> payload){
+		int pointVal = payload.get("pointVal");
+		System.out.println("point"+pointVal);
+		String userId = authentication.getPrincipal().toString();
+		User user = userService.getUser(userId).get();
+		user.setPointVal(user.getPointVal() + pointVal);
+		userService.updateUser(user);
+		return new ResponseEntity(HttpStatus.OK);
+	}
+	
 }

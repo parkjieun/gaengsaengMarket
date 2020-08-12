@@ -5,8 +5,9 @@
             <!-- <v-tabs-slider></v-tabs-slider> -->
 
             <v-tab v-for="(i,index) in categoryBig" :key="index" :href="`#tab-${index}`" style="width:60px;" @mouseover="inTab(index,i.cate_big_id)" @mouseout="outTab">
-                <div style="font-weight:bold;">
+                <div style="font-weight:bold;" @click="goHome(i.name)">
                 {{i.name}}
+                
                 </div>
             </v-tab>
 
@@ -18,7 +19,7 @@
                                 <div v-if="jndex==index">
                                     <v-card-text v-if="j==categoryBig.length" style="width:100%;text-align:center;padding:0px;border-left:solid rgba(0,0,0,0.2) 1px; ">
                                         <v-list-item v-for="(k,kndex) in categoryMid[j.cate_big_id]" :key="kndex" style="padding:0px;">
-                                            <v-btn @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}})" text style="margin:auto;" width="100%" height="40px">
+                                            <v-btn @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}}).catch(res=>{})" text style="margin:auto;" width="100%" height="40px">
                                                 <div >
                                                     {{k.name}}
                                                 </div>
@@ -27,7 +28,7 @@
                                     </v-card-text>
                                     <v-card-text v-else style="width:100%;text-align:center;padding:0px;border-left:solid rgba(0,0,0,0.2) 1px;border-right:solid rgba(0,0,0,0.2) 1px; ">
                                         <v-list-item v-for="(k,kndex) in categoryMid[j.cate_big_id]" :key="kndex" style="padding:0px;">
-                                            <v-btn @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}})" text style="margin:auto;" width="100%" height="40px">
+                                            <v-btn @click="$router.push({name:'CategoryPage',params:{categoryNum:k.cate_mid_id}}).catch(res=>{})" text style="margin:auto;" width="100%" height="40px">
                                                 <div >
                                                     {{k.name}}
                                                 </div>
@@ -109,6 +110,11 @@ export default {
             this.$nextTick(() => {
                 setTimeout(this.out, 150)
             })
+        },
+        goHome(value){
+            if(value=="HOME"){
+                this.$router.push("/")
+            }
         }
     }
 }
