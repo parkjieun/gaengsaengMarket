@@ -32,7 +32,7 @@
                             <v-text-field v-model="nickName" :rules="rules" label="닉네임" required></v-text-field>
                         </v-list-item>
                         <v-list-item>
-                            <v-text-field v-model="phoneNumber" label="핸드폰번호" required></v-text-field>
+                            <v-text-field v-model="phone" :rules="phoneRules" label="핸드폰번호" required></v-text-field>
                         </v-list-item>
                         <v-list-item>
                             <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
@@ -71,10 +71,13 @@ export default {
             nickName: "",
             address: "",
             introduce: "",
-            phoneNumber:"",
+            phone:"",
             img: null,
             rules: [
                 value => (value && value.length <= 10) || "10자 이내로 입력해주세요"
+            ],
+            phoneRules:[
+                value => (value && !value.includes("-") && (/^[0-9]*$/).test(value) && value.length<=12) || "\'-\'를 제외한 숫자만 입력해주세요"
             ]
         }
     },
@@ -121,6 +124,7 @@ export default {
             frm.append("socialId",this.socialId)
             frm.append("introduce", this.introduce)
             frm.append("address", this.address)
+            frm.append("phone",this.phone)
             http.post("/api/user", frm, {
                     headers: {
                         Authorization: this.$store.state.authorization,

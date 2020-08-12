@@ -1,33 +1,85 @@
 <template>
-<v-app>
-    <v-container fluid>
-        <v-row id="postList">
-            <post-list :posts="posts" />
-        </v-row>
-    </v-container>
-</v-app>
+<div id="app">
+    <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subMenu">
+        <div style="font-size:12px; height:28px; ">
+            <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig }} 
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)"> {{ categoryMid }} 
+        </div>
+    </v-row> 
+    <div id="postList" style="margin-top: 30px;"> 
+            <PostList :posts="posts"/>
+    </div>
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
+</div>
 </template>
 
 <script>
 import httpPost from "@/util/http-post"
 import PostList from "@/components/post/PostList.vue"
+import InfiniteLoading from 'vue-infinite-loading'
+
 export default {
-    compoennts:{
+    components:{
         PostList,
+        InfiniteLoading,
     },
     data(){
         return{
             posts:[],
+            start: 0,
+            categoryBig: '',
+            categoryMid: '',
         }
     },
-    created(){
-        httpPost.get(`/api/post/category/${this.$route.params.categoryNum}?sno=0`).then(res=>{
-            this.posts=res.data
-        })
-    }
+    watch: {
+        '$route.params.categoryNum': 'fetchData'
+    },
+    methods: {
+        fetchData() {
+            this.posts = [],
+            this.start = 0,
+            this.categoryMid = '',
+            this.categoryBig = '',
+            this.$refs.InfiniteLoading.stateChanger.reset();
+            this.getCategory(this.$route.params.categoryNum)
+        },
+        infiniteHandler($state) {
+            httpPost.get(`/api/post/category/${this.$route.params.categoryNum}?sno=` + this.start)
+            .then(res => {
+                const data = res.data.slice(1,res.data.length)
+                if (data.length) {
+                    this.start += 12;
+                    this.posts.push(...data);
+                    $state.loaded();
+                } 
+                else {
+                    $state.complete();
+                }
+            });      
+        },
+        getCategory(categoryId) {
+            // 카테고리 저장
+            httpPost.get(`/api/post/category/${categoryId}?sno=0`)
+            .then(res => {
+                this.categoryMid = res.data[0].cate_mid_name
+                this.categoryBig = res.data[0].cate_big_name
+            });      
+           
+        }
+
+    },
+    created() {
+        this.getCategory(this.$route.params.categoryNum)
+             
+    },
 }
 </script>
 
-<style>
+<style scoped>
+#app {
+    width: 80%;
+    margin: 0 auto 0 auto;
+}
 
 </style>

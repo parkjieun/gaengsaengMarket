@@ -20,7 +20,7 @@
             </div>
         <!-- update button -->
         <!-- user == login.user만 보여줄 것!!! -->
-            <v-btn prepend-icon="mdi-" color="#defcfc" small @click="updateBtn" style="margin: 10px;" >수정</v-btn>
+            <v-btn color="#defcfc" small @click="updateBtn" style="margin: 10px;" >수정</v-btn>
             
         </v-row>
         
@@ -52,6 +52,7 @@ export default {
             allPosts: [],
             onSalePosts: [],
             soldOutPosts: [],
+            likePosts: [],
             user: this.myProfile,
             myPage: true,
         }
@@ -86,6 +87,7 @@ export default {
             this.showPosts = this.soldOutPosts
         },
         likePost() {
+            this.showPosts = this.likePosts
 
         },
 
@@ -104,6 +106,12 @@ export default {
             httpPost.get('/api/post?user_id=' + this.myProfile.userId)
             .then((res) => {
                 this.setPosts(res.data)
+            })
+        })
+        .then(() => {
+            httpPost.get('/api/post?sno=0&like=true&user_id='+this.myProfile.userId)
+            .then((res) => {
+                this.likePosts = res.data
             })
         })
     },

@@ -31,14 +31,16 @@ export default new Vuex.Store({
     },
     loggedIn(state){
       if(state.myProfile!=null && state.myProfile && state.myProfile!="" && state.myProfile!="null"){
-        console.log(state.myProfile)
         return true
       }
       return false
-    },
+    }, 
     getN(state){
       console.log(">>>>GETTERS")
       return state.myProfile
+},
+    myPoint(state){
+      return state.myProfile.pointVal 
     }
   },
   mutations: {
@@ -64,6 +66,14 @@ export default new Vuex.Store({
     },
     setPatner(state,value){
       state.patner = value
+    },
+    LOGOUT(state){
+      state.myProfile=""
+      state.isAuthenticated=false
+      state.authorization=""
+      sessionStorage.removeItem("myProfile")
+      sessionStorage.removeItem("isAuthenticated")
+      sessionStorage.removeItem("authorization")
     }
   },
 
@@ -134,6 +144,14 @@ export default new Vuex.Store({
       http_user.get("/api/user/"+userId).then(res=>{
         commit("setPatner",res.data)
       })
+    },
+    getMyProfile({commit , getters}){
+      http_user.get("/api/user",getters.config).then(res=>{
+        commit("SET_USERPROFILE",res.data)
+      })
+    },
+    logout({commit}){
+      commit("LOGOUT")
     }
   },
 })

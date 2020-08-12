@@ -31,8 +31,8 @@
     </delete>
     
 	 <insert id="insertPost">
-    	insert into post(title, contents, cate_mid_id, user_id, price, deal_type, deal_weak) 
-    	values(#{title},#{contents},#{cate_mid_id},#{user_id},#{price},#{deal_type},#{deal_weak})
+    	insert into post(title, contents, cate_mid_id, user_id, price, deal_type, deal_weak, addr) 
+    	values(#{title},#{contents},#{cate_mid_id},#{user_id},#{price},#{deal_type},#{deal_weak}, #{addr})
     </insert>
     
    	<insert id="insertHashtag">
@@ -78,7 +78,7 @@
 		from post t0
 		
 		left outer join (
-		    select post_id, max(img_url) as files
+		    select post_id, min(img_url) as files
 		    from post_img
 		    group by post_id
 		) t1
@@ -98,17 +98,31 @@
 		</if>
 		
 		where del_flag != 1 
-		
-		<if test="query!=null and !query.equals('')">
-		and (t0.post_id in (
-				    select post_id
-				    from hashtag
-				    where tag like CONCAT('%',#{query},'%')
-				    group by post_id
+		 
+		<if test="tags!=null or (query!=null and !query.equals(''))">
+		and (
+				1=1
+				<if test="tags!=null">
+				and t0.post_id IN (
+					SELECT ht.post_id 
+					FROM 
+					(
+						SELECT  post_id ,group_concat(tag) AS tags
+						from hashtag
+						GROUP BY post_id
+						HAVING 
+						<foreach collection="tags" item="tag" open="" close="" separator="and">
+				    		tags like CONCAT('%',#{tag},'%')
+				    	</foreach>
+					) ht
 				)
-		  	or t0.title like  CONCAT('%',#{query},'%')
+				</if>
+				
+				<if test="query!=null and !query.equals('')">
+		  		and t0.title like  CONCAT('%',#{query},'%')
+		  		</if>
 		  )
-		 </if>
+		 </if>		 
 		 
 		<choose>
        		<when test="like">
@@ -123,7 +137,6 @@
 		       		<when test="type == 1">
 				    	AND t0.`type` = 1
 		       		</when>
-		       		
 		       </choose>
        		</when>
        </choose>
@@ -140,6 +153,7 @@
 			 , b.cate_big_id AS 'cate_big_id'
 			 , u.nick_name
 			 , u.profile_img
+			 , u.address
 			 
 			 <if test="user_id!=null and !user_id.equals('')">
 			 , (SELECT COUNT(*) FROM `like` WHERE post_id=#{post_id} AND user_id=#{user_id}) as likeFlag
@@ -160,7 +174,8 @@
 		  	, cate_mid_id = #{cate_mid_id}
 		 	, price= #{price}
 		  	, deal_type = #{deal_type}
-       		, deal_weak = #{deal_weak}  
+       		, deal_weak = #{deal_weak}
+       		, addr = #{addr}  
     	where post_id = #{post_id}
    </update>
     
@@ -178,6 +193,17 @@
     	</where>
     </delete>
     
+    <update id="updatePostType">
+		update post
+       	set type = 0
+    	where post_id = #{post_id}
+   </update>
+    
+   <update id="updatePoint">
+		update user
+    	set point_val = (point_val- #{price})
+    	where user_id = #{user_id}
+   </update>
 
 </mapper>
 

@@ -10,5 +10,5 @@ import com.ssafy.chat.model.ChatRoomJoin;
 public interface ChatRoomJoinRepository extends JpaRepository<ChatRoomJoin, Integer>{
 
 	public List<ChatRoomJoin> findAllByRoomId(String roomId);
-
+	public List<ChatRoomJoin> findAllByUserId(String userId);
 }

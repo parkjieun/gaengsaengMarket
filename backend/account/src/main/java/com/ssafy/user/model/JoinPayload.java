@@ -33,6 +33,6 @@ public class JoinPayload {
 
 	private MultipartFile img;
 	
-	
+	private String phone;
 
 }

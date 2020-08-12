@@ -103,14 +103,14 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> selectAllPost(String query, String user_id, boolean like, int type, int sno) throws Exception {
+	public List<Post> selectAllPost(String query, String user_id, boolean like, int type, int sno, List<String> tags) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("query",query);
 		map.put("user_id",user_id);
 		map.put("like",like);
-		System.out.println(">>>type: "+type);
 		map.put("type",type);
 		map.put("sno", sno);
+		map.put("tags", tags);
 		
 		return mapper.selectAllPost(map);
 	}
@@ -164,26 +164,8 @@ public class PostServiceImpl implements PostService {
 		return flag;
 	}
 
-//	@Override
-//	public int insertLikePost(String post_id, String user_id) throws Exception {
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("post_id", post_id);
-//		map.put("user_id", user_id);
-//		
-//		return mapper.insertLikePost(map);
-//	}
-
-//	@Override
-//	public int deleteLikePost(String post_id, String user_id) throws Exception {
-//		HashMap<String, Object> map = new HashMap<String, Object>();
-//		map.put("post_id", post_id);
-//		map.put("user_id", user_id);
-//		
-//		return mapper.deleteLikePost(map);
-//	}
-
 	@Override
-	public String selectLike(String post_id, String user_id) throws Exception {
+	public String selectLike(int post_id, String user_id) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("post_id", post_id);
 		map.put("user_id", user_id);
@@ -205,6 +187,21 @@ public class PostServiceImpl implements PostService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int updatePostType(int post_id, int price, String user_id) throws Exception {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		int flag = mapper.updatePostType(post_id);
+		
+		if(flag > 0) {
+			map.put("price", price);
+			map.put("user_id", user_id);
+			flag = mapper.updatePoint(map);
+		}
+		
+		return flag;
 	}
 	 
 }
