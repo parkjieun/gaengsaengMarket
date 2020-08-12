@@ -98,17 +98,31 @@
 		</if>
 		
 		where del_flag != 1 
-		
-		<if test="query!=null and !query.equals('')">
-		and (t0.post_id in (
-				    select post_id
-				    from hashtag
-				    where tag like CONCAT('%',#{query},'%')
-				    group by post_id
+		 
+		<if test="tags!=null or (query!=null and !query.equals(''))">
+		and (
+				1=1
+				<if test="tags!=null">
+				and t0.post_id IN (
+					SELECT ht.post_id 
+					FROM 
+					(
+						SELECT  post_id ,group_concat(tag) AS tags
+						from hashtag
+						GROUP BY post_id
+						HAVING 
+						<foreach collection="tags" item="tag" open="" close="" separator="and">
+				    		tags like CONCAT('%',#{tag},'%')
+				    	</foreach>
+					) ht
 				)
-		  	or t0.title like  CONCAT('%',#{query},'%')
+				</if>
+				
+				<if test="query!=null and !query.equals('')">
+		  		and t0.title like  CONCAT('%',#{query},'%')
+		  		</if>
 		  )
-		 </if>
+		 </if>		 
 		 
 		<choose>
        		<when test="like">
