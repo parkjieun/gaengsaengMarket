@@ -39,8 +39,19 @@ public class ChatService {
     }
 
     public ChatRoom createChatRoom(String userId, String receiverId) {
-    	System.out.println(userId +","+receiverId);
-        ChatRoom chatRoom = new ChatRoom();
+        
+    	List<ChatRoomJoin> chatRoomSender = chatRoomJoinRepository.findAllByUserId(userId);
+    	List<ChatRoomJoin> chatRoomReceiver = chatRoomJoinRepository.findAllByUserId(receiverId);
+    	
+    	for(ChatRoomJoin crjSender : chatRoomSender) {
+    		for(ChatRoomJoin crjReceiver : chatRoomReceiver) {
+    			if(crjSender.getRoomId().equals(crjReceiver.getRoomId())) {
+    				return null;
+    			}
+    		}
+    	}
+    	
+    	ChatRoom chatRoom = new ChatRoom();
         
         chatRoomRepository.save(chatRoom);
         
