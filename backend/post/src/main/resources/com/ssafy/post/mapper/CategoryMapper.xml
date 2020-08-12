@@ -47,6 +47,41 @@
 		WHERE c1.cate_big_id=c2.cate_big_id
 		AND cate_mid_id = #{category_mid_id}
 	</select>
+	
+	<select id="selectCategoryPostByBig" resultType="Post" >
+		select
+			t0.*,
+		    t1.files,
+		    t2.tags,
+		    t3.name AS 'cate_big_name',
+		    t3.cate_big_id  
+		    
+		from post t0
+		
+		left outer join (
+		    select post_id, min(img_url) as files
+		    from post_img
+		    group by post_id
+		) t1
+		on t0.post_id = t1.post_id
+		
+		left outer join (	
+		    SELECT post_id, group_concat(tag) AS tags
+			 FROM hashtag 
+			 GROUP BY post_id
+		) t2
+		on t0.post_id = t2.post_id
+
+		INNER JOIN category_mid t3
+		ON t0.cate_mid_id = t3.cate_mid_id
+		
+		where del_flag != 1 
+		AND t3.cate_big_id=#{cate_big_id}
+		
+		
+		ORDER BY t0.create_date DESC
+       	LIMIT #{sno}, 12
+	</select>
 	 
     
 </mapper>

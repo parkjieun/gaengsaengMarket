@@ -190,12 +190,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public int updatePostType(int post_id, int price, String user_id) throws Exception {
+	public int updatePostType(int post_id, int price, String user_id, String gubun) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		int flag = mapper.updatePostType(post_id);
 		
-		if(flag > 0) {
+		if(flag > 0 && gubun.equals("delivery")) {
 			map.put("price", price);
 			map.put("user_id", user_id);
 			flag = mapper.updatePoint(map);
