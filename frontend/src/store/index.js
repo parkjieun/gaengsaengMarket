@@ -34,9 +34,13 @@ export default new Vuex.Store({
         return true
       }
       return false
-    },
+    }, 
+    getN(state){
+      console.log(">>>>GETTERS")
+      return state.myProfile
+},
     myPoint(state){
-      return state.myProfile.pointVal
+      return state.myProfile.pointVal 
     }
   },
   mutations: {
