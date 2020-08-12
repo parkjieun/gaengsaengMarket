@@ -35,6 +35,10 @@ export default new Vuex.Store({
         return true
       }
       return false
+    },
+    getN(state){
+      console.log(">>>>GETTERS")
+      return state.myProfile
     }
   },
   mutations: {
