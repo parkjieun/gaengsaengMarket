@@ -14,4 +14,6 @@ public interface CategoryService {
 	public List<Post> selectCategoryPost(String category_mid, int sno)  throws Exception;
 	
 	public Post selectCateName(String category_mid_id)  throws Exception;
+
+	public List<Post> selectCategoryPostByBig(String cate_big_id, int sno) throws Exception;
 }
