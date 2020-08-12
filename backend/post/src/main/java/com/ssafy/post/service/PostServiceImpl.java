@@ -103,14 +103,14 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> selectAllPost(String query, String user_id, boolean like, int type, int sno) throws Exception {
+	public List<Post> selectAllPost(String query, String user_id, boolean like, int type, int sno, List<String> tags) throws Exception {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("query",query);
 		map.put("user_id",user_id);
 		map.put("like",like);
-		System.out.println(">>>type: "+type);
 		map.put("type",type);
 		map.put("sno", sno);
+		map.put("tags", tags);
 		
 		return mapper.selectAllPost(map);
 	}
