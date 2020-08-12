@@ -81,29 +81,6 @@ public class PostController {
 		return new ResponseEntity<String>(SUCESS, HttpStatus.OK);
 	}   
 	
-	
-//	@ApiOperation(value = "멀티파일 업로드 테스트")
-//	@RequestMapping(value = "/upload", method = RequestMethod.POST) //@RequestParam("file")  List<MultipartFile> files
-//	public List<String> upload( Post dto) throws Exception {
-//		
-//		List<String> list = new ArrayList<>();
-//		String path = "D:\\workspace\\post\\src\\main\\webapp\\WEB-INF\\";
-//				
-//		for (MultipartFile file : dto.getFile()) {
-//			String originalFileName = file.getOriginalFilename();
-//			String safeFile = path + System.currentTimeMillis() + "_" +originalFileName;
-//			
-//			try {
-//				file.transferTo(new File(safeFile));
-//			}catch(IllegalStateException e) {
-//				e.printStackTrace();
-//			}catch(IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		return list;
-//	}
 
 	@ApiOperation(value = "게시글 삭제")
 	@RequestMapping(value ="/{post_id}", method = RequestMethod.DELETE)
@@ -120,13 +97,16 @@ public class PostController {
 	
 	@ApiOperation(value = "게시글 전체 조회")
 	@RequestMapping( method = RequestMethod.GET)
-	public ResponseEntity<List<Post>> selectAllPost(String query, String user_id, boolean like, 
+	public ResponseEntity<List<Post>> selectAllPost(
+			String query, @RequestParam(value="tags", required= false) List<String> tags,
+			String user_id, boolean like, 
 			@RequestParam(value = "type",required = false, defaultValue = "3" ) int type,
 			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
-		logger.info("-------------selectAllPost-----------------------------");
-		System.out.println(query+"/"+user_id+"/"+like+"/"+type+"/"+sno);
 		
-		List<Post> list =postService.selectAllPost(query,user_id,like,type,sno);
+		logger.info("-------------selectAllPost-----------------------------");
+		System.out.println(query+"/"+tags+"/"+user_id+"/"+like+"/"+type+"/"+sno);
+		
+		List<Post> list =postService.selectAllPost(query,user_id,like,type,sno,tags);
 		//System.out.println(">>>"+list);
 		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);
 	}
