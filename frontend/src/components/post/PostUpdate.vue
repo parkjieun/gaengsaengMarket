@@ -85,7 +85,7 @@
           <v-row v-show="toggle_exclusive.includes(1)">
             <v-col cols="2"><h2>거래 가능 요일</h2></v-col>
             <ValidationProvider v-validate.persist ="'required'" v-slot="{ errors }">
-              <v-col cols="1">
+              <v-col  >
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
                   <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">월</v-btn>
                   <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">화</v-btn>
@@ -95,6 +95,9 @@
                   <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">토</v-btn>
                   <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;">일</v-btn>
                 </v-btn-toggle>
+                <v-row  >
+              <kakaomap @addr="addressPrint" v-bind:propsdata="focusAdrr"></kakaomap>
+            </v-row>
               </v-col>
               <v-col
                 ><span class="error-color">{{ errors[0] }}</span></v-col
@@ -184,7 +187,7 @@
 import axios from "axios";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { min, max, required } from "vee-validate/dist/rules";
-
+import kakaomap from "@/components/post/map.vue";
 extend("required", {
   ...required,
   message: " * 반드시 입력해야하는 항목입니다.",
@@ -201,8 +204,11 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    kakaomap,
   },
   data: () => ({
+    focusAdrr:"",//디비에서 가져오는 주소, 포커싱할 주소임
+    address:"", //맵에서 선택한 주소
     userId: "",
     postId: "",
     price: "",
@@ -249,7 +255,9 @@ export default {
     axios.get("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId).then(({ data }) => {
       console.log("오는 전체데이터");
       console.log(data);
-
+      this.focusAdrr = data.addr;
+      this.addr = this.focusAdrr; //새로 주소 설정 안하면 기존에 설정된 주소로 보내기 위해서
+     
       this.seletedCateBig = Number(data.cate_big_id);
       this.getCateMid();
       this.seletedCateMid = data.cate_mid_id;
@@ -307,6 +315,10 @@ export default {
   },
 
   methods: { 
+    addressPrint(message) {
+        this.address = message
+        console.log("map에서 계속 호출됨 : "+message) 
+    },
     deletePost() {
       axios
         .delete("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId, {
@@ -401,6 +413,7 @@ export default {
       formData.append("price", this.price);
       formData.append("deal_type", deal_type1);
       formData.append("deleteFiles", this.deleteImags);
+      formData.append("addr", this.addr);
       //선택한 요일
       let sum = 0;
       for (let i in this.toggle_weekend) {
