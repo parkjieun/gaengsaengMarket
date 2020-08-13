@@ -2,8 +2,8 @@
   <div class="contain" style="position:relative;">
 
   
-  <v-icon fab text @click="carouselLeft" style="position:absolute; bottom:120px; left: -30px; z-index:99;">mdi-chevron-left</v-icon>
-  <v-icon fab text @click="carouselRight" style="position:absolute; bottom:120px; right: -30px; z-index:99;">mdi-chevron-right</v-icon>
+  <v-icon fab text @click="carouselLeft" style="position:absolute; bottom:120px; left: -30px;">mdi-chevron-left</v-icon>
+  <v-icon fab text @click="carouselRight" style="position:absolute; bottom:120px; right: -30px;">mdi-chevron-right</v-icon>
   <div class="row" id="carousel">
     <div class="row__inner">
     
@@ -26,23 +26,11 @@
 
     </div>
   </div>
-  <v-btn
-      id="scrollButton"
-      fab
-      small
-      color="#a6e3e9"
-      retain-focus-on-click
-      @click="scrollToTop"
-  >
-          <v-icon color="#3f696e">mdi-chevron-up</v-icon>
-  </v-btn>
+  
 </div>
 </template>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
-
-import PostItemCarousel from '@/components/post/PostItemCarousel.vue'
-
 export default {
     props: ['posts', 'subTitle'],
     data(){
@@ -50,9 +38,6 @@ export default {
           defaultImg: ''
             
         }
-    },
-    components: {
-        PostItemCarousel,
     },
     computed:{
         len(){
@@ -90,12 +75,6 @@ export default {
 </script>
 
 <style scoped>
-#scrollButton {
-    position: fixed;
-    bottom: 20px;
-    right: 30px;
-    z-index: 99;
-}
 body,
 html {
   padding: 0 10px;
