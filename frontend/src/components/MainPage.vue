@@ -19,12 +19,12 @@
         </div>
         <div style="width: 80%; margin-left:auto; margin-right:auto;">
             <h3>카테고리별 상품</h3>
-            <v-tabs style="width: 100%;" grow>
-                <v-tab v-for="name in categorytab" :key="name" @click="goToCategory">{{name}}</v-tab>
+            <v-tabs style="width: 100%; margin-bottom:10px;" grow>
+                <v-tab v-for="cate in categorytab" :key="cate.id" @click="goToCategory(cate.id)">{{cate.name}}</v-tab>
             </v-tabs>
         </div>
-        <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;" v-for="post in categoryPosts" :key="post[0]">
-            <div class="categoryTitles" id="categoryTitle" style="align-items:center;"><v-icon small >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px;"> {{ post[0] }} </span><v-btn text small style="margin-left:10px; color: gray;">전체보기</v-btn></div> 
+        <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;" v-for="post in categoryPosts" :key="post[0].id">
+            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center;"><v-icon small color="cyan" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px;"> {{ post[0].name }} </span><v-btn text small @click="goToBigCatePage(post[0].id)">전체보기</v-btn></div> 
             <PostList :posts="post[1]"/>
         </div>
 
@@ -50,8 +50,6 @@ export default {
             recentPosts: [],
             categoryPosts: [],
             categorytab: []
-            // #app > div > div > div:nth-child(4) > div.categoryTitles
-            // #app > div > div > div:nth-child(5) > div.categoryTitles
         }
     },
     components: {
@@ -74,17 +72,14 @@ export default {
         goPostCreate() {
             this.$router.push( { name: 'post-create' })
         },
-        setCategoryId() {
-            var list = document.getElementsByClassName("categoryTitles");
-            console.log(list)
-            for (var i = 0; i < list.length; i++) {
-                console.log(list.item(i))
-            }
-        },
         goToCategory(i) {
-            $('html, body').animate({scrollTop: $("#categoryTitle[i]").offset().top}, 100);
+            var position = $(`#${i}`).offset().top - 30
+            $('html, body').animate({scrollTop: position}, 200);
             
         },
+        goToBigCatePage(categoryId) {
+            this.$route.push()
+        }
 
     },
     created() {
@@ -96,19 +91,16 @@ export default {
         .then(res => {
             for (var i = 0; i < res.data.length; i ++) {
                 const cate_name = res.data[i].name
+                const cate_id = res.data[i].cate_big_id
                 httpPost.get(`/api/post/category/big/${res.data[i].cate_big_id}?sno=0`)
                 .then(posts => {
                     if (posts.data.length) {
-                        this.categoryPosts.push([cate_name, posts.data.slice(0, 8)])
-                        this.categorytab.push(cate_name)
+                        this.categoryPosts.push([{name:cate_name, id: cate_id}, posts.data])
+                        this.categorytab.push({name:cate_name, id:cate_id})
                     }         
                 })
             }
-        })
-        .then(
-            this.setCategoryId()
-        )
-        
+        })     
     },
     mounted() {
         
