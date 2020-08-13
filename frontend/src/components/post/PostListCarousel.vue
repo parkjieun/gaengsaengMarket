@@ -167,15 +167,14 @@ a:hover {
 }
 .tile__img {
   width: 250px;
-  height: 140.625px;
+  height: 160px;
   -o-object-fit: cover;
      object-fit: cover;
 }
 .tile__details {
   position: absolute;
   width: 250px;
-  /* padding-left:30px; */
-  /* margin-left: 30px; */
+  height:160px;
   bottom: 0;
   left: 30px;
   right: 0;
