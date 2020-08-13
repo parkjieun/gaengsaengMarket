@@ -50,7 +50,7 @@
         <!-- search -->
         <v-col cols="5">
             <v-flex>
-                <v-combobox multiple v-model="select" color="#a6e3e9" @keydown.enter="searchItem" chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="상품 및 #해시태그를 입력해 주세요" :search-input.sync="search" @keyup.space="updateTags">
+                <v-combobox multiple v-model="select" color="#a6e3e9" @click:append="searchItem" chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="제목 및 #해시태그를 검색해주세요" :search-input.sync="search" @keyup.space="updateTags">
                 </v-combobox>
             </v-flex>
         </v-col>
@@ -135,11 +135,13 @@ export default {
 
         },
         searchItem() {
-            const keyword = this.select.join('&')
-            this.$router.push({ name: 'SearchPage', params: { keywords: this.select, keyword: keyword} })
+            const title = this.search
+            const tags = this.select.join(',')
+            const keyword = `tags=${tags}&title=${title}`
             this.search = ""
             this.select = []
-            console.log(this.search)
+            this.$router.push({ name: 'SearchPage', params: { tags: tags, title: title, keyword: keyword} })
+            
         },
         updateTags() {
             this.$nextTick(() => {
