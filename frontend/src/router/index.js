@@ -12,6 +12,7 @@ import PostList from '../components/post/List.vue'
 import CategoryPage from '@/components/page/CategoryPage.vue'
 import Chat from '@/components/chat/Chat.vue'
 import Chat2 from '@/components/chat/Chat2.vue'
+import DeliveryDetail from '@/components/chat/DeliveryDetail.vue'
 import Point from '@/components/page/Point.vue'
 import SearchPage from '@/components/page/SearchPage.vue'
 Vue.use(VueRouter)
@@ -87,6 +88,11 @@ const routes = [
     path:"/inchat/:roomId",
     name:"Chat2",
     component:Chat2
+  },
+  {
+    path:"/delivery",
+    name:"Delivery",
+    component:DeliveryDetail
   },
   {
     path:"/point",
