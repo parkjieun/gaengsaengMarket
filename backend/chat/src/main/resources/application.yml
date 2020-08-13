@@ -30,4 +30,5 @@ server:
 jwt:
   secret: secret0key0in0ssafyasdfasdfasdfasdfasdf
 
-    
+delivery:
+  key: DlCHvPTEJjHmTu3U9IlZhA

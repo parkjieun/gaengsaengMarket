@@ -17,6 +17,7 @@ export default new Vuex.Store({
     items: [],
     item: {},
     replys: [],
+    delivery:null,
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
@@ -74,6 +75,9 @@ export default new Vuex.Store({
       sessionStorage.removeItem("myProfile")
       sessionStorage.removeItem("isAuthenticated")
       sessionStorage.removeItem("authorization")
+    },
+    SET_DELIVERY(state,value){
+      state.delivery=value
     }
   },
 
@@ -152,6 +156,9 @@ export default new Vuex.Store({
     },
     logout({commit}){
       commit("LOGOUT")
+    },
+    setDelivery({commit},value){
+      commit("SET_DELIVERY",value)
     }
   },
 })
