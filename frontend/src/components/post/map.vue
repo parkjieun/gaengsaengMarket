@@ -58,7 +58,8 @@
   width: 36px;
   height: 37px;
   margin: 10px 0 0 0px;
-  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;
+  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png)
+    no-repeat;
 }
 #placesList .item .marker_1 {
   padding: 4px;
@@ -123,13 +124,21 @@
 <template>
   <v-container fluid>
     <div class="map_wrap">
-      <div id="map" tabindex="-1" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+      <div
+        id="map"
+        tabindex="-1"
+        style="width:100%;height:100%;position:relative;overflow:hidden;"
+      ></div>
       <div id="menu_wrap" class="bg_white">
         <v-row rows="1" style="text-align: center; margin-top: 3px; ">
-          <v-col sm="4" style="font-size: 13px;margin-top: 10px; ">키워드 : </v-col>
-          <v-col sm="5" style="font-size: 13px;padding:0px;"> <v-text-field hide-details v-model="searchKeyword"></v-text-field> </v-col>
+          <v-col sm="4" style="font-size: 13px;margin-top: 10px; "
+            >키워드 :
+          </v-col>
+          <v-col sm="5" style="font-size: 13px;padding:0px;">
+            <v-text-field hide-details v-model="searchKeyword"></v-text-field>
+          </v-col>
           <v-col sm="3" style=" margin-top: 2px;margin-bottom: 0px;">
-            <v-btn icon color="#00bcd4" @click="initMap()">
+            <v-btn icon color="#00bcd4" @click="searchPlaces()">
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
           </v-col>
@@ -144,7 +153,14 @@
 </template>
 <script>
 export default {
-  data: () => ({ searchKeyword: "이태원역", addr: "" }),
+  props: ["propsdata"],
+  data: () => ({
+    searchKeyword: "이태원역",
+    addr: "",
+    isInOwnAddr: false,
+    pageMap: "",
+    pageInfowindow: "",
+  }),
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -152,7 +168,8 @@ export default {
       const script = document.createElement("script");
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
-      script.src = "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
+      script.src =
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
       document.head.appendChild(script);
     }
   },
@@ -161,7 +178,8 @@ export default {
       this.$emit("addr", title);
     },
     initMap() {
-      var markers = [];
+      console.log("부모에서 propsdata 잘 받아오니? " + this.propsdata);
+
       var container = document.getElementById("map");
       var options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
@@ -169,27 +187,43 @@ export default {
       };
 
       var map = new kakao.maps.Map(container, options);
-
-      var ps = new kakao.maps.services.Places();
-
+      this.pageMap = map;
       // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
       var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      let searchKeyword = this.searchKeyword;
-      // 키워드로 장소를 검색합니다
-      searchPlaces(searchKeyword);
-
-      // 키워드 검색을 요청하는 함수입니다
-      function searchPlaces(searchKeyword) {
-        var keyword = searchKeyword;
-
-        if (!keyword.replace(/^\s+|\s+$/g, "")) {
-          alert("키워드를 입력해주세요!");
-          return false;
-        }
-
-        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-        ps.keywordSearch(keyword, placesSearchCB);
+      this.pageInfowindow = infowindow;
+      //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
+      var addrInfos;
+      //디비에 주소가 아무것도 저장이 안되어있다면? 혹은 불러오지 못해서 값이 아예없다면?
+      if (this.propsdata == "" || this.propsdata == null) {
+        console.log("아무것도 안들어왔대요");
+        addrInfos = ["멀티캠퍼스 역삼", 37.5012860931305, 127.03960466386198];
+      } else {
+        addrInfos = this.propsdata.split(","); //디비에 저장된 정보들 받아오는 변수
       }
+      this.searchKeyword = addrInfos[0];
+      this.searchPlaces();
+      this.isInOwnAddr = true;
+    },
+
+    // 키워드 검색을 요청하는 함수입니다
+    searchPlaces() {
+      var markers = [];
+      var sendAddr = this.sendAddr;
+      var keyword = this.searchKeyword;
+      var map = this.pageMap;
+      var infowindow = this.pageInfowindow;
+      var theFlag = this.isInOwnAddr;
+      var addrInfos = this.propsdata.split(","); //디비에 저장된 정보들 받아오는 변수
+      var iwRemoveable = true; //인포윈도우 지울지말지 확인하는 불린
+
+      if (!keyword.replace(/^\s+|\s+$/g, "")) {
+        alert("키워드를 입력해주세요!");
+        return false;
+      }
+
+      var ps = new kakao.maps.services.Places();
+      // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+      ps.keywordSearch(keyword, placesSearchCB);
 
       // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
       function placesSearchCB(data, status, pagination) {
@@ -207,6 +241,33 @@ export default {
           alert("검색 결과 중 오류가 발생했습니다.");
           return;
         }
+      }
+
+      //처음에 직거래 장소로 자기 주소가 등록되어있을때
+      function setFirstPlace() {
+        // 정상적으로 검색이 완료됐으면
+        var moveLatLon = new kakao.maps.LatLng(
+          Number(addrInfos[1]),
+          Number(addrInfos[2])
+        );
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: moveLatLon,
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div style="width:150px;text-align:center;padding:6px 0;">직거래위치<br/><b>' +
+            addrInfos[0] +
+            "</b></div>",
+        });
+        infowindow.open(map, marker);
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        map.setCenter(moveLatLon);
+        map.setLevel(1);
       }
 
       // 검색 결과 목록과 마커를 표출하는 함수입니다
@@ -227,7 +288,9 @@ export default {
           // 마커를 생성하고 지도에 표시합니다
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i),
+            placeI=places[i],
             itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
 
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
           // LatLngBounds 객체에 좌표를 추가합니다
@@ -248,10 +311,32 @@ export default {
             kakao.maps.event.addListener(marker, "click", function() {
               // 마커 위에 인포윈도우를 표시합니다
               // 이동할 위도 경도 위치를 생성합니다
-              //alert("현재위치 :" + title)
-
-              tempPrint(title);
-              var moveLatLon = new kakao.maps.LatLng(marker.getPosition().getLat(), marker.getPosition().getLng());
+              console.log("click..:" +  placeI.road_address_name + 
+            placeI.address_name )
+              let sendToserverAddrInfo =
+                title +
+                "," +
+                marker.getPosition().getLat() +
+                "," +
+                marker.getPosition().getLng()
+                +","+
+                placeI.road_address_name
+                +","+
+                placeI.address_name;
+              sendAddr(sendToserverAddrInfo);
+              var moveLatLon = new kakao.maps.LatLng(
+                marker.getPosition().getLat(),
+                marker.getPosition().getLng()
+              ); 
+              // 인포윈도우로 장소에 대한 설명을 표시합니다
+              var infowindow = new kakao.maps.InfoWindow({
+                content:
+                  '<div style="width:150px;text-align:center;padding:6px 0;">새로운 직거래위치<br/><b>' +
+                  title +
+                  "</b></div>",
+                  removable : iwRemoveable,
+              });
+              infowindow.open(map, marker);
 
               // 지도 중심을 이동 시킵니다
               map.setCenter(moveLatLon);
@@ -260,6 +345,12 @@ export default {
             });
             itemEl.onmouseover = function() {
               displayInfowindow(marker, title);
+              var moveLatLon = new kakao.maps.LatLng(
+                marker.getPosition().getLat(),
+                marker.getPosition().getLng()
+              );
+              // 지도 중심을 이동 시킵니다
+              map.setCenter(moveLatLon);
             };
 
             itemEl.onmouseout = function() {
@@ -276,34 +367,44 @@ export default {
 
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
         map.setBounds(bounds);
- 
+
+        if (!theFlag) {
+          setFirstPlace();
+        }
       }
 
-      var test = ""
-      function tempPrint(title) {
-        console.log("tempPrint : " + title); 
-        test = title
-        // this.addr = title
-        // console.log("this.addr : " + this.addr);
-      }
-        this.addr = test
-        console.log("this.addr : " + this.addr);
-      if (this.addr != "") {
-        alert("map에서 호출되는 this.addr " + this.addr);
-        this.sendAddr();
-      }
       // 검색결과 항목을 Element로 반환하는 함수입니다
       function getListItem(index, places) {
         var el = document.createElement("li"),
-          itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' + '<div  style="padding-left: 42px;">' + "   <h5>" + places.place_name + "</h5>";
+          itemStr =
+            '<span class="markerbg marker_' +
+            (index + 1) +
+            '"></span>' +
+            '<div  style="padding-left: 42px;">' +
+            "   <h5>" +
+            places.place_name +
+            "</h5>";
 
         if (places.road_address_name) {
-          itemStr += '    <span style="padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;>">' + places.road_address_name + "</span>" + "   <span  " + places.address_name + "</span>";
+          itemStr +=
+            '    <span style="padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;>">' +
+            places.road_address_name +
+            "</span>" +
+            "   <span  " +
+            places.address_name +
+            "</span>";
         } else {
-          itemStr += '    <span style="padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;>">' + places.address_name + "</span> ";
+          itemStr +=
+            '    <span style="padding-left:26px;background:url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png) no-repeat;>">' +
+            places.address_name +
+            "</span> ";
         }
 
-        itemStr += ' <br/> <span style="color:#009900;">' + places.phone + "</span>" + "</div>";
+        itemStr +=
+          ' <br/> <span style="color:#009900;">' +
+          places.phone +
+          "</span>" +
+          "</div>";
 
         el.innerHTML = itemStr;
         el.className = "item";
@@ -313,14 +414,19 @@ export default {
 
       // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
       function addMarker(position, idx, title) {
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        var imageSrc =
+            "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
           imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
           imgOptions = {
             spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
             spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
             offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
           },
-          markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+          markerImage = new kakao.maps.MarkerImage(
+            imageSrc,
+            imageSize,
+            imgOptions
+          ),
           marker = new kakao.maps.Marker({
             position: position, // 마커의 위치
             image: markerImage,
@@ -375,7 +481,8 @@ export default {
       // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
       // 인포윈도우에 장소명을 표시합니다
       function displayInfowindow(marker, title) {
-        var content = '<div style="text-align: center;">' + " * " + title + "</div>";
+        var content =
+          '<div style="text-align: center;">' + " * " + title + "</div>";
 
         infowindow.setContent(content);
         infowindow.open(map, marker);
