@@ -16,7 +16,7 @@
             color="#a6e3e9"
             retain-focus-on-click
             @click="scrollToTop"
-        >
+        > 
             <v-icon color="#3f696e">mdi-chevron-up</v-icon>
         </v-btn>
     </v-row>  
@@ -29,6 +29,7 @@ export default {
     props: ['posts'],
     data(){
         return{
+            windowTop: 0,
             
         }
     },
@@ -43,6 +44,18 @@ export default {
             return 0
         }
     },
+    watch: {
+        windowTop: function() {
+            if (this.windowTop > 400) {
+                var btn = document.getElementById('scrollButton')
+                btn.style.display = 'block'
+            }
+            else {
+                var btn = document.getElementById('scrollButton')
+                btn.style.display = 'none'
+            }
+        }
+    },
     methods:{
         goDetail(i){
             console.log(i)
@@ -51,6 +64,15 @@ export default {
         scrollToTop() {
             window.scroll({top: 0, left: 0, behavior: 'smooth'})
         },
+        onScroll(e) {
+            this.windowTop = e.target.documentElement.scrollTop;
+        }
+    },
+    mounted() {
+        window.addEventListener("scroll", this.onScroll)
+    },
+    beforeDestroy() {
+        window.removeEventListener("scroll", this.onScroll);
     },
 }
 </script>
@@ -58,9 +80,9 @@ export default {
 <style scoped>
 #scrollButton {
     position: fixed;
+    display: none;
     bottom: 20px;
     right: 30px;
-    z-index: 99;
 }
 
 </style>
