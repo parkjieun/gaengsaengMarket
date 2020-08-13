@@ -1,5 +1,7 @@
 <template>
 <div>
+
+    <ChatNavigation :chatFlag="chatFlag" @flag="getChatFlag"/>
     <v-app-bar height="25%" app flat style="color:#00263b;">
         <div v-if="!loggedIn" style="width:35%;position:absolute;right:2%;" class="text-right d-none d-sm-block">
             <v-btn text small class="my-0" @click="openForm">
@@ -85,11 +87,14 @@ import {
 } from 'vuex'
 import LoginForm from "@/components/user/LoginForm.vue"
 import CategoryTabs from "@/components/frame/CategoryTabs.vue"
+import ChatNavigation from '@/components/chat/ChatNavigation.vue'
+
 export default {
     name: "NavBar",
     components: {
         LoginForm,
         CategoryTabs,
+        ChatNavigation,
     },
     computed: {
         ...mapState(['authorization', 'myProfile', "isAuthenticated"]),
@@ -101,6 +106,7 @@ export default {
             dialog: false,
             search: "",
             select: [],
+            chatFlag: false,
         }
     },
     created() {
@@ -162,8 +168,9 @@ export default {
         },
         goChat() {
             if (this.isAuthenticated) {
-                let routeData = this.$router.resolve('/chat');
-                window.open(routeData.href, "a", "width=400, height=600, left=100, top=50");
+                this.chatFlag = !this.chatFlag
+                // let routeData = this.$router.resolve('/chat');
+                // window.open(routeData.href, "a", "width=400, height=600, left=100, top=50");
             } else {
                 alert("로그인을 해주세요")
             }
@@ -172,6 +179,9 @@ export default {
         },
         logout() {
             this.$store.dispatch("logout")
+        },
+        getChatFlag(i) {
+            this.chatFlag = i
         }
     },
 
