@@ -46,7 +46,7 @@
         <v-card-text class="text-left" style="padding-bottom:0px;padding-top:5px;">
 
          
-          <v-chip style="margin-right:3px;" x-small v-for="tag in tags" :key="tag">
+          <v-chip style="margin-right:3px;" color="#defcfc" text-color="#517373" small v-for="tag in tags" :key="tag">
               {{ tag }}
             </v-chip>
         </v-card-text>
