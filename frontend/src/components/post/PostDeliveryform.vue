@@ -40,10 +40,10 @@
                   </v-col>
                   
                   <v-col cols="12" sm="6"  >
-                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('point')" :class="{pay_selected: pointIsActive}">갱생포인트</v-btn>
+                    <v-btn large style="width:100%;background-color:#fff;height:50px;font-size:17px;color:#2d3753" @click="payIsActive('point')" :class="{pay_selected: pointIsActive}">갱생포인트</v-btn>
                   </v-col>
                   <v-col cols="12" sm="6" >
-                    <v-btn large style="width:100%;background-color:#fff;height:50px;" @click="payIsActive('bank')" :class="{pay_selected: bankIsActive}">무통장입금</v-btn>
+                    <v-btn large style="width:100%;background-color:#fff;height:50px;font-size:17px;color:#2d3753" @click="payIsActive('bank')" :class="{pay_selected: bankIsActive}">무통장입금</v-btn>
                   </v-col>
 
                   <v-col cols="12"  sm="9" v-if="pointIsActive">
@@ -243,7 +243,7 @@ export default {
 
 <style scoped>
 .pay_selected{
-  border:1.5px solid black;
+  border:1.5px solid #2d3753;
   font-weight:550
 }
 </style>
