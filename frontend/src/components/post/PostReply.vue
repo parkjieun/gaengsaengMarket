@@ -10,15 +10,20 @@
           label="상품문의 내용을 입력하세요."
           value=""
           rows="2"
-          row-height="30"
+          row-height="20"
           :rules="[rules.length(10)]"
           counter="10"
            required
         ></v-textarea>
+
         
-        <v-btn class="ma-2" outlined fab color="indigo" @click="submitReply">
-          <v-icon>mdi-pencil</v-icon>
+        <v-btn class="ma-2" outlined color="rgba(0,0,0,.87)" @click="submitReply">
+          <v-icon>mdi-pencil</v-icon> 등록
         </v-btn>
+                
+        <!-- <v-btn class="ma-2" outlined fab color="indigo" @click="submitReply">
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn> -->
         
        <!-- </v-col> -->
     </v-row>
