@@ -2,6 +2,7 @@
 <v-app>
   <login-form :dialog="dialog" @closeForm="dialog=false" />
     <NavBar v-if="!isChat" @openForm="openForm" />
+    <ChatList/>
     <router-view></router-view>
 </v-app>
 </template>
@@ -10,11 +11,13 @@
 import NavBar from '@/components/frame/NavBar.vue'
 import CategoryMenu from '@/components/frame/CategoryMenu.vue'
 import LoginForm from "@/components/user/LoginForm.vue"
+import ChatList from '@/components/chat/ChatList.vue'
 export default {
     components: {
         NavBar,
         CategoryMenu,
-        LoginForm
+        LoginForm,
+        ChatList,
     },
 
     data() {
