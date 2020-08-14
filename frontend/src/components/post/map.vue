@@ -161,17 +161,8 @@ export default {
     pageMap: "",
     pageInfowindow: "",
   }),
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
-      document.head.appendChild(script);
-    }
+  mounted() { 
+      this.initMap(); 
   },
   methods: {
     sendAddr(title) {
