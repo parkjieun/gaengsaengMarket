@@ -1,29 +1,26 @@
 <template>
   <div id="app">
-      <h5 id="pageTitle">{{keywords}}에 대한 검색결과</h5>
+      <h5 id="pageTitle">{{msg}}</h5>
       <hr>
       <PostList :posts="posts"/>
-      <infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
   </div>
 </template>
 
 <script>
 import httpPost from "@/util/http-post"
 import PostList from '@/components/post/PostList.vue'
-import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
     components: {
         PostList,
-        InfiniteLoading,
     },
     data() {
         return {
-            start : 0,
             posts : [],
-            keywords: this.$route.params.keyword
+            tags: this.$route.params.tags,
+            title: this.$route.params.title,
+            msg: '',
         }
-
     },
     watch: {
         '$route.params.keyword' : 'fetchPage'
@@ -31,24 +28,41 @@ export default {
     methods: {
         fetchPage() {
             this.posts = []
-            this.start = 0
-            this.keywords= this.$route.params.keyword
-            this.$refs.InfiniteLoading.stateChanger.reset();
-        },
-        infiniteHandler($state) {
-            httpPost.get(`/api/post?sno=${this.start}&query=${this.keywords}`)
-            .then(res => {
-                console.log(res)
-                if (res.data.length) {
-                    this.start += 12;
-                    this.posts.push(...res.data);
-                    $state.loaded();
-                } 
-                else {
-                    $state.complete();
+            this.tags = this.$route.params.tags
+            this.title = this.$route.params.title
+            if (this.tags && this.title) {
+                this.msg = `해시태그 검색: ${this. tags} & 제목 검색: ${this.title}`
+                httpPost.get(`/api/post?query=${this.title}&tags=${this.tags}`)
+                .then(res => {
+                    this.posts = res.data
+                })
+            }
+            else if (this.tags || this.title) {
+                if (this.tags) {
+                    this.msg = `해시태그 검색: ${this. tags}`
+                    httpPost.get(`/api/post?tags=${this.tags}`)
+                    .then(res => {
+                        this.posts = res.data
+                    })
                 }
-            });      
+                else {
+                    this.msg = `제목 검색: ${this.title}`
+                    httpPost.get(`/api/post?query=${this.title}`)
+                    .then(res => {
+                        this.posts = res.data
+                    })
+                }
+            }
+            else {
+                console.log(this.tags)
+                console.log(this.title)
+                this.msg = "검색어를 정확히 입력해주세요"
+            }
         },
+
+    },
+    created() {
+        this.fetchPage()
     }
 
 

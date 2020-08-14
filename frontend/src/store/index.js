@@ -17,6 +17,7 @@ export default new Vuex.Store({
     items: [],
     item: {},
     replys: [],
+    delivery:null,
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
@@ -76,6 +77,9 @@ export default new Vuex.Store({
       console.log("포인트 변환***"+ value);
       state.myProfile.pointVal -=  value;
       console.log("포인트 변환222***"+ state.myProfile.pointVal);
+},
+    SET_DELIVERY(state,value){
+      state.delivery=value
     }
   },
 
@@ -157,6 +161,9 @@ export default new Vuex.Store({
     },
     logout({commit}){
       commit("LOGOUT")
+    },
+    setDelivery({commit},value){
+      commit("SET_DELIVERY",value)
     }
   },
 })

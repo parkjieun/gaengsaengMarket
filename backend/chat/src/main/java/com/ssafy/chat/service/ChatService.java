@@ -1,13 +1,25 @@
 package com.ssafy.chat.service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ssafy.chat.model.ChatMessage;
 import com.ssafy.chat.model.ChatRoom;
 import com.ssafy.chat.model.ChatRoomJoin;
@@ -26,6 +38,11 @@ public class ChatService {
 	@Autowired
 	private ChatRoomJoinRepository chatRoomJoinRepository;
 
+	private final String DELIVERY_URL = "http://info.sweettracker.co.kr";
+	
+	@Value("${delivery.key}")
+	private String deliveryKey;
+	
     public List<ChatRoom> findAllRoom(String userId) {
         // 채팅방 생성순서 최근 순으로 반환
     	
@@ -73,11 +90,44 @@ public class ChatService {
     }
 
 	public void saveMessage(ChatMessage message) {
+		
 		chatRepository.save(message);
 	}
 
 	public List<ChatRoomJoin> getRoomMember(String roomId) {
 		return chatRoomJoinRepository.findAllByRoomId(roomId);
+	}
+
+	public String convertMessage(String content) {
+		content = content.trim();
+		Gson gson = new Gson();
+		if(content.matches("^[0-9]{9,25}$")) {
+			ResponseEntity<?> re =null;
+			RestTemplate rt = new RestTemplate();
+			re = rt.exchange(DELIVERY_URL+"/api/v1/recommend?t_key="+deliveryKey+"&t_invoice="+content,HttpMethod.GET,null,String.class);
+			JsonParser parser = new JsonParser();
+			JsonElement element = parser.parse(re.getBody().toString());
+			System.out.println(re.getBody().toString());
+			for(JsonElement je : element.getAsJsonObject().get("Recommend").getAsJsonArray()) {
+				StringBuilder sb = new StringBuilder(DELIVERY_URL);
+				sb.append("/api/v1/trackingInfo");
+				sb.append("?t_key="+deliveryKey);
+				sb.append("&t_invoice="+content);
+				sb.append("&t_code="+je.getAsJsonObject().get("Code"));
+				re = rt.exchange(sb.toString(), HttpMethod.GET,null,String.class);
+				System.out.println(je.getAsJsonObject().get("Code").toString() +"확인중 입니다.");
+				System.out.println(re.getStatusCode().toString());
+				if(re.getStatusCode()==HttpStatus.OK) {
+					HashMap<String, String> hm = new HashMap<>();
+					hm.put("isDelivery", "true");
+					hm.put("code", je.getAsJsonObject().get("Code").getAsString());
+					hm.put("content", content);
+					return gson.toJson(hm);
+				}
+			}
+		}
+		return content;
+		
 	}
 	
 }
