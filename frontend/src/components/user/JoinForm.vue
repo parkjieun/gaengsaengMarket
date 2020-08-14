@@ -1,7 +1,7 @@
 <template>
 <v-app>
     <v-row justify="center">
-        <v-dialog v-model="dialog2" max-width="700">
+        <v-dialog v-model="dialog2" max-width="500" >
             <v-card>
                 <v-card-title class="headline text-center">
                     <div style="margin:auto;">상점의 정보를 입력해주세요.</div>
@@ -13,10 +13,10 @@
                             <v-spacer></v-spacer>
                             <image-input v-model="avatar" @input="input">
                                 <div slot="activator">
-                                    <v-avatar size="10rem" v-ripple v-if="!avatar" class="grey lighten-3 mb-3">
+                                    <v-avatar size="8rem" v-ripple v-if="!avatar" class="grey lighten-3 mb-3">
                                         <v-icon size="5rem">mdi-account</v-icon>
                                     </v-avatar>
-                                    <v-avatar size="10rem" v-ripple v-else class="mb-3">
+                                    <v-avatar size="8rem" v-ripple v-else class="mb-3">
                                         <img :src="avatar.imageURL" alt="avatar">
                                     </v-avatar>
                                 </div>
