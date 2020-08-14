@@ -338,8 +338,8 @@
                 </div>
               </v-container>
             </v-row>
-            <v-row> 
-              {{selectedTitleAddr }}[직거래로 선택한 주소의 이름]<br /> 
+            <v-row>
+              {{ selectedTitleAddr }}[직거래로 선택한 주소의 이름]<br />
               {{ selectedAddr }}[직거래로 선택한 주소]
             </v-row>
           </v-col>
@@ -515,8 +515,8 @@ export default {
         this.categoryBig = data;
       });
 
-     this.postId = this.$route.params.post_id; //임시
-   // this.postId = 10036; //임시
+    this.postId = this.$route.params.post_id; //임시
+    // this.postId = 10036; //임시
     console.log(
       "현재 수정페이지...포스트아이디 넘어오나" +
         this.postId +
@@ -569,16 +569,28 @@ export default {
       });
   },
   mounted() {
-    if (window.kakao && window.kakao.maps) {
+    console.log("mouted 동작중..");
+    this.initMap();
+    var container = document.getElementById("map");
+    console.log("맵 잘 띄웡ㅆ니 : " + container);
+    var options = {
+      center: new kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+
+    this.pageMap = new kakao.maps.Map(container, options);
+    this.pageMap.relayout();
+    //this.initMap();
+    /*if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
       const script = document.createElement("script");
-      /* global kakao */
+      // global kakao 
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
         "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
       document.head.appendChild(script);
-    }
+    }*/
   },
 
   watch: {
@@ -603,30 +615,38 @@ export default {
   },
 
   methods: {
+    setMap(map, infowindow) {
+      this.pageMap = map;
+      this.pageInfowindow = infowindow;
+    },
     sendAddr(title) {
       this.addr = title;
-      let addrInfos =  title.split(",");
+      let addrInfos = title.split(",");
       this.selectedTitleAddr = addrInfos[0]; //마커클릭하면 설정되는 직거래 위치 장소이름
       this.selectedAddr = addrInfos[3]; //마커클릭하면 설정되는 직거래 위치 지번? 도로명주소?
     },
     initMap() {
       console.log(" focusAdrr 잘 받아오니? " + this.focusAdrr);
 
-      var container = document.getElementById("map");
-      console.log("맵 잘 띄웡ㅆ니 : " + container);
-      var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
-      };
+      console.log("setTimeout 전에 this.pageMap: " + this.pageMap);
 
-      this.pageMap = new kakao.maps.Map(container, options);
-      this.pageMap.relayout();
-      //this.initMap();
+      var searchPlaces = this.searchPlaces;
+      var setMap = this.setMap;
+      setTimeout(function() {
+        var container = document.getElementById("map");
+        console.log("맵 잘 띄웡ㅆ니 : " + container);
+        var options = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+        };
 
-      // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      this.pageInfowindow = infowindow;
-      //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
+        var map = new kakao.maps.Map(container, options);
+
+        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+        setMap(map, infowindow);
+      }, 100); //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
       var addrInfos;
       //디비에 주소가 아무것도 저장이 안되어있다면? 혹은 불러오지 못해서 값이 아예없다면?
       if (this.focusAdrr == "" || this.focusAdrr == null) {
@@ -636,9 +656,12 @@ export default {
         addrInfos = this.focusAdrr.split(","); //디비에 저장된 정보들 받아오는 변수
       }
       this.searchKeyword = addrInfos[0];
-      this.searchPlaces();
+
+      setTimeout(function() {
+        searchPlaces();
+      }, 100);
+
       this.isInOwnAddr = true;
-      this.pageMap.relayout();
     },
     searchPlaces() {
       var markers = [];
@@ -928,7 +951,8 @@ export default {
           el.removeChild(el.lastChild);
         }
       }
-    }, 
+    
+        this.isInOwnAddr = true;},
     deletePost() {
       axios
         .delete("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId, {
