@@ -75,7 +75,7 @@
           <v-row v-show="toggle_exclusive.includes(1)">
             <v-col cols="2"><h2>거래 가능 요일</h2></v-col>
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <v-col cols="1">
+              <v-col >
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
                   <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">월</v-btn>
                   <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">화</v-btn>
@@ -85,6 +85,9 @@
                   <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">토</v-btn>
                   <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">일</v-btn>
                 </v-btn-toggle>
+                <v-row  >
+              <kakaomap @addr="addressPrint" v-bind:propsdata="focusAdrr"></kakaomap>
+            </v-row>
               </v-col>
               <v-col
                 ><span class="error-color">{{ errors[0] }}</span></v-col
@@ -171,6 +174,8 @@ import axios from "axios";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { min, max, required } from "vee-validate/dist/rules";
 import { mapState } from "vuex";
+import kakaomap from "@/components/post/map.vue";
+
 extend("required", {
   ...required,
   message: " * 반드시 입력해야하는 항목입니다.",
@@ -187,8 +192,11 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    kakaomap,
   },
   data: () => ({
+    focusAdrr:"",//디비에서 가져오는 주소, 포커싱할 주소임
+    address:"", //맵에서 선택한 주소
     price: "",
     StandbyImgs: [], //파일 선택시 고르는 이미지들
     thumnailImgsUrl: [], //선택한 이미지들을 미리보기 보여주는 이미지의 url
@@ -336,61 +344,77 @@ export default {
 
         let categories = [bag, accessories, mobile, home_appliances, peripheral, book,
         kidult, daily_necessities, furniture, kitchen_utensils, food]
-
+        //console.log("넘어온값 detectName :" + detectName)
+        //console.log("categories 배열 출력 " + categories)
         for (let i in categories){
-          for(let j of categories[j]){
+          for(let j of categories[i]){
+            //console.log("for문 도는중 i, j :  "+ i + " / " + j)
             if(detectName.includes(j)){
-              switch(i){
+              //console.log("for문 도는중 검출했어 i, j :  "+ i + " / " + j)
+              switch(Number(i)){
                 case 0:
                   this.seletedCateBig = 10004
-                  this.seletedCateMid = 10004
+                  this.getCateMid()
+                  this.seletedCateMid = 10006
                   break
                 case 1:
                   this.seletedCateBig = 10004
+                  this.getCateMid()
                   this.seletedCateMid = 10008 //악세서리
                   break
                 case 2:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10021 //핸드폰
                   break
                 case 3:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10022 //가전제품
                   break
                 case 4:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10024 //주변기기
                   break
                 case 5:
                   this.seletedCateBig = 10007
+                  this.getCateMid()
                   this.seletedCateMid = 10025 //책
                   break
                 case 6:
                   this.seletedCateBig = 10008
+                  this.getCateMid()
                   this.seletedCateMid = 10026 //취미 키덜트
                   break
                 case 7:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10028 //생활용품
                   break
                 case 8:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10029 //가구
                   break
                 case 9:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10030 //주방용품
                   break
                 case 10:
                   this.seletedCateBig = 10009
+                  this.getCateMid()
                   this.seletedCateMid = 10004 // 식품
                   break
+                default:
+                  return
               }
             }
           }
         }
         
-    },
+    }, 
     edit(index, item) {
       if (!this.editing) {
         this.editing = item;
@@ -438,7 +462,7 @@ export default {
       formData.append("user_id", this.$store.state.myProfile.userId); //임시
       formData.append("price", this.price);
       formData.append("deal_type", deal_type1);
-
+      formData.append("addr", this.addr);
       //선택한 요일
       let sum = 0;
       for (let i in this.toggle_weekend) {
