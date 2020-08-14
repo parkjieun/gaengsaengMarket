@@ -1,18 +1,24 @@
 <template>
 <v-app>
-    <v-dialog v-model="dealdialog" max-width="300" >
+    <v-dialog v-model="dealdialog" max-width="20rem" >
       <v-card>
-        <v-card-title style="height:50px;font-size:15px !important;font-weight:550;border-bottom:1px solid rgb(220, 219, 228)">거래방법 선택</v-card-title>
+        <!-- <v-card-title style="padding:1rem;font-size:0.7rem;">
+          <h2>거래방법 선택</h2>
+        </v-card-title> -->
         <v-card-text style="padding:0px">
           <div v-if="item.deal_type == 1 || item.deal_type == 3">
             <v-divider></v-divider>
-            <v-btn color="green darken-1"  style="width:100%;font-size:20px !important;height:80px;font-weight:550" text @click="goDelivery()">택배거래</v-btn>
+            <v-btn color="#2d3753"  style="width:100%;font-size:20px !important;height:5.5rem;font-weight:550" text @click="goDelivery()">
+              택배거래 <img :src="require(`@/assets/post/delivery.png`)" style="width:35px">
+            </v-btn>
             <!-- <v-btn color="green darken-1"  style="width:100%;font-size:20px !important;height:80px;font-weight:550" text @click.native="dealdialog = false"  @click="goDelivery()">택배거래</v-btn> -->
           </div>
         
           <div v-if="item.deal_type == 2 || item.deal_type == 3">
             <v-divider></v-divider>
-            <v-btn color="green darken-1" style="width:100%;font-size:20px !important;height:80px; font-weight:550" text @click="goDirect()">직거래 </v-btn>
+            <v-btn color="#2d3753" style="width:100%;font-size:20px !important;height:5.5rem; font-weight:550" text @click="goDirect()">
+              직거래 <img :src="require(`@/assets/post/handshake.png`)" style="width:35px">
+            </v-btn>
           </div>
 
           <!-- <button @click="$emit('update:dealdialog', !dealdialog)">Close</button> -->
