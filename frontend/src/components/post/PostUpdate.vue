@@ -508,14 +508,14 @@ export default {
     y: 0,
     inputTags: [],
   }),
-  mounted() {
+  created() {
     axios
       .get("http://i3a504.p.ssafy.io:8000/api/post/category/category_big")
       .then(({ data }) => {
         this.categoryBig = data;
       });
 
-     this.postId = this.$route.params.post_id; //임시
+    this.postId = this.$route.params.post_id; //임시
     // this.postId = 10036; //임시
     console.log(
       "현재 수정페이지...포스트아이디 넘어오나" +
@@ -566,7 +566,9 @@ export default {
             //console.log("["+i+"]째 요일은 값이 들어가 있어요");
           }
         }
-      });/*
+      });
+  },
+  mounted() {/*
     console.log("mouted 동작중..");
     this.initMap();
     var container = document.getElementById("map");
@@ -577,8 +579,8 @@ export default {
     };
 
     this.pageMap = new kakao.maps.Map(container, options);
-    this.pageMap.relayout();*/
-    //this.initMap();
+    this.pageMap.relayout();
+    //this.initMap();*/
     if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
@@ -657,9 +659,7 @@ export default {
 
       setTimeout(function() {
         searchPlaces();
-      }, 100);
- 
- 
+      }, 1000); 
     },
     searchPlaces() {
       var markers = [];
@@ -949,8 +949,6 @@ export default {
           el.removeChild(el.lastChild);
         }
       }
-
-      this.isInOwnAddr = true;
     },
     deletePost() {
       axios
