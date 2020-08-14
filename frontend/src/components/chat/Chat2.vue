@@ -95,6 +95,7 @@ export default {
                     Authorization: this.$store.state.authorization
                 }
             }).then(response => {
+                console.log(response)
                 
                 this.messages = response.data;
                 
