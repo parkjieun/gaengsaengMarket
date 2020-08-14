@@ -70,17 +70,17 @@
 
               <div style="font-weight: 600px;font-size:13px; margin-right:10px;height:56px; color:#555555;   display: flex;">
                   <v-col class="hover_big" style="border-right: 1.5px solid #f2f3f6; text-align:center" >
-                    <div  @click="goPostLike" v-if="item.likeFlag==1"><img calss="txt_btn" :src="require(`@/assets/post/fullheart.png`)"></div>
-                    <div  @click="goPostLike" v-else><img calss="txt_btn" :src="require(`@/assets/post/emptyheart.png`)"></div>
-                      찜하기
+                    <div  @click="goPostLike" v-if="item.likeFlag==1"><img calss="txt_btn"   style="width:40px" :src="require(`@/assets/post/fullheart2.png`)"></div>
+                    <div  @click="goPostLike" v-else><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/plusheart.png`)"></div>
+                      <span style="color:#2d3753">찜하기</span>
                   </v-col>
                   <v-col class="hover_big" style="border-right: 1.5px solid #f2f3f6; text-align:center">
-                    <div @click="createRoom"><img calss="txt_btn" :src="require(`@/assets/post/chat.png`)"></div>
-                    연락하기
+                    <div @click="createRoom"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/chat2.png`)"></div>
+                      <span style="color:#2d3753">채팅</span>
                   </v-col>
                   <v-col class="hover_big" style="text-align:center" >
-                    <div  @click="openDialog"><img calss="txt_btn" :src="require(`@/assets/post/card.png`)"></div>
-                    바로구매
+                    <div  @click="openDialog"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/credit-card.png`)"></div>
+                      <span style="color:#2d3753">바로구매</span>
                   </v-col>
               </div>
             </div>
@@ -116,17 +116,74 @@
               </v-tab-item>
             </v-tabs>
            </v-col>
-            <v-col cols="2" style=" text-align:center">
-              <div style=" border-bottom:2px solid #cfcfcf;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
+            <!-- <v-col cols="2" style=" text-align:center">
+              <div style=" border-bottom:2px solid #2d3753;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
+                
                 <div style="padding-top:20px">
                   <v-avatar color="#a6e3e9" size="85" @click="goUserProfile">
                     <img v-if="!!item.profile_img"  :src="`http://i3a504.p.ssafy.io/static/image/account/${item.profile_img}`" >
                     <v-icon v-else size="85" dark>mdi-account</v-icon>
                 </v-avatar>
                 </div>
+
                 <div style="padding-top:10px; color:#72787f; font-weight:550" @click="goUserProfile">
                 {{item.nick_name}} 
                 </div>
+            </v-col> -->
+            <v-col cols="2" style=" text-align:center">
+              <div style=" border-bottom:2px solid #2d3753;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
+             
+
+
+             <v-hover v-slot:default="{ hover }">
+              <v-card >
+                <div style="height: 150px; overflow: hidden"> 
+                   <!-- class="selector" -->
+                    <v-img style="height: auto;" v-if="!!item.profile_img"  :src="`http://i3a504.p.ssafy.io/static/image/account/${item.profile_img}`" >
+                    <v-expand-transition>
+                      <div
+                        v-if="hover"
+                        class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-3 white--text"
+                        style="height: 100%;"
+                      >
+                      VIEW
+                       <v-btn outline  style="position:absolute;background:#fff;color:#2d3753;border:1px solid #2d3753;font-weight:bold "  @click="goUserProfile">
+                          VIEW
+                      </v-btn>
+                      </div>
+                    </v-expand-transition>
+                    
+                    </v-img>
+
+                    <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" >
+                    <v-expand-transition>
+                      <div 
+                        v-if="hover"
+                        class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-3 white--text"
+                        style="height: 100%;"
+                      >
+                      
+                       <v-btn outline  style="position:absolute;background:#fff;color:#2d3753;border:1px solid #2d3753;font-weight:bold "  @click="goUserProfile">
+                          VIEW
+                      </v-btn>
+                      </div>
+                    </v-expand-transition>
+                    </v-img>
+                    <!-- <v-icon v-else size="185" dark>mdi-account</v-icon> -->
+
+
+                </div>
+
+                <v-card-title primary-title  > 
+                    <div style="font-size:16px;" @click="goUserProfile">{{item.nick_name}} </div>
+                </v-card-title>
+
+                <!-- <v-card-actions>
+                  <v-btn flat color="orange">Share</v-btn>
+                </v-card-actions> -->
+              </v-card>
+            </v-hover>
+
             </v-col>
         </v-row>
        
@@ -327,7 +384,7 @@ position: relative;
     text-align:left
 }
 .txt_btn{
-  width:30px; height:30px; margin-right:5px;
+  width:40px; height:40px; margin-right:5px;
 }
 .soldOut{
   position:absolute; 
@@ -353,4 +410,14 @@ position: relative;
     -o-transform:scale(1.2);
     transform:scale(1.2);
 }
+
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: .5;
+  position: absolute;
+  width: 100%;
+}
+
 </style>
