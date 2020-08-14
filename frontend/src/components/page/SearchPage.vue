@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-      <h5 id="pageTitle">{{msg}}</h5>
-      <hr>
+      <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subtitle">
+        <div style="font-size:12px; height:28px; ">
+            <v-icon small>mdi-magnify</v-icon>{{ msg }} 
+        </div>
+        </v-row> 
       <PostList :posts="posts"/>
   </div>
 </template>
@@ -74,9 +77,6 @@ export default {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-}
-#pageTitle {
-    margin: 10px;
 }
 
 </style>

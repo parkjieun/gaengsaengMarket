@@ -82,7 +82,7 @@ export default {
     position: fixed;
     display: none;
     bottom: 20px;
-    right: 30px;
+    left: 30px;
 }
 
 </style>
