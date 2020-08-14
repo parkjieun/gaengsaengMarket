@@ -170,7 +170,7 @@ export default {
         if (data === 'success') {
             msg = '구매가 완료되었습니다.';
             //vue.$store.dispatch("setPoint", this.point)
-           // this.$store.commit('setPoint',this.point);
+            this.$store.commit('setPoint',this.point);
           }else{
             msg = '이미 판매된 상품입니다.';
           }

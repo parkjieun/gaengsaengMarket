@@ -22,7 +22,7 @@
 
     <!-- <post-deliveryform :deliverydialog="deliverydialog"  @closeForm1="deliverydialog=false"/>  -->
     <post-deliveryform :deliverydialog="deliverydialog"  @closeForm1="typeUpdate"/>
-    <post-directform :directdialog="directdialog" :addr="item.addr | arrange" :typee="item.type"   @closeForm2="typeUpdate"/>
+    <post-directform :directdialog="directdialog" :addr="item.addr | arrange" @closeForm2="typeUpdate"/>
 </v-app>
 </template>
 
