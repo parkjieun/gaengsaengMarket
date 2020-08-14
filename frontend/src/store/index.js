@@ -38,10 +38,7 @@ export default new Vuex.Store({
     getN(state){
       console.log(">>>>GETTERS")
       return state.myProfile
-},
-    myPoint(state){
-      return state.myProfile.pointVal 
-    }
+    },
   },
   mutations: {
     SET_USERPROFILE(state, value) {
@@ -74,6 +71,11 @@ export default new Vuex.Store({
       sessionStorage.removeItem("myProfile")
       sessionStorage.removeItem("isAuthenticated")
       sessionStorage.removeItem("authorization")
+    },
+    setPoint(state, value){
+      console.log("포인트 변환***"+ value);
+      state.myProfile.pointVal -=  value;
+      console.log("포인트 변환222***"+ state.myProfile.pointVal);
     }
   },
 
@@ -95,6 +97,9 @@ export default new Vuex.Store({
     },
     setAuth({commit},value){
       commit('SET_AUTH',value)
+    },
+    setPoint({commit},value){
+      commit('setPoint',value)
     },
     getPosts(context) {
       http_post
