@@ -11,7 +11,12 @@ import cookies from 'vue-cookies'
 import "vuetify/dist/vuetify.min.css"
 import GSignInButton from 'vue-google-signin-button'
 import InfiniteLoading from 'vue-infinite-loading';
-
+import VueSweetalert2 from 'vue-sweetalert2';
+ 
+// If you don't need the styles, do not connect
+import '@/sweetalert2/dist/sweetalert2.css';
+ 
+Vue.use(VueSweetalert2);
 Vue.use(InfiniteLoading)
 Vue.use(GSignInButton)
 Vue.config.productionTip = false
