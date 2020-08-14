@@ -128,7 +128,9 @@
       <ValidationObserver v-slot="{ invalid }">
         <v-container>
           <v-col>
-            <v-layout row justify-center align-center><h1>상품 등록</h1></v-layout>
+            <v-layout row justify-center align-center
+              ><h1>상품 등록</h1></v-layout
+            >
             <v-col> <v-divider></v-divider></v-col>
           </v-col>
         </v-container>
@@ -137,7 +139,18 @@
         <v-container
           ><v-col>
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <v-file-input multiple v-model="StandbyImgs" accept="image/*" @change="onFileChange()" label="상품 사진을 등록해주세요." ref="inputImg" filled prepend-icon="mdi-camera" required> </v-file-input>
+              <v-file-input
+                multiple
+                v-model="StandbyImgs"
+                accept="image/*"
+                @change="onFileChange()"
+                label="상품 사진을 등록해주세요."
+                ref="inputImg"
+                filled
+                prepend-icon="mdi-camera"
+                required
+              >
+              </v-file-input>
               <span class="error-color">{{ errors[0] }}</span>
             </ValidationProvider>
           </v-col>
@@ -147,10 +160,23 @@
                 <template v-for="i in UploadImages.length">
                   <v-col :key="i" cols="12" md="4">
                     <v-hover v-slot:default="{ hover }">
-                      <v-card @click="removeImage(i)" :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }">
-                        <v-img :src="thumnailImgsUrl[i - 1]" :lazy-src="thumnailImgsUrl[i - 1]" height="225px"> </v-img>
+                      <v-card
+                        @click="removeImage(i)"
+                        :elevation="hover ? 12 : 2"
+                        :class="{ 'on-hover': hover }"
+                      >
+                        <v-img
+                          :src="thumnailImgsUrl[i - 1]"
+                          :lazy-src="thumnailImgsUrl[i - 1]"
+                          height="225px"
+                        >
+                        </v-img>
 
-                        <v-layout row justify-center align-center> <v-icon justify="center" color="red darken-2">mdi-close</v-icon> </v-layout>
+                        <v-layout row justify-center align-center>
+                          <v-icon justify="center" color="red darken-2"
+                            >mdi-close</v-icon
+                          >
+                        </v-layout>
                       </v-card>
                     </v-hover>
                   </v-col>
@@ -163,7 +189,15 @@
           <v-row>
             <v-col cols="2"><h2>제목</h2></v-col>
             <v-col>
-              <ValidationProvider rules="required|max:125"> <v-text-field v-model="title" :rules="titleRules" :counter="125" label="제목을 입력해주세요" required></v-text-field> </ValidationProvider>
+              <ValidationProvider rules="required|max:125">
+                <v-text-field
+                  v-model="title"
+                  :rules="titleRules"
+                  :counter="125"
+                  label="제목을 입력해주세요"
+                  required
+                ></v-text-field>
+              </ValidationProvider>
             </v-col>
           </v-row>
         </v-container>
@@ -171,10 +205,34 @@
           <v-row>
             <v-col cols="2"><h2>카테고리</h2> </v-col>
             <v-col cols="3">
-              <ValidationProvider rules="required"> <v-select :items="categoryBig" item-text="name" item-value="cate_big_id" v-model="seletedCateBig" ref="cateBig" :rules="categoryRules" @change="getCateMid()" placeholder="카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider
+              <ValidationProvider rules="required">
+                <v-select
+                  :items="categoryBig"
+                  item-text="name"
+                  item-value="cate_big_id"
+                  v-model="seletedCateBig"
+                  ref="cateBig"
+                  :rules="categoryRules"
+                  @change="getCateMid()"
+                  placeholder="카테고리를 선택 해주세요"
+                  outlined
+                  required
+                ></v-select> </ValidationProvider
             ></v-col>
             <v-col>
-              <ValidationProvider rules="required"> <v-select :items="categoryMid" item-text="name" item-value="cate_mid_id" v-model="seletedCateMid" ref="cateMid" :rules="categoryRules" :disabled="!seletedCateBig ? true : false" placeholder="세부 카테고리를 선택 해주세요" outlined required></v-select> </ValidationProvider
+              <ValidationProvider rules="required">
+                <v-select
+                  :items="categoryMid"
+                  item-text="name"
+                  item-value="cate_mid_id"
+                  v-model="seletedCateMid"
+                  ref="cateMid"
+                  :rules="categoryRules"
+                  :disabled="!seletedCateBig ? true : false"
+                  placeholder="세부 카테고리를 선택 해주세요"
+                  outlined
+                  required
+                ></v-select> </ValidationProvider
             ></v-col>
           </v-row>
         </v-container>
@@ -184,9 +242,22 @@
 
             <ValidationProvider rules="required" v-slot="{ errors }"
               ><v-col cols="1">
-                <v-btn-toggle v-model="toggle_exclusive" color="#00bcd4" multiple group>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4" color="#00bcd4">택배거래</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4" color="#00bcd4">직거래</v-btn>
+                <v-btn-toggle
+                  v-model="toggle_exclusive"
+                  color="#00bcd4"
+                  multiple
+                  group
+                >
+                  <v-btn
+                    style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    color="#00bcd4"
+                    >택배거래</v-btn
+                  >
+                  <v-btn
+                    style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    color="#00bcd4"
+                    >직거래</v-btn
+                  >
                 </v-btn-toggle>
               </v-col>
               <v-col
@@ -199,62 +270,76 @@
           <v-row v-show="toggle_exclusive.includes(1)">
             <v-col cols="2"><h2>거래 가능 요일</h2></v-col>
             <ValidationProvider rules="required" v-slot="{ errors }">
-              <v-col >
+              <v-col>
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">월</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">화</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">수</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">목</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">금</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">토</v-btn>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4">일</v-btn>
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >월</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >화</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >수</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >목</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >금</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >토</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
+                    >일</v-btn
+                  >
                 </v-btn-toggle>
                 <v-row>
-              <v-container fluid>
-                <div class="map_wrap">
-                  <div
-                    id="map"
-                    style="width:100%;height:100%;position:relative;overflow:hidden;"
-                  ></div>
-                  <div id="menu_wrap" class="bg_white">
-                    <v-row
-                      rows="1"
-                      style="text-align: center; margin-top: 3px; "
-                    >
-                      <v-col sm="4" style="font-size: 13px;margin-top: 10px; "
-                        >키워드 :
-                      </v-col>
-                      <v-col sm="5" style="font-size: 13px;padding:0px;">
-                        <v-text-field
-                          hide-details
-                          v-model="searchKeyword"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        sm="3"
-                        style=" margin-top: 2px;margin-bottom: 0px;"
-                      >
-                        <v-btn icon color="#00bcd4" @click="searchPlaces()">
-                          <v-icon>mdi-magnify</v-icon>
-                        </v-btn>
-                      </v-col>
-                    </v-row>
+                  <v-container fluid>
+                    <div class="map_wrap">
+                      <div
+                        id="map"
+                        style="width:100%;height:100%;position:relative;overflow:hidden;"
+                      ></div>
+                      <div id="menu_wrap" class="bg_white">
+                        <v-row
+                          rows="1"
+                          style="text-align: center; margin-top: 3px; "
+                        >
+                          <v-col
+                            sm="4"
+                            style="font-size: 13px;margin-top: 10px; "
+                            >키워드 :
+                          </v-col>
+                          <v-col sm="5" style="font-size: 13px;padding:0px;">
+                            <v-text-field
+                              hide-details
+                              v-model="searchKeyword"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col
+                            sm="3"
+                            style=" margin-top: 2px;margin-bottom: 0px;"
+                          >
+                            <v-btn icon color="#00bcd4" @click="searchPlaces()">
+                              <v-icon>mdi-magnify</v-icon>
+                            </v-btn>
+                          </v-col>
+                        </v-row>
 
-                    <hr />
-                    <ul id="placesList" style="padding-left: 4px;"></ul>
-                    <div id="pagination"></div>
-                  </div>
-                </div>
-              </v-container>
-            </v-row>
-            <v-row> 
-              {{selectedTitleAddr }}[직거래로 선택한 주소의 이름]<br /> 
-              {{ selectedAddr }}[직거래로 선택한 주소]
-            </v-row>
+                        <hr />
+                        <ul id="placesList" style="padding-left: 4px;"></ul>
+                        <div id="pagination"></div>
+                      </div>
+                    </div>
+                  </v-container>
+                </v-row>
+                <v-row>
+                  {{ selectedTitleAddr }}[직거래로 선택한 주소의 이름]<br />
+                  {{ selectedAddr }}[직거래로 선택한 주소]
+                  {{ errors[0] }}
+                </v-row>
               </v-col>
-              <v-col
-                ><span class="error-color">{{ errors[0] }}</span></v-col
-              >
             </ValidationProvider>
           </v-row>
         </v-container>
@@ -263,7 +348,17 @@
             <v-row>
               <v-col cols="2"><h2>가격</h2></v-col>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
-                <v-col><v-text-field type="number" :rules="priceRules" v-model="price" label="가격" placeholder="가격을 입력하세요" sufix="" outlined></v-text-field> </v-col>
+                <v-col
+                  ><v-text-field
+                    type="number"
+                    :rules="priceRules"
+                    v-model="price"
+                    label="가격"
+                    placeholder="가격을 입력하세요"
+                    sufix=""
+                    outlined
+                  ></v-text-field>
+                </v-col>
                 <v-col
                   ><span class="error-color">{{ errors[0] }}</span></v-col
                 >
@@ -278,7 +373,12 @@
             <br />
             <v-container>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
-                <v-textarea v-model="contents" required outlined placeholder="내용을 입력해 주세요."></v-textarea>
+                <v-textarea
+                  v-model="contents"
+                  required
+                  outlined
+                  placeholder="내용을 입력해 주세요."
+                ></v-textarea>
                 <v-col
                   ><span class="error-color">{{ errors[0] }}</span></v-col
                 >
@@ -292,9 +392,27 @@
           <h2>태그</h2>
           <br />
           <v-col>
-            <v-combobox v-model="model" :filter="filter" :hide-no-data="!search" :items="items" :search-input.sync="search" hide-selected label="Search for an option" multiple small-chips solo>
+            <v-combobox
+              v-model="model"
+              :filter="filter"
+              :hide-no-data="!search"
+              :items="items"
+              :search-input.sync="search"
+              hide-selected
+              label="Search for an option"
+              multiple
+              small-chips
+              solo
+            >
               <template v-slot:selection="{ attrs, item, parent, selected }">
-                <v-chip v-if="item === Object(item)" v-bind="attrs" :color="`${item.color} `" :input-value="selected" label small>
+                <v-chip
+                  v-if="item === Object(item)"
+                  v-bind="attrs"
+                  :color="`${item.color} `"
+                  :input-value="selected"
+                  label
+                  small
+                >
                   <span class="pr-2">
                     {{ item.text }}
                   </span>
@@ -302,14 +420,25 @@
                 </v-chip>
               </template>
               <template v-slot:item="{ index, item }">
-                <v-text-field v-if="editing === item" v-model="editing.text" autofocus flat background-color="transparent" hide-details solo @keyup.enter="edit(index, item)"></v-text-field>
+                <v-text-field
+                  v-if="editing === item"
+                  v-model="editing.text"
+                  autofocus
+                  flat
+                  background-color="transparent"
+                  hide-details
+                  solo
+                  @keyup.enter="edit(index, item)"
+                ></v-text-field>
                 <v-chip v-else :color="`${item.color}  `" dark label small>
                   {{ item.text }}
                 </v-chip>
                 <v-spacer></v-spacer>
                 <v-list-item-action @click.stop>
                   <v-btn icon @click.stop.prevent="edit(index, item)">
-                    <v-icon>{{ editing !== item ? "mdi-pencil" : "mdi-check" }}</v-icon>
+                    <v-icon>{{
+                      editing !== item ? "mdi-pencil" : "mdi-check"
+                    }}</v-icon>
                   </v-btn>
                 </v-list-item-action>
               </template>
@@ -336,7 +465,7 @@
 import axios from "axios";
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { min, max, required } from "vee-validate/dist/rules";
-import { mapState } from "vuex"; 
+import { mapState } from "vuex";
 
 extend("required", {
   ...required,
@@ -353,7 +482,7 @@ extend("max", {
 export default {
   components: {
     ValidationProvider,
-    ValidationObserver, 
+    ValidationObserver,
   },
   data: () => ({
     selectedTitleAddr: "", //마커클릭하면 설정되는 직거래 위치 장소이름
@@ -364,8 +493,8 @@ export default {
     isInOwnAddr: false,
     pageMap: "",
     pageInfowindow: "", //여기까지 합치는 맵
-    focusAdrr:"",//디비에서 가져오는 주소, 포커싱할 주소임
-    address:"", //맵에서 선택한 주소
+    focusAdrr: "", //디비에서 가져오는 주소, 포커싱할 주소임
+    address: "", //맵에서 선택한 주소
     price: "",
     StandbyImgs: [], //파일 선택시 고르는 이미지들
     thumnailImgsUrl: [], //선택한 이미지들을 미리보기 보여주는 이미지의 url
@@ -375,7 +504,10 @@ export default {
     toggle_weekend: [0, 1, 2, 3, 4, 5, 6],
     title: "",
     contents: "",
-    titleRules: [(v) => !!v || "제목을 입력해 주세요", (v) => (v && v.length <= 125) || "제목은 125자 이하여야 합니다"],
+    titleRules: [
+      (v) => !!v || "제목을 입력해 주세요",
+      (v) => (v && v.length <= 125) || "제목은 125자 이하여야 합니다",
+    ],
     categoryRules: [(v) => !!v || "카테고리를 선택해 주세요"],
     priceRules: [(v) => (v && v >= 0) || "정확한 가격을 입력해 주세요"],
     categoryBig: [],
@@ -398,9 +530,11 @@ export default {
     inputTags: [],
   }),
   created() {
-    axios.get("http://i3a504.p.ssafy.io:8000/api/post/category/category_big").then(({ data }) => {
-      this.categoryBig = data;
-    });
+    axios
+      .get("http://i3a504.p.ssafy.io:8000/api/post/category/category_big")
+      .then(({ data }) => {
+        this.categoryBig = data;
+      });
   },
   watch: {
     model(val, prev) {
@@ -422,31 +556,39 @@ export default {
       });
     },
   },
-  methods: { 
+  methods: {
     sendAddr(title) {
       this.addr = title;
-      let addrInfos =  title.split(",");
+      let addrInfos = title.split(",");
       this.selectedTitleAddr = addrInfos[0]; //마커클릭하면 설정되는 직거래 위치 장소이름
       this.selectedAddr = addrInfos[3]; //마커클릭하면 설정되는 직거래 위치 지번? 도로명주소?
+    },
+    setMap(map, infowindow) {
+      this.pageMap = map;
+      this.pageInfowindow = infowindow;
     },
     initMap() {
       console.log(" focusAdrr 잘 받아오니? " + this.focusAdrr);
 
-      var container = document.getElementById("map");
-      console.log("맵 잘 띄웡ㅆ니 : " + container);
-      var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3,
-      };
+      console.log("setTimeout 전에 this.pageMap: " + this.pageMap);
 
-      this.pageMap = new kakao.maps.Map(container, options);
-      this.pageMap.relayout();
-      //this.initMap();
+      var searchPlaces = this.searchPlaces;
+      var setMap = this.setMap;
+      setTimeout(function() {
+        var container = document.getElementById("map");
+        console.log("맵 잘 띄웡ㅆ니 : " + container);
+        var options = {
+          center: new kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+        };
 
-      // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      this.pageInfowindow = infowindow;
-      //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
+        var map = new kakao.maps.Map(container, options);
+
+        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+        setMap(map, infowindow);
+      }, 100); //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
       var addrInfos;
       //디비에 주소가 아무것도 저장이 안되어있다면? 혹은 불러오지 못해서 값이 아예없다면?
       if (this.focusAdrr == "" || this.focusAdrr == null) {
@@ -456,11 +598,15 @@ export default {
         addrInfos = this.focusAdrr.split(","); //디비에 저장된 정보들 받아오는 변수
       }
       this.searchKeyword = addrInfos[0];
-      this.searchPlaces();
+
+      setTimeout(function() {
+        searchPlaces();
+      }, 100);
+
       this.isInOwnAddr = true;
-      this.pageMap.relayout();
     },
     searchPlaces() {
+      console.log("맵 잘 띄웡11 this.pageMap: " + this.pageMap);
       var markers = [];
       var sendAddr = this.sendAddr;
       var keyword = this.searchKeyword;
@@ -520,8 +666,14 @@ export default {
         });
         infowindow.open(map, marker);
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        map.setLevel(1);
-        map.setCenter(moveLatLon);
+        //  map.setLevel(1);
+        // map.setCenter(moveLatLon);
+
+        setTimeout(function() {
+          map.relayout();
+          map.setLevel(1);
+          map.setCenter(moveLatLon);
+        }, 100);
       }
 
       // 검색 결과 목록과 마커를 표출하는 함수입니다
@@ -748,7 +900,8 @@ export default {
           el.removeChild(el.lastChild);
         }
       }
-    }, 
+    
+        this.isInOwnAddr = true;},
     updateTags() {
       this.$nextTick(() => {
         const i = this.search.indexOf("#");
@@ -767,9 +920,14 @@ export default {
       });
     },
     getCateMid() {
-      axios.get("http://i3a504.p.ssafy.io:8000/api/post/category/category_mid/" + this.seletedCateBig).then(({ data }) => {
-        this.categoryMid = data;
-      });
+      axios
+        .get(
+          "http://i3a504.p.ssafy.io:8000/api/post/category/category_mid/" +
+            this.seletedCateBig
+        )
+        .then(({ data }) => {
+          this.categoryMid = data;
+        });
     },
     removeImage(i) {
       this.UploadImages.splice(i - 1, 1);
@@ -780,14 +938,17 @@ export default {
       if (this.UploadImages.length >= 10 || this.StandbyImgs.length > 10) {
         alert("이미지는 10개 이하 까지 올릴 수 있습니다.");
         this.StandbyImgs = [];
-      } else if (this.UploadImages.length <= 10 && this.StandbyImgs.length <= 10) {
+      } else if (
+        this.UploadImages.length <= 10 &&
+        this.StandbyImgs.length <= 10
+      ) {
         for (let Standbyimg of this.StandbyImgs) {
           this.UploadImages.push(Standbyimg);
           this.thumnailImgsUrl.push(URL.createObjectURL(Standbyimg)); //현재 페이지에 임시로 띄우기 위한 url
           console.log("서버에 들어갈 이미지:" + Standbyimg);
         }
         console.log(this.UploadImages);
-        
+
         //opencv 이미지 넣은 갯수만큼 분석
 
         let formData = new FormData();
@@ -811,105 +972,156 @@ export default {
                 this.inputTags.push(splitTags[i]);
                 this.model.push({ text: splitTags[i], color: this.colors[i] });
                 this.items.push({ text: splitTags[i], color: this.colors[i] });
-                if(!splitTags[i].includes("색")){
-                  this.distingishCategory(splitTags[i])
+                if (!splitTags[i].includes("색")) {
+                  this.distingishCategory(splitTags[i]);
                 }
               }
             }
           });
       }
-    },distingishCategory(detectName){
-        //패션잡화 
-        let bag = ["핸드백", "백팩", "수트케이스"]
-        let accessories = ["넥타이"]
-        //디지털 가전
-        let mobile = ["핸드폰"]
-        let home_appliances = ["티비", "전자렌지", "오븐","토스터기","싱크대","냉장고", "헤어드라이기", "시계"]
-        let peripheral = ["마우스", "리모콘", "키보드"]
-        let book = ["책"]
-        //도서 티켓 취미 애완
-        let kidult = ["프리스비", "자전거", "차", "오토바이", "비행기", "버스", "열차", "트럭", "보트", "신호등"
-        ,"곰인형", "연", "스포츠볼"]
-        //생활 문구 가구 식품
-        let daily_necessities = ["칫솔", "가위", "우산", "화분", "꽃병"]
-        let furniture = ["벤치", "의자", "침대", "식탁", "쇼파"]
-        let kitchen_utensils = ["병", "와인잔", "컵", "포크", "나이프", "수저", "그릇"]
-        let food = ["바나나", "사과", "샌드위치", "오렌지", "브로콜리", "당근", "핫도그", "피자",
-        "도넛", "케이크"]
+    },
+    distingishCategory(detectName) {
+      //패션잡화
+      let bag = ["핸드백", "백팩", "수트케이스"];
+      let accessories = ["넥타이"];
+      //디지털 가전
+      let mobile = ["핸드폰"];
+      let home_appliances = [
+        "티비",
+        "전자렌지",
+        "오븐",
+        "토스터기",
+        "싱크대",
+        "냉장고",
+        "헤어드라이기",
+        "시계",
+      ];
+      let peripheral = ["마우스", "리모콘", "키보드"];
+      let book = ["책"];
+      //도서 티켓 취미 애완
+      let kidult = [
+        "프리스비",
+        "자전거",
+        "차",
+        "오토바이",
+        "비행기",
+        "버스",
+        "열차",
+        "트럭",
+        "보트",
+        "신호등",
+        "곰인형",
+        "연",
+        "스포츠볼",
+      ];
+      //생활 문구 가구 식품
+      let daily_necessities = ["칫솔", "가위", "우산", "화분", "꽃병"];
+      let furniture = ["벤치", "의자", "침대", "식탁", "쇼파"];
+      let kitchen_utensils = [
+        "병",
+        "와인잔",
+        "컵",
+        "포크",
+        "나이프",
+        "수저",
+        "그릇",
+      ];
+      let food = [
+        "바나나",
+        "사과",
+        "샌드위치",
+        "오렌지",
+        "브로콜리",
+        "당근",
+        "핫도그",
+        "피자",
+        "도넛",
+        "케이크",
+      ];
 
-        let categories = [bag, accessories, mobile, home_appliances, peripheral, book,
-        kidult, daily_necessities, furniture, kitchen_utensils, food]
-        //console.log("넘어온값 detectName :" + detectName)
-        //console.log("categories 배열 출력 " + categories)
-        for (let i in categories){
-          for(let j of categories[i]){
-            //console.log("for문 도는중 i, j :  "+ i + " / " + j)
-            if(detectName.includes(j)){
-              //console.log("for문 도는중 검출했어 i, j :  "+ i + " / " + j)
-              switch(Number(i)){
-                case 0:
-                  this.seletedCateBig = 10004
-                  this.getCateMid()
-                  this.seletedCateMid = 10006
-                  break
-                case 1:
-                  this.seletedCateBig = 10004
-                  this.getCateMid()
-                  this.seletedCateMid = 10008 //악세서리
-                  break
-                case 2:
-                  this.seletedCateBig = 10007
-                  this.getCateMid()
-                  this.seletedCateMid = 10021 //핸드폰
-                  break
-                case 3:
-                  this.seletedCateBig = 10007
-                  this.getCateMid()
-                  this.seletedCateMid = 10022 //가전제품
-                  break
-                case 4:
-                  this.seletedCateBig = 10007
-                  this.getCateMid()
-                  this.seletedCateMid = 10024 //주변기기
-                  break
-                case 5:
-                  this.seletedCateBig = 10007
-                  this.getCateMid()
-                  this.seletedCateMid = 10025 //책
-                  break
-                case 6:
-                  this.seletedCateBig = 10008
-                  this.getCateMid()
-                  this.seletedCateMid = 10026 //취미 키덜트
-                  break
-                case 7:
-                  this.seletedCateBig = 10009
-                  this.getCateMid()
-                  this.seletedCateMid = 10028 //생활용품
-                  break
-                case 8:
-                  this.seletedCateBig = 10009
-                  this.getCateMid()
-                  this.seletedCateMid = 10029 //가구
-                  break
-                case 9:
-                  this.seletedCateBig = 10009
-                  this.getCateMid()
-                  this.seletedCateMid = 10030 //주방용품
-                  break
-                case 10:
-                  this.seletedCateBig = 10009
-                  this.getCateMid()
-                  this.seletedCateMid = 10004 // 식품
-                  break
-                default:
-                  return
-              }
+      let categories = [
+        bag,
+        accessories,
+        mobile,
+        home_appliances,
+        peripheral,
+        book,
+        kidult,
+        daily_necessities,
+        furniture,
+        kitchen_utensils,
+        food,
+      ];
+      //console.log("넘어온값 detectName :" + detectName)
+      //console.log("categories 배열 출력 " + categories)
+      for (let i in categories) {
+        for (let j of categories[i]) {
+          //console.log("for문 도는중 i, j :  "+ i + " / " + j)
+          if (detectName.includes(j)) {
+            //console.log("for문 도는중 검출했어 i, j :  "+ i + " / " + j)
+            switch (Number(i)) {
+              case 0:
+                this.seletedCateBig = 10004;
+                this.getCateMid();
+                this.seletedCateMid = 10006;
+                break;
+              case 1:
+                this.seletedCateBig = 10004;
+                this.getCateMid();
+                this.seletedCateMid = 10008; //악세서리
+                break;
+              case 2:
+                this.seletedCateBig = 10007;
+                this.getCateMid();
+                this.seletedCateMid = 10021; //핸드폰
+                break;
+              case 3:
+                this.seletedCateBig = 10007;
+                this.getCateMid();
+                this.seletedCateMid = 10022; //가전제품
+                break;
+              case 4:
+                this.seletedCateBig = 10007;
+                this.getCateMid();
+                this.seletedCateMid = 10024; //주변기기
+                break;
+              case 5:
+                this.seletedCateBig = 10007;
+                this.getCateMid();
+                this.seletedCateMid = 10025; //책
+                break;
+              case 6:
+                this.seletedCateBig = 10008;
+                this.getCateMid();
+                this.seletedCateMid = 10026; //취미 키덜트
+                break;
+              case 7:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10028; //생활용품
+                break;
+              case 8:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10029; //가구
+                break;
+              case 9:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10030; //주방용품
+                break;
+              case 10:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10004; // 식품
+                break;
+              default:
+                return;
             }
           }
         }
-        
-    }, 
+      }
+    },
     edit(index, item) {
       if (!this.editing) {
         this.editing = item;
@@ -967,7 +1179,8 @@ export default {
 
       axios
         .post(
-          "http://i3a504.p.ssafy.io:8000/api/post?" + querystring.stringify({ tag: this.inputTags }),
+          "http://i3a504.p.ssafy.io:8000/api/post?" +
+            querystring.stringify({ tag: this.inputTags }),
           formData,
 
           {
@@ -1010,11 +1223,8 @@ export default {
     ...mapState(["isAuthenticated"]),
   },
   mounted() {
-    if (!this.isAuthenticated) {
-      alert("로그인을 해주세요");
-      this.$router.push({ name: "MainPage" });
-    }
-     if (window.kakao && window.kakao.maps) {
+    console.log("mounted 동작중...");
+    if (window.kakao && window.kakao.maps) {
       this.initMap();
     } else {
       const script = document.createElement("script");
