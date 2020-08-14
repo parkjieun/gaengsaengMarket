@@ -192,8 +192,10 @@ export default {
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
+        console.log("**************addr1");
         this.initMap();
     } else {
+        console.log("**************addr2");
         const script = document.createElement('script');
         /* global kakao */
         script.onload = () => kakao.maps.load(this.initMap);

@@ -48,7 +48,7 @@
 
                   <v-col cols="12"  sm="9" v-if="pointIsActive">
                       <v-text-field label="포인트 입력"  ref="point" required type="number" @keyup="pointChange" v-model="point" :rules="[rules.pointcnt]" ></v-text-field>
-                      <small>사용 가능 포인트  {{myProfile.pointVal}}P</small>  
+                      <small>사용 가능 포인트  {{myProfile.pointVal | currency}}P</small>  
                   </v-col>
 
                   <v-col cols="12" sm="3" v-if="pointIsActive" >
@@ -216,7 +216,7 @@ export default {
         bankIsActive:false,
         point:null, 
         rules: {   
-          pointcnt: v => (v >= this.item.price) ||`${this.item.price- v}P 부족합니다`,
+          pointcnt: v => (v >= this.item.price) ||`${(this.item.price- v).toFixed(0).replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, "$1,") }P 부족합니다`,
         },
       }
   },
