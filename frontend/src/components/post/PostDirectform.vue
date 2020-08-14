@@ -124,6 +124,7 @@ export default {
     initMap(){
       console.log("**************addr:"+this.addr);
       var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+      console.log("mapContainer:"+mapContainer);
       var mapOption = {
             center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
             level: 3 // 지도의 확대 레벨
@@ -172,7 +173,6 @@ export default {
   },
   data () {
     return {
-        // addr:this.addr2,
         addrselect:'postAddr',
       }
   },
@@ -190,19 +190,24 @@ export default {
         val || this.$emit("closeForm2")
     },
   },
-  mounted() {
-    if (window.kakao && window.kakao.maps) {
+  updated() {
+    this.$nextTick(function () {
+      console.log("########################3update");
+      //this.initMap()// 모든 화면이 렌더링된 후 실행합니다.
+
+      if (window.kakao && window.kakao.maps) {
         console.log("**************addr1");
         this.initMap();
-    } else {
+      } else {
         console.log("**************addr2");
         const script = document.createElement('script');
         /* global kakao */
         script.onload = () => kakao.maps.load(this.initMap);
-        script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services,clusterer,drawing"';
+        script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services,clusterer,drawing';
         document.head.appendChild(script);
-    }
- },
+      }
+    })
+  }
 }
 </script>
 
