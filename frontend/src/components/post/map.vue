@@ -126,7 +126,6 @@
     <div class="map_wrap">
       <div
         id="map"
-        tabindex="-1"
         style="width:100%;height:100%;position:relative;overflow:hidden;"
       ></div>
       <div id="menu_wrap" class="bg_white">
@@ -161,8 +160,20 @@ export default {
     pageMap: "",
     pageInfowindow: "",
   }),
-  mounted() { 
-      this.initMap(); 
+  mounted() {
+   
+
+    /* this.initMap();
+    var container = document.getElementById("map");
+    console.log("맵 잘 띄웡ㅆ니 : " + container);
+    var options = {
+      center: new kakao.maps.LatLng(33.450701, 126.570667),
+      level: 3,
+    };
+
+    this.pageMap = new kakao.maps.Map(container, options); 
+    this.pageMap.relayout() 
+    //this.initMap();*/
   },
   methods: {
     sendAddr(title) {
@@ -172,13 +183,16 @@ export default {
       console.log("부모에서 propsdata 잘 받아오니? " + this.propsdata);
 
       var container = document.getElementById("map");
+      console.log("맵 잘 띄웡ㅆ니 : " + container);
       var options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
       };
 
-      var map = new kakao.maps.Map(container, options);
-      this.pageMap = map;
+      this.pageMap = new kakao.maps.Map(container, options);
+      this.pageMap.relayout();
+      //this.initMap();
+
       // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
       var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
       this.pageInfowindow = infowindow;
@@ -194,6 +208,7 @@ export default {
       this.searchKeyword = addrInfos[0];
       this.searchPlaces();
       this.isInOwnAddr = true;
+      this.pageMap.relayout();
     },
 
     // 키워드 검색을 요청하는 함수입니다
@@ -279,9 +294,8 @@ export default {
           // 마커를 생성하고 지도에 표시합니다
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i),
-            placeI=places[i],
+            placeI = places[i],
             itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-
 
           // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
           // LatLngBounds 객체에 좌표를 추가합니다
@@ -302,32 +316,33 @@ export default {
             kakao.maps.event.addListener(marker, "click", function() {
               // 마커 위에 인포윈도우를 표시합니다
               // 이동할 위도 경도 위치를 생성합니다
-              console.log("click..:" +  placeI.road_address_name + 
-            placeI.address_name )
+              console.log(
+                "click..:" + placeI.road_address_name + placeI.address_name
+              );
               let sendToserverAddrInfo =
                 title +
                 "," +
                 marker.getPosition().getLat() +
                 "," +
-                marker.getPosition().getLng()
-                +","+
-                placeI.road_address_name
-                +","+
+                marker.getPosition().getLng() +
+                "," +
+                placeI.road_address_name +
+                "," +
                 placeI.address_name;
               sendAddr(sendToserverAddrInfo);
               var moveLatLon = new kakao.maps.LatLng(
                 marker.getPosition().getLat(),
                 marker.getPosition().getLng()
-              ); 
+              );
               // 인포윈도우로 장소에 대한 설명을 표시합니다
-              var infowindow = new kakao.maps.InfoWindow({
+              var infowindow1 = new kakao.maps.InfoWindow({
                 content:
                   '<div style="width:150px;text-align:center;padding:6px 0;">새로운 직거래위치<br/><b>' +
                   title +
                   "</b></div>",
-                  removable : iwRemoveable,
+                removable: iwRemoveable,
               });
-              infowindow.open(map, marker);
+              infowindow1.open(map, marker);
 
               // 지도 중심을 이동 시킵니다
               map.setCenter(moveLatLon);
