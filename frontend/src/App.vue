@@ -31,7 +31,7 @@ export default {
         isChat() {
             var url = window.location.href
             console.log(url)
-            return url.includes("chat") || url.includes("point")
+            return url.includes("chat") || url.includes("point") || url.includes("delivery")
         }
     },
     methods: {
@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 textarea {
     resize: none;
 }

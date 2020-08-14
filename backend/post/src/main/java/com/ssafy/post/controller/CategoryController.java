@@ -57,15 +57,25 @@ public class CategoryController {
 		return new ResponseEntity<List<CategoryMid>>(list, HttpStatus.OK);
 	}
  
-	@ApiOperation(value = "카테고리 전체 조회")
+	@ApiOperation(value = "카테고리 mid 전체 조회")
 	@RequestMapping(value ="/{category_mid_id}",  method = RequestMethod.GET)
 	public ResponseEntity<List<Post>> selectCategoryPost(@PathVariable("category_mid_id") String category_mid_id,
 			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
 		logger.info("-------------selectCategoryPost-----------------------------");
 		List<Post> list =categoryService.selectCategoryPost(category_mid_id, sno);
 		Post p = categoryService.selectCateName(category_mid_id);
-//		System.out.println("p:    "+p.toString());
 		list.add(0, p);
+		System.out.println(">>>"+list);
+		
+		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "카테고리 big 전체 조회")
+	@RequestMapping(value ="/big/{cate_big_id}",  method = RequestMethod.GET)
+	public ResponseEntity<List<Post>> selectCategoryPostByBig(@PathVariable("cate_big_id") String cate_big_id,
+			@RequestParam(value = "sno",required = false, defaultValue = "0" ) int sno) throws Exception {
+		logger.info("-------------selectCategoryPostByBig-----------------------------");
+		List<Post> list =categoryService.selectCategoryPostByBig(cate_big_id, sno);
 		System.out.println(">>>"+list);
 		
 		return new ResponseEntity<List<Post>>(list, HttpStatus.OK);

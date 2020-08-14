@@ -180,10 +180,10 @@ public class PostController {
 	
 	@ApiOperation(value = "바로구매")
 	@RequestMapping(value ="/buy", method = RequestMethod.PUT)
-	public ResponseEntity<String> doBuy(int post_id, String user_id, int price) throws Exception {
+	public ResponseEntity<String> doBuy(int post_id, String user_id, int price, String gubun) throws Exception {
 		logger.info("-------------doBuy-----------------------------");
 
-		int flag = postService.updatePostType(post_id, price, user_id);
+		int flag = postService.updatePostType(post_id, price, user_id, gubun);
 		
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>flag:"+flag);
 		

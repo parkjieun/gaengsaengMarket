@@ -20,5 +20,7 @@ public interface CategoryMapper {
 	public List<Post> selectCategoryPost(HashMap<String, Object> map) throws Exception;
 	
 	public Post selectCateName(String category_mid_id) throws Exception;
+
+	public List<Post> selectCategoryPostByBig(HashMap<String, Object> map) throws Exception;
 	
 }
