@@ -1,6 +1,6 @@
 <template>
 <div>
-    <ChatRoom id="chatRoom" :roomId="roomId" :showRoom="showRoom" :messages="messages" @hideRoom="hideRoom"/>
+    <ChatRoom id="chatRoom" ref="chatRoom" :roomId="roomId" :showRoom="showRoom" :messages="messages" @hideRoom="hideRoom"/>
     <v-card
     id="chatList"
     width="200"
@@ -119,6 +119,7 @@ export default {
 
         },
         enterRoom(roomId) {
+            this.$refs.chatRoom.destroyed()
             this.roomId = roomId
             httpChat.get('/api/chat/room/' + roomId, {
                 headers: {
@@ -147,9 +148,7 @@ export default {
             
             
             this.showRoom = true
-            
-
-            
+            this.$refs.chatRoom.connect(roomId)
         },
         expandChatList() {
             $("#userListBox").slideToggle();
