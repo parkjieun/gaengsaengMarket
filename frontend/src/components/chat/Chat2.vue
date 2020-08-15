@@ -80,8 +80,8 @@ export default {
     created() {
         this.roomId = this.$route.params.roomId
         this.userId = this.$store.state.myProfile.userId
-        // this.socket = new SockJS("http://i3a504.p.ssafy.io:8001/ws-stomp");
-        this.socket = new SockJS("http://localhost:8001/ws-stomp");
+        this.socket = new SockJS("http://i3a504.p.ssafy.io:8001/ws-stomp");
+        // this.socket = new SockJS("http://localhost:8001/ws-stomp");
         this.stomp = Stomp.over(this.socket);
         this.findRoom();
         this.connect()
