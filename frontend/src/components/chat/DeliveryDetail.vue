@@ -1,9 +1,7 @@
 <template>
-<v-app id="inspire">
-    <v-btn color="rgba(166,227,233,1)" small fixed top left fab @click="goChat">
-        <v-icon>mdi-arrow-left</v-icon>
-    </v-btn>
-    <v-row justify="center">
+<v-app id="inspire" style="position:absolute">
+    <v-dialog v-model="deliveryModal">
+
         <v-card>
             <v-card-title class="text-center headline">
                 <div style="margin:auto;">갱생마켓 배송 조회</div>
@@ -54,7 +52,8 @@
                 <v-spacer></v-spacer>
             </v-card-text>
         </v-card>
-    </v-row>
+
+    </v-dialog>
 </v-app>
 </template>
 
@@ -63,7 +62,7 @@ import {
     mapState
 } from "vuex"
 export default {
-
+    props:['deliveryModal'],
     created() {
         console.log(this.delivery)
     },
@@ -76,7 +75,9 @@ export default {
         }
     },
     watch: {
-
+        deliveryModal(value){
+            value||this.$emit("closeModal")
+        }
     }
 }
 </script>
