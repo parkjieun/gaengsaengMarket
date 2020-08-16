@@ -337,18 +337,20 @@
               </div>
             </div>
             <v-row>
-            <v-row justify="center">
-              <v-chip class="ma-2" label   color="#fc9d9d">
-                {{ selectedTitleAddr }}
-              </v-chip> 
-              <v-chip class="ma-2" label   color="#ffcac2">
-                {{ selectedAddr }}
-              </v-chip>
+              <v-row justify="center">
+                <v-chip class="ma-2" label color="#fc9d9d">
+                  {{ selectedTitleAddr }}
+                </v-chip>
+                <v-chip class="ma-2" label color="#ffcac2">
+                  {{ selectedAddr }}
+                </v-chip>
+              </v-row>
             </v-row>
-          </v-row>
+            <v-row justify="center" style="color:red;" v-if="selectedTitleAddr == ''">
+                <br>
+                    *  반드시 거래위치를 선택해주세요  
+              </v-row>
           </v-col>
-       
-           
         </v-row>
       </v-container>
       <br />
@@ -356,8 +358,9 @@
         <v-container>
           <v-row>
             <v-col cols="2"><h2>가격</h2></v-col>
-            <v-col
+            <v-col cols="3"
               ><v-text-field
+              append-icon="mdi-currency-krw"
                 type="number"
                 :rules="priceRules"
                 v-model="price"
@@ -392,13 +395,13 @@
         <br />
         <v-col>
           <v-combobox
+          append-icon="mdi-pound"
             v-model="model"
             :filter="filter"
             :hide-no-data="!search"
             :items="items"
             :search-input.sync="search"
-            hide-selected
-            label="Search for an option"
+            hide-selected 
             multiple
             small-chips
             solo
@@ -451,7 +454,7 @@
           ><v-layout row justify-center align-center>
             <v-btn color="#A6E3E9" @click="createHandler()">
               수정
-            </v-btn> 
+            </v-btn>
             <v-btn @click="deletePost()" color="#ffcac2">
               삭제
             </v-btn>
@@ -506,7 +509,7 @@ export default {
     colors: ["#fc9d9d", "#ffcac2", "#ffe6eb", "#A6E3E9", "#CBF1F5", "#DEFCFC"],
     editing: null,
     index: -1,
-    items: [{ header: "추가할 태그를 입력하세요" }],
+    items: [],
     nonce: 1,
     menu: false,
     model: [],
@@ -521,8 +524,8 @@ export default {
         this.categoryBig = data;
       });
 
-    this.postId = this.$route.params.post_id; //임시
-    //this.postId = 10036; //임시
+    //this.postId = this.$route.params.post_id; //임시
+    this.postId = 10062; //임시
     console.log(
       "현재 수정페이지...포스트아이디 넘어오나" +
         this.postId +
@@ -544,7 +547,13 @@ export default {
         this.getCateMid();
         this.seletedCateMid = data.cate_mid_id;
         this.title = data.title;
-        this.contents = data.contents;
+
+        let dbContens = data.contents.split("<br>");
+        let resultContens = ""
+        for(let lines of dbContens){
+          resultContens += lines + "\n"
+        }
+        this.contents = resultContens
         if (data.deal_type == 1) {
           this.toggle_exclusive.push(0);
         } else if (data.deal_type == 2) {
@@ -564,8 +573,7 @@ export default {
         let splitTags = data.tags.split(",");
         for (let i in splitTags) {
           this.inputTags.push(splitTags[i]);
-          this.model.push({ text: splitTags[i], color: this.colors[i] });
-          this.items.push({ text: splitTags[i], color: this.colors[i] });
+          this.model.push({ text: splitTags[i], color: this.colors[i] }); 
         }
 
         let sum = data.deal_weak;
@@ -615,8 +623,7 @@ export default {
             text: v,
             color: this.colors[this.nonce - 1],
           };
-
-          this.items.push(v);
+ 
           this.inputTags.push(v.text);
           this.nonce++;
         }
@@ -627,6 +634,24 @@ export default {
   },
 
   methods: {
+     analyzeTitle() { 
+      axios
+        .get("http://i3a504.p.ssafy.io:5000/api/opencv/distractinfo?title="+this.title)
+        .then(({ data }) => {
+          for (let tag of data.tags) {
+            this.inputTags.push(tag);
+            this.model.push({ text: tag, color: this.colors[0] }); 
+          }
+
+          this.seletedCateBig = data.categories.cate_big_id;
+          this.getCateMid()
+          this.seletedCateMid = data.categories.cate_mid_id;
+
+          this.price = Number(data.price);
+
+          this.contents = this.title + "\n" + data.tags + " 이거 정말 좋은 놈으로 갖고왔습니다."
+        });
+    },
     sendAddr(title) {
       this.addr = title;
       let addrInfos = title.split(",");
@@ -660,13 +685,14 @@ export default {
         addrInfos = this.focusAdrr.split(","); //디비에 저장된 정보들 받아오는 변수
       }
       this.searchKeyword = addrInfos[0];
-         var searchPlaces = this.searchPlaces
-     
-       // this.searchPlaces();
-      this.$nextTick(function() {
+      var searchPlaces = this.searchPlaces;
+
+      // this.searchPlaces();
+
+      setTimeout(() => {
         searchPlaces();
-      }); 
-    
+      }, 1000);
+
       //this.isInOwnAddr = true;
     },
     searchPlaces() {
@@ -820,7 +846,7 @@ export default {
               infowindow.close();
             };
 
-            itemEl.onclick = function() { 
+            itemEl.onclick = function() {
               let sendToserverAddrInfo =
                 title +
                 "," +
