@@ -1,7 +1,7 @@
 <template>
 <v-card width="300" class="mx-auto" id="chatRoom">
     <v-toolbar color="#a6e3e9" flat dense>
-        <v-toolbar-title color="#3f696e" style="font-size:0.9rem" id="chatTitle">
+        <v-toolbar-title color="#3f696e" style="font-size:0.9rem; cursor:pointer;" id="chatTitle" @click="goUserProfile(patner.userId)">
             <div>
                 <v-avatar size="30">
                     <v-img :src="patnerImg" />
@@ -192,7 +192,10 @@ export default {
         },
         closeModal() {
             this.deliveryModal = false
-        }
+        },
+        goUserProfile(id) {
+            this.$router.push({name: 'UserProfile', params: {uid: id}})
+        },
     },
     filters: {
         processingDate(value) {
