@@ -307,11 +307,14 @@ export default {
         httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
             .then(
                 response => {
-
+                    console.log(response)
                     // this.goChat()
                     this.$store.dispatch("findAllRoom")
+                    this.$store.dispatch("setPatner", this.item.user_id)
+                    $('#chatRoom').show();
                 }
             )
+          
       }
     },
     typeUpdate(result) {
