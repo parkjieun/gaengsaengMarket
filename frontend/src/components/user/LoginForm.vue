@@ -131,9 +131,10 @@ export default {
             this.$swal({
                 position: 'top-end',
                 icon: 'success',
-                width:"250px",
-                title:"로그인 성공",
+                width: "250px",
+                title: "로그인 성공",
                 showConfirmButton: false,
+
                 timer: 1200,
                 showClass: {
                     popup: 'animate__animated animate__shakeY'
@@ -142,8 +143,10 @@ export default {
                     popup: 'animate__animated animate__fadeOutUp'
                 },
                 backdrop: false,
-                heightAuto:false,
+                heightAuto: false,
+                height:'200px'
             });
+            this.$store.dispatch("findAllRoom")
         },
         onGoogleSignInSuccess(googleUser) {
             var vue = this
