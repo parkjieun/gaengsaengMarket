@@ -12,7 +12,7 @@
                 </v-carousel>
             </v-col>
         </v-row>
-        <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;">
+        <div class="postList" style="width:80%; margin-left:auto; margin-right:auto; margin-top: 50px;">
             <h3>최근 등록 상품</h3>
             <hr>
             <PostListCarousel :posts="recentPosts"/>
@@ -24,7 +24,7 @@
             </v-tabs>
         </div>
         <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;" v-for="post in categoryPosts" :key="post[0].id">
-            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center;"><v-icon small color="cyan" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px;"> {{ post[0].name }} </span><v-btn text small @click="goToBigCatePage(post[0].id)">전체보기</v-btn></div> 
+            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center; margin-top: 20px;"><v-icon small color="cyan" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px;"> {{ post[0].name }} </span><v-btn text small @click="goToBigCatePage(post[0])">전체보기</v-btn></div> 
             <PostList :posts="post[1]"/>
         </div>
 
@@ -77,8 +77,9 @@ export default {
             $('html, body').animate({scrollTop: position}, 200);
             
         },
-        goToBigCatePage(categoryId) {
-            this.$route.push()
+        goToBigCatePage(cateInfo) {
+            console.log(cateInfo)
+            this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: cateInfo.id, bigCategoryName: cateInfo.name}})
         }
 
     },

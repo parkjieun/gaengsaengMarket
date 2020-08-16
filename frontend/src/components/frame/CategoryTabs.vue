@@ -4,12 +4,12 @@
         <v-tabs class="tabs " hide-slider grow v-model="tab" background-color="#fff" style="">
             <!-- <v-tabs-slider></v-tabs-slider> -->
 
-            <v-tab v-for="(i,index) in categoryBig" @click="goHome(i.name)" :key="index" :href="`#tab-${i.cate_big_id}`" style="width:60px;" @mouseover="inTab(index,i.cate_big_id)" @mouseout="outTab">
+            <v-tab v-for="(i,index) in categoryBig" @click="goHome(i)" :key="index" :href="`#tab-${i.cate_big_id}`" style="width:60px;" @mouseover="inTab(index,i.cate_big_id)" @mouseout="outTab">
                 <div style="font-weight:bold;" >
                     {{i.name}}
                 </div>
             </v-tab>
-
+            
             <v-tab-item v-if="index!==0" v-for="(i,index) in categoryBig" :key="index" :value="'tab-' + i.cate_big_id">
                 <v-card v-if="c" @mouseover="inCard" class="elevation-2" @mouseleave="outCard" flat tile style="position:absolute;z-index: 91;height:300px;background-color: rgba( 255, 255, 255, 1 );width:100%;">
                     <div style="margin-top:35px;">
@@ -118,8 +118,11 @@ export default {
         },
         goHome(value) {
 
-            if (value == "HOME") {
+            if (value.name == "HOME") {
                 this.$router.push("/").catch(res=>{})
+            }
+            else {
+                this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: value.cate_big_id, bigCategoryName: value.name}})
             }
         },
 
