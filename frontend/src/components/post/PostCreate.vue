@@ -594,7 +594,7 @@ export default {
     analyzeTitle() {
       axios
         .get(
-          "http://i3a504.p.ssafy.io:5000/api/opencv/distractinfo?title=" +
+          "http://i3a504.p.ssafy.io:8002/api/opencv/distractinfo?title=" +
             this.title
         )
         .then(({ data }) => {
@@ -1020,7 +1020,7 @@ export default {
         }
 
         axios
-          .put("http://i3a504.p.ssafy.io:8002/imgUpload", formData, {
+          .put("http://i3a504.p.ssafy.io:8002/api/opencv/imgUpload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
