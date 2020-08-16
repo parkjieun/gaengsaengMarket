@@ -1,9 +1,14 @@
 <template>
 <v-app>
+    <div class="d-none d-lg-block">
   <login-form :dialog="dialog" @closeForm="dialog=false" />
     <NavBar v-if="!isChat" @openForm="openForm" />
     <ChatList/>
     <router-view></router-view>
+    </div>
+    <div style="width:100%;height:100%;" class="d-block d-lg-none">
+        <small-page/>
+    </div>
 </v-app>
 </template>
 
@@ -12,12 +17,14 @@ import NavBar from '@/components/frame/NavBar.vue'
 import CategoryMenu from '@/components/frame/CategoryMenu.vue'
 import LoginForm from "@/components/user/LoginForm.vue"
 import ChatList from '@/components/chat/ChatList.vue'
+import SmallPage from '@/components/page/SmallPage.vue'
 export default {
     components: {
         NavBar,
         CategoryMenu,
         LoginForm,
         ChatList,
+        SmallPage,
     },
 
     data() {
