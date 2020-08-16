@@ -89,7 +89,7 @@
 
        <v-row>
          <v-col cols="10" >
-            <v-tabs background-color="#fafafa"  :grow="true" color="#2D3753" >
+            <v-tabs background-color="#fafafa"  :grow="true" color="#69d0da" >
               <v-tab ripple>
                 <span  style="font-weight:600;"> 상품정보 </span>
               </v-tab>
@@ -164,7 +164,7 @@
 
         <v-row v-if="myProfile != null" >  
           <v-col cols="12" style="text-align:right"  v-show="item.user_id ==  myProfile.userId" >    
-            <v-btn class="ma-2" tile outlined color="rgba(0,0,0,.87)" @click="goPostUpdate" >
+            <v-btn class="ma-2" tile outlined color="#69d0da" @click="goPostUpdate" >
               <v-icon left>mdi-pencil</v-icon> 수정하기
             </v-btn>
           </v-col>
