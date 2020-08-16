@@ -16,7 +16,7 @@
                       <img :src="'http://i3a504.p.ssafy.io/static/image/post/'+file" style="height:400px;width:100%;" >
                        
                        <div v-show="item.type==0" style="position:absolute; top:0%; height:100%; color:white; width:100%; background:black; opacity: 0.5;" class="soldOut">
-                        <div style="text-align:center;padding-top:160px;font-size:40px">SOLD OUT</div>
+                        <div style="text-align:center;padding-top:160px;font-size:40px">판매 완료</div>
                        </div>
                   </v-carousel-item>
                 </v-carousel>
@@ -70,7 +70,7 @@
 
               <div style="font-weight: 600px;font-size:13px; margin-right:10px;height:56px; color:#555555;   display: flex;">
                   <v-col class="hover_big" style="border-right: 1.5px solid #f2f3f6; text-align:center" >
-                    <div  @click="goPostLike" v-if="item.likeFlag==1"><img calss="txt_btn"   style="width:40px" :src="require(`@/assets/post/fullheart2.png`)"></div>
+                    <div  @click="goPostLike" v-if="item.likeFlag==1"><img calss="txt_btn"   style="width:40px" :src="require(`@/assets/post/fullheart3.png`)"></div>
                     <div  @click="goPostLike" v-else><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/plusheart.png`)"></div>
                       <span style="color:#2d3753">찜하기</span>
                   </v-col>
@@ -116,74 +116,47 @@
               </v-tab-item>
             </v-tabs>
            </v-col>
-            <!-- <v-col cols="2" style=" text-align:center">
-              <div style=" border-bottom:2px solid #2d3753;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
                 
-                <div style="padding-top:20px">
-                  <v-avatar color="#a6e3e9" size="85" @click="goUserProfile">
-                    <img v-if="!!item.profile_img"  :src="`http://i3a504.p.ssafy.io/static/image/account/${item.profile_img}`" >
-                    <v-icon v-else size="85" dark>mdi-account</v-icon>
-                </v-avatar>
-                </div>
-
-                <div style="padding-top:10px; color:#72787f; font-weight:550" @click="goUserProfile">
-                {{item.nick_name}} 
-                </div>
-            </v-col> -->
             <v-col cols="2" style=" text-align:center">
               <div style=" border-bottom:2px solid #2d3753;font-weight:600;padding-bottom:20px; ">판매자 정보</div>
-             
-
-
-             <v-hover v-slot:default="{ hover }">
-              <v-card >
-                <div style="height: 150px; overflow: hidden"> 
-                   <!-- class="selector" -->
-                    <v-img style="height: auto;" v-if="!!item.profile_img"  :src="`http://i3a504.p.ssafy.io/static/image/account/${item.profile_img}`" >
-                    <v-expand-transition>
-                      <div
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-3 white--text"
-                        style="height: 100%;"
-                      >
-                      VIEW
-                       <v-btn outline  style="position:absolute;background:#fff;color:#2d3753;border:1px solid #2d3753;font-weight:bold "  @click="goUserProfile">
-                          VIEW
-                      </v-btn>
-                      </div>
-                    </v-expand-transition>
-                    
+ 
+                <v-hover v-slot:default="{ hover }">
+                  <v-card class="mx-auto"  max-width="344 " >
+                    <v-img  v-if="!!item.profile_img"   style="height: 200px;position:relative;background-position:center center;background-size:cover" :src="`http://i3a504.p.ssafy.io/static/image/account/${item.profile_img}`">
+                      <v-expand-transition>
+                        <div
+                          v-if="hover"
+                          class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-3 white--text"
+                          style="height: 100%;"
+                        >
+                        VIEW
+                          <v-btn outline  style="position:absolute;background:#fff;color:#2d3753;border:1px solid #2d3753;font-weight:bold "  @click="goUserProfile">
+                            VIEW
+                        </v-btn>
+                        </div>
+                      </v-expand-transition>
                     </v-img>
 
                     <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" >
-                    <v-expand-transition>
-                      <div 
-                        v-if="hover"
-                        class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-3 white--text"
-                        style="height: 100%;"
-                      >
-                      
-                       <v-btn outline  style="position:absolute;background:#fff;color:#2d3753;border:1px solid #2d3753;font-weight:bold "  @click="goUserProfile">
-                          VIEW
-                      </v-btn>
-                      </div>
-                    </v-expand-transition>
+                      <v-expand-transition>
+                        <div 
+                          v-if="hover"
+                          class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-3 white--text"
+                          style="height: 100%;"
+                        >
+                        
+                          <v-btn outline  style="position:absolute;background:#fff;color:#2d3753;border:1px solid #2d3753;font-weight:bold "  @click="goUserProfile">
+                            VIEW
+                        </v-btn>
+                        </div>
+                      </v-expand-transition>
                     </v-img>
-                    <!-- <v-icon v-else size="185" dark>mdi-account</v-icon> -->
 
-
-                </div>
-
-                <v-card-title primary-title  > 
-                    <div style="font-size:16px;" @click="goUserProfile">{{item.nick_name}} </div>
-                </v-card-title>
-
-                <!-- <v-card-actions>
-                  <v-btn flat color="orange">Share</v-btn>
-                </v-card-actions> -->
-              </v-card>
-            </v-hover>
-
+                    <v-card-subtitle style="font-size:17px">
+                      {{item.nick_name}}
+                    </v-card-subtitle>
+                  </v-card>
+                </v-hover>
             </v-col>
         </v-row>
        
@@ -191,7 +164,7 @@
 
         <v-row v-if="myProfile != null" >  
           <v-col cols="12" style="text-align:right"  v-show="item.user_id ==  myProfile.userId" >    
-              <v-btn class="ma-2" tile outlined color="success" @click="goPostUpdate" style="background:#2d3753 !important;border-color:#2d3753 !iportant;height:36px;color:#fff !important">
+            <v-btn class="ma-2" tile outlined color="rgba(0,0,0,.87)" @click="goPostUpdate" >
               <v-icon left>mdi-pencil</v-icon> 수정하기
             </v-btn>
           </v-col>
@@ -296,15 +269,15 @@ export default {
           var msg;
 
           if (data === 'insert') {
-              msg = '찜하기가 등록 되었습니다.';
+              //msg = '찜하기가 등록 되었습니다.';
               this.item.likeFlag = "1"
               this.item.like_cnt += 1;
             }else{
-              msg = '찜하기가 해지 되었습니다.';
+              //msg = '찜하기가 해지 되었습니다.';
               this.item.likeFlag = "0"
               this.item.like_cnt -= 1;
             }
-          alert(msg);
+          //alert(msg);
 
         })
         .catch(() => {

@@ -9,16 +9,20 @@
           ref="message"
           label="상품문의 내용을 입력하세요."
           value=""
-          rows="2"
-          row-height="20"
-          :rules="[rules.length(10)]"
-          counter="10"
-           required
+          rows="1"
+          row-height="10"
+          :rules="[rules.length(100)]"
+          counter="100"
+          required
+          outlined
+           background-color="#fff"
+         
         ></v-textarea>
 
         
-        <v-btn class="ma-2" outlined color="rgba(0,0,0,.87)" @click="submitReply">
-          <v-icon>mdi-pencil</v-icon> 등록
+        <!-- <v-btn class="ma-2" outlined color="rgba(0,0,0,.87)" @click="submitReply"> -->
+        <v-btn class="ma-2" outlined  @click="submitReply" style="background:#2d3753 !important;border-color:#2d3753 !important;height:36px;color:#fff !important">           
+          <v-icon small>mdi-pencil</v-icon>  등록
         </v-btn>
                 
         <!-- <v-btn class="ma-2" outlined fab color="indigo" @click="submitReply">
@@ -84,7 +88,7 @@ export default {
       if(this.myProfile == null || this.myProfile == ""){
         alert("로그인해주세요");
       }else{
-        if(this.message.length == 0 || this.message.length > 10){
+        if(this.message.length == 0 || this.message.length > 100){
             this.$refs.message.focus();
         }else{
 
