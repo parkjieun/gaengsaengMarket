@@ -21,7 +21,7 @@
 
         
         <!-- <v-btn class="ma-2" outlined color="rgba(0,0,0,.87)" @click="submitReply"> -->
-        <v-btn class="ma-2" outlined  @click="submitReply" style="background:#2d3753 !important;border-color:#2d3753 !important;height:36px;color:#fff !important">           
+        <v-btn class="ma-2" outlined  @click="submitReply" style="background:#2FA599 !important;border-color:#2FA599 !important;height:36px;color:#fff !important">           
           <v-icon small>mdi-pencil</v-icon>  등록
         </v-btn>
                 
