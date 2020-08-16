@@ -3,7 +3,7 @@
     <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subMenu">
         <div style="font-size:12px; height:28px; ">
             <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
-            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig }} 
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig[0].name }} 
         </div>
     </v-row> 
     <div id="postList" style="margin-top: 30px;"> 
@@ -37,7 +37,6 @@ export default {
         fetchData() {
             this.posts = []
             this.start = 0
-            this.categoryBig = this.$route.params.bigCategoryName
             this.$refs.InfiniteLoading.stateChanger.reset();
         },
         infiniteHandler($state) {
@@ -56,7 +55,12 @@ export default {
 
     },
     mounted() {
-        this.categoryBig = this.$route.params.bigCategoryName
+        httpPost.get('/api/post/category/category_big')
+        .then(res => {
+            this.categoryBig = res.data.filter(cate => {
+                return (cate.cate_big_id == this.$route.params.bigCategoryNum)
+            })
+        })
              
     },
 }
