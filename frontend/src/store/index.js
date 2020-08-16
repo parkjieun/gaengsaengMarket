@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import http_user from '@/util/http-common'
 import http_post from '@/util/http-post'
 import router from '../router';
+import httpChat from '@/util/http-chat'
 
 
 
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     item: {},
     replys: [],
     delivery:null,
+    chatrooms:[],
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
@@ -69,6 +71,7 @@ export default new Vuex.Store({
       state.myProfile=""
       state.isAuthenticated=false
       state.authorization=""
+      state.chatrooms=[]
       sessionStorage.removeItem("myProfile")
       sessionStorage.removeItem("isAuthenticated")
       sessionStorage.removeItem("authorization")
@@ -80,6 +83,9 @@ export default new Vuex.Store({
 },
     SET_DELIVERY(state,value){
       state.delivery=value
+    },
+    ADD_CHATROOM(state,value){
+      state.chatrooms.push(value)
     }
   },
 
@@ -164,6 +170,27 @@ export default new Vuex.Store({
     },
     setDelivery({commit},value){
       commit("SET_DELIVERY",value)
-    }
+    },
+  findAllRoom(context) {
+    context.state.chatrooms=[]
+    httpChat.get('/api/chat/room', context.getters.config).then(response => {
+        const data = response.data
+        data.forEach(element => {
+          httpChat.get('/api/chat/room/' + element.roomId, context.getters.config).then(res => {
+              const joinData = res.data
+              joinData.forEach(ele => {
+                  if (ele.userId !== context.state.myProfile.userId) {
+                      http_user.get('/api/user/' + ele.userId).then(res2 => {
+                          element['roomName'] = res2.data.nickName
+                          element['profileImg'] = "http://i3a504.p.ssafy.io/static/image/account/" + res2.data.profileImg
+                          context.commit("ADD_CHATROOM",element)
+                      })
+                  }
+              })
+
+          })
+      });
+    });
+},
   },
 })
