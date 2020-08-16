@@ -41,7 +41,7 @@
 
     </v-app-bar>
 
-    <v-row id="nav">
+    <v-row id="nav" align="center">
         <v-col align="center">
             <div style="">
                 <router-link to="/">
@@ -56,17 +56,17 @@
                 </v-combobox>
             </v-flex>
         </v-col>
-        <v-col align="center">
-            <v-btn text @click="goMyProfile">
+        <v-col>
+            <v-btn text @click="goMyProfile" style="margin-left:20px;">
                 <v-icon outlined>mdi-account-outline</v-icon>내 정보
             </v-btn>
             <v-btn text @click="goPostCreate">
                 <img src="@/assets/gifs/shopping.gif" width="20px">갱생시키기
             </v-btn>
-            <v-btn text @click="goChat">
+            <!-- <v-btn text @click="goChat">
                 <img src="@/assets/gifs/chat-message.gif" width="20px">
                 톡톡
-            </v-btn>
+            </v-btn> -->
         </v-col>
     </v-row>
     <v-row>
