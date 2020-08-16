@@ -10,6 +10,7 @@ import UpdateCreate from '../components/post/PostUpdate.vue'
 import PostDetail from '../components/post/Detail.vue'
 import PostList from '../components/post/List.vue'
 import CategoryPage from '@/components/page/CategoryPage.vue'
+import BigCategoryPage from '@/components/page/BigCategoryPage.vue'
 import Chat from '@/components/chat/Chat.vue'
 import Chat2 from '@/components/chat/Chat2.vue'
 import DeliveryDetail from '@/components/chat/DeliveryDetail.vue'
@@ -78,6 +79,11 @@ const routes = [
     path: '/category/:categoryNum',
     name: 'CategoryPage',
     component: CategoryPage
+  }, 
+  {
+    path: '/category/big/:bigCategoryNum',
+    name: 'BigCategoryPage',
+    component: BigCategoryPage
   }, 
   {
     path:"/chat",
