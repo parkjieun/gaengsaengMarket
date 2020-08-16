@@ -20,7 +20,7 @@
                     </v-list-item-content>
 
                     <v-list-item-icon class="my-auto">
-                        <v-icon :color="'#a6e3e9'">mdi-chat</v-icon>
+                        <v-icon :color="'#a6e3e9'">mdi-chat-processing</v-icon>
                     </v-list-item-icon>
                 </v-list-item>
             </template>
@@ -97,6 +97,7 @@ export default {
         },
         hideRoom() {
             this.showRoom = false
+            this.$refs.chatRoom.destroyed()
             this.messages = []
         }
     },
