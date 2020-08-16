@@ -122,7 +122,7 @@ export default {
                 this.$router.push("/").catch(res=>{})
             }
             else {
-                this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: value.cate_big_id, bigCategoryName: value.name}})
+                this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: value.cate_big_id}})
             }
         },
 
