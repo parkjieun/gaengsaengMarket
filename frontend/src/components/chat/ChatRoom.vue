@@ -1,8 +1,8 @@
 <template>
 <v-card width="300" class="mx-auto" id="chatRoom">
     <v-toolbar color="#a6e3e9" flat dense>
-        <v-toolbar-title color="#3f696e" style="font-size:0.9rem; cursor:pointer;" id="chatTitle" @click="goUserProfile(patner.userId)">
-            <div>
+        <v-toolbar-title color="#3f696e" style="font-size:0.9rem; " id="chatTitle" >
+            <div @click="goUserProfile(patner.userId)" style="cursor: pointer;">
                 <v-avatar size="30">
                     <v-img :src="patnerImg" />
                 </v-avatar><span class="mx-3">{{patner.nickName}}</span>
@@ -15,7 +15,7 @@
     <v-list dense id="chatBody" v-if="messages.length">
 
         <v-list-item two-line v-for="item in messages" :key="item.messageId">
-
+            <!-- 받는 메세지 -->
             <div v-if="item.userId != userId" class="row">
                 <v-avatar size="30" style="margin-right: 5px;" class="my-auto">
                     <v-img :src="patnerImg" />
@@ -31,6 +31,7 @@
                     <v-list-item-subtitle style="width:150px; font-size:0.1rem; margin-left:10px;">{{item.createDate | processingDate}}</v-list-item-subtitle>
                 </v-list-item-content>
             </div>
+            <!-- 보내는 메세지 -->
             <div v-else class="row justify-end">
                 <v-list-item-content class="py-1" style="width:auto; max-width:180px;">
                     <v-list-item-title class="sendMsg my-auto caption delivery" v-if="isJsonString(item.content)">
@@ -95,8 +96,6 @@ export default {
             stomp: null,
             userId: '',
             room: {},
-            myProfileImg: null,
-            userId: '',
             content: '',
             text: "",
             scroll: $("#chatBody").prop('scrollHeight'),
@@ -124,6 +123,9 @@ export default {
         ...mapState(['myProfile', 'patner']),
         patnerImg() {
             return baseURL + "/static/image/account/" + this.patner.profileImg
+        },
+        myProfileImg() {
+            return baseURL + "/static/image/account/" + this.myProfile.profileImg 
         }
     },
     methods: {

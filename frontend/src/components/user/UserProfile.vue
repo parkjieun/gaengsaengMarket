@@ -21,6 +21,9 @@
                     <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
                 </h5>  
             </div>
+            <div v-else style="margin: 30px; position:absolute; top: 0; right: 0; cursor:pointer;" @click="createRoom">
+                <v-icon x-large style="margin-left: 5px;" color="#a6e3e9">mdi-chat-processing</v-icon>
+            </div>
             <div v-if="myPage" class="d-md-none" style="position:absolute; bottom: 0; right: 150px;">
                 <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
                     <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
@@ -51,6 +54,8 @@
 import PostList from '@/components/post/PostList.vue'
 import httpUser from '@/util/http-common'
 import httpPost from '@/util/http-post'
+import httpChat from "@/util/http-chat"
+
 import axios from 'axios'
 import { mapState, mapActions,mapGetters } from 'vuex'
 const baseURL = "http://i3a504.p.ssafy.io"
@@ -127,7 +132,35 @@ export default {
                     store.dispatch("getMyProfile")
                 }
             }, 1000);
-        }
+        },
+        createRoom(){
+            if(this.myProfile == null || this.myProfile == ""){
+                            this.$swal({
+                        position: 'top-end',
+
+                        title: "로그인 해주세요",
+                        showConfirmButton: false,
+                        timer:1200,
+                        backdrop: false,
+                        heightAuto: false,
+                        
+                    });
+            }else{
+                var params = new URLSearchParams();
+                params.append("receiverId", this.user.userId);
+                httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
+                    .then(
+                        response => {
+                            console.log(response)
+                            // this.goChat()
+                            this.$store.dispatch("findAllRoom")
+                            this.$store.dispatch("setPatner", this.user.userId)
+                            $('#chatRoom').show();
+                        }
+                    )
+                
+            }
+        },
     },
     computed : {
         
