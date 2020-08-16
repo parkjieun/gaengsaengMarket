@@ -524,8 +524,8 @@ export default {
         this.categoryBig = data;
       });
 
-    //this.postId = this.$route.params.post_id; //임시
-    this.postId = 10062; //임시
+    this.postId = this.$route.params.post_id; //임시
+    //this.postId = 10062; //임시
     console.log(
       "현재 수정페이지...포스트아이디 넘어오나" +
         this.postId +
@@ -636,7 +636,7 @@ export default {
   methods: {
      analyzeTitle() { 
       axios
-        .get("http://i3a504.p.ssafy.io:5000/api/opencv/distractinfo?title="+this.title)
+        .get("http://i3a504.p.ssafy.io:8002/api/opencv/distractinfo?title="+this.title)
         .then(({ data }) => {
           for (let tag of data.tags) {
             this.inputTags.push(tag);
