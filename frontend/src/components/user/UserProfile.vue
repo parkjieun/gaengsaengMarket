@@ -1,36 +1,46 @@
 <template>
     <div id="userProfile">
-        <h3>회원정보</h3>
+        <h3 style="margin-top: 30px;">회원정보</h3>
         <v-divider class="my-5"></v-divider>
-        <v-row justify="center" align="center">
+        <v-row style="position:relative;">
+        
         <!-- profile image -->
-            <v-avatar color="#a6e3e9" size="62">
-                <img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image">
-                <v-icon v-else size="40" dark>mdi-account</v-icon>
-            </v-avatar>
+            <div>
+                <v-img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
+                <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" ></v-img>
+            </div>
         <!-- User Info -->
             
-            <div id="username">
-                <h4>{{user.nickName}}</h4>
-                <v-subheader>{{user.introduce}}</v-subheader>
+            <div id="username" style="margin: 30px; max-width:300px;">
+                <h3>{{user.nickName}}</h3>
+                <v-subheader class="px-0">{{user.introduce}}</v-subheader>
             </div>
             
-            <div v-if="myPage">
-                <h5> GM: {{$store.state.myProfile.pointVal | currency}} </h5>
+            <div v-if="myPage" class="d-md-flex d-none" style="margin: 30px; position:absolute; top: 0; right: 0;">
+                <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
+                    <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
+                </h5>  
+            </div>
+            <div v-if="myPage" class="d-md-none" style="position:absolute; bottom: 0; right: 150px;">
+                <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
+                    <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
+                </h5>  
             </div>
         <!-- update button -->
         <!-- user == login.user만 보여줄 것!!! -->
-            <v-btn v-if="myPage" color="#defcfc" small @click="updateBtn" style="margin: 10px;">수정</v-btn>
-            <v-btn v-if="myPage" color="#defcfc" small @click="chargePoint" style="margin: 10px;">갱생머니 충전</v-btn>
+            <v-btn v-if="myPage" color="#defcfc" small @click="updateBtn" style="margin: 10px; width:100px; position: absolute; bottom:0; right:30px;">수정</v-btn>
+            
         </v-row>
         
         <!-- menu -->
-        <v-tabs centered>
-            <v-tab @click="allProduct()">판매 수</v-tab>
+        <v-divider style="margin-top:30px;"></v-divider>
+        <v-tabs grow color="#349ea8">
+            <v-tab @click="allProduct()">총 판매</v-tab>
             <v-tab @click="onSale()">판매 중</v-tab>
             <v-tab @click="soldOut()">판매 완료</v-tab>
             <v-tab v-if="myPage" @click="likePost()">찜한 글</v-tab>
         </v-tabs>
+        <v-divider></v-divider>
 
         <!-- product list -->
         <PostList :posts="showPosts" id="postList"/>
