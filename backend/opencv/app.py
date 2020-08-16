@@ -2,17 +2,33 @@ from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import extractTags
-from title_analyzer import TitleAnalyzer
-
+import title_analyzer
 app = Flask(__name__)
+app.config['JSON_AS_ASCII'] = False
 CORS(app)
-title_analyzer = TitleAnalyzer()
 
-@app.route('/')
+@app.route('/api/opencv')
 def home():
      return render_template('index.html')
 
-@app.route('/imgUpload', methods = ['GET', 'PUT', 'POST'])
+@app.route('/api/opencv/distractinfo', methods = ['GET'])
+def test():
+    title = request.args.get('title')
+    distracting = title_analyzer.TitleAnalyzer()
+    print("*******************************************")
+    print("들어온 문자열", title)
+    print("태그들", distracting.get_nouns(title))
+    print("카테고리", distracting.get_category(title))
+    print("가격", distracting.get_price(title))
+    result = []
+    result.append(distracting.get_nouns(title))
+    result.append(distracting.get_category(title))
+    result.append(distracting.get_price(title))
+    print("result", result)
+    #return {'title': title }
+    return {'tags': distracting.get_nouns(title), 'categories': distracting.get_category(title), 'price': distracting.get_price(title)}
+
+@app.route('/api/opencv/imgUpload', methods = ['GET', 'PUT', 'POST'])
 def upload_file():
    if request.method == 'PUT':
       #저장할 경로 + 파일명
@@ -25,18 +41,6 @@ def upload_file():
 
       print("진짜 최종 태그들...",resultTags)
       return ','.join(resultTags)
-
-@app.route('/category', methods = ['GET'])
-def category_by_title():
-    return str(title_analyzer.get_category(request.args.get('title')))
-    
-@app.route('/hashtag', methods = ['GET'])
-def keyword_by_title():
-    return str(title_analyzer.get_nouns(request.args.get('title')))
-
-@app.route('/price', methods=['GET'])
-def price_by_title():
-    return str(title_analyzer.get_price(request.args.get('title')))
 
 if __name__ == '__main__':
     app.debug = True
