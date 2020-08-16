@@ -194,7 +194,8 @@
                   v-model="title"
                   :rules="titleRules"
                   :counter="125"
-                  label="제목을 입력해주세요"
+                  label="띄어쓰기를 꼭 해주세요"
+                  @keyup.enter="analyzeTitle"
                   required
                 ></v-text-field>
               </ValidationProvider>
@@ -269,37 +270,43 @@
         <v-container>
           <v-row v-show="toggle_exclusive.includes(1)">
             <v-col cols="2"><h2>직거래 가능 요일</h2></v-col>
-            <v-col>
-              <v-btn-toggle v-model="toggle_weekend" multiple group>
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >월</v-btn
-                >
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >화</v-btn
-                >
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >수</v-btn
-                >
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >목</v-btn
-                >
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >금</v-btn
-                >
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >토</v-btn
-                >
-                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
-                  >일</v-btn
-                >
-              </v-btn-toggle>
-            </v-col>
+            <ValidationProvider rules="required" v-slot="{ errors }">
+              <v-col>
+                <v-btn-toggle v-model="toggle_weekend" multiple group>
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >월</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >화</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >수</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >목</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >금</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >토</v-btn
+                  >
+                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                    >일</v-btn
+                  >
+                </v-btn-toggle>
+              </v-col>
+              <v-col
+                ><span class="error-color">{{ errors[0] }}</span></v-col
+              >
+            </ValidationProvider>
           </v-row>
         </v-container>
         <br />
         <v-container>
           <v-row>
             <v-col cols="2"><h2>직거래 장소</h2></v-col>
+
             <v-col>
               <div class="map_wrap">
                 <div
@@ -339,6 +346,14 @@
                   </v-chip>
                 </v-row>
               </v-row>
+              <v-row
+                justify="center"
+                style="color:red;"
+                v-if="selectedTitleAddr == ''"
+              >
+                <br />
+                * 반드시 거래위치를 선택해주세요
+              </v-row>
             </v-col>
           </v-row>
         </v-container>
@@ -349,8 +364,9 @@
             <v-row>
               <v-col cols="2"><h2>가격</h2></v-col>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
-                <v-col
+                <v-col  
                   ><v-text-field
+                  append-icon="mdi-currency-krw"
                     type="number"
                     :rules="priceRules"
                     v-model="price"
@@ -394,13 +410,13 @@
           <br />
           <v-col>
             <v-combobox
+              append-icon="mdi-pound"
               v-model="model"
               :filter="filter"
               :hide-no-data="!search"
               :items="items"
               :search-input.sync="search"
               hide-selected
-              label="Search for an option"
               multiple
               small-chips
               solo
@@ -451,7 +467,11 @@
         <v-form fluid>
           <v-container
             ><v-layout row justify-center align-center>
-              <v-btn :disabled="invalid" color="cyan" @click="createHandler()">
+              <v-btn
+                :disabled="invalid && selectedTitleAddr == ''"
+                color="#A6E3E9"
+                @click="createHandler()"
+              >
                 등록
               </v-btn></v-layout
             >
@@ -521,7 +541,7 @@ export default {
     colors: ["#fc9d9d", "#ffcac2", "#ffe6eb", "#A6E3E9", "#CBF1F5", "#DEFCFC"],
     editing: null,
     index: -1,
-    items: [{ header: "추가할 태그를 입력하세요" }],
+    items: [],
     nonce: 1,
     menu: false,
     model: [],
@@ -560,9 +580,8 @@ export default {
           v = {
             text: v,
             color: this.colors[this.nonce - 1],
-          };
+          }; 
 
-          this.items.push(v);
           this.inputTags.push(v.text);
           this.nonce++;
         }
@@ -572,6 +591,31 @@ export default {
     },
   },
   methods: {
+    analyzeTitle() {
+      axios
+        .get(
+          "http://i3a504.p.ssafy.io:5000/api/opencv/distractinfo?title=" +
+            this.title
+        )
+        .then(({ data }) => {
+          for (let tag of data.tags) {
+            this.inputTags.push(tag);
+            this.model.push({ text: tag, color: this.colors[0] }); 
+          }
+
+          this.seletedCateBig = data.categories.cate_big_id;
+          this.getCateMid();
+          this.seletedCateMid = data.categories.cate_mid_id;
+
+          this.price = Number(data.price);
+
+          this.contents =
+            this.title +
+            "\n" +
+            data.tags +
+            " 이거 정말 좋은 놈으로 갖고왔습니다.";
+        });
+    },
     sendAddr(title) {
       this.addr = title;
       let addrInfos = title.split(",");
@@ -608,7 +652,7 @@ export default {
 
       var searchPlaces = this.searchPlaces;
       this.$nextTick(function() {
-        searchPlaces;
+        searchPlaces();
       });
       this.isInOwnAddr = true;
     },
@@ -763,7 +807,7 @@ export default {
               infowindow.close();
             };
 
-            itemEl.onclick = function() { 
+            itemEl.onclick = function() {
               let sendToserverAddrInfo =
                 title +
                 "," +
@@ -989,8 +1033,7 @@ export default {
             if (splitTags.length != 0) {
               for (let i in splitTags) {
                 this.inputTags.push(splitTags[i]);
-                this.model.push({ text: splitTags[i], color: this.colors[i] });
-                this.items.push({ text: splitTags[i], color: this.colors[i] });
+                this.model.push({ text: splitTags[i], color: this.colors[i] }); 
                 if (!splitTags[i].includes("색")) {
                   this.distingishCategory(splitTags[i]);
                 }
