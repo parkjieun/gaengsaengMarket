@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="cursor:pointer;">
   <v-hover v-slot:default="{ hover }">
     
     <v-card tile width="250px;" height="350" style="position:relative; min-width:250px;max-width:250px;">
