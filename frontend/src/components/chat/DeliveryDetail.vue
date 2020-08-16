@@ -13,7 +13,7 @@
                         운송장 번호
                     </v-col>
                     <v-col>
-                        {{delivery.invoiceNo}}
+                        {{invoiceNo}}
                     </v-col>
                 </v-row>
                 <v-row>
@@ -21,7 +21,7 @@
                         품목
                     </v-col>
                     <v-col>
-                        {{delivery.itemName}}
+                        {{itemName}}
                     </v-col>
                 </v-row>
             </v-card-subtitle>
@@ -38,15 +38,15 @@
 
                     </colgroup>
                     <tr class="posttitle">
-                            <th>시간</th>
-                            <th>현재 위치</th>
-                            <th>배송 상태</th>
+                        <th>시간</th>
+                        <th>현재 위치</th>
+                        <th>배송 상태</th>
                     </tr>
-                    <tr class="text-center" v-for="(item,index) in delivery.trackingDetails" :key="index">
-                            <td>{{item.timeString}}</td>
-                            <td>{{item.where}}</td>
-                            <td>{{item.kind}}</td>
-                        </tr>
+                    <tr class="text-center" v-for="(item,index) in trackingDetails" :key="index">
+                        <td>{{item.timeString}}</td>
+                        <td>{{item.where}}</td>
+                        <td>{{item.kind}}</td>
+                    </tr>
                 </table>
 
                 <v-spacer></v-spacer>
@@ -62,21 +62,39 @@ import {
     mapState
 } from "vuex"
 export default {
-    props:['deliveryModal'],
+    props: ['deliveryModal'],
     created() {
         console.log(this.delivery)
     },
     computed: {
-        ...mapState(['delivery'])
+        ...mapState(['delivery']),
+        invoiceNo() {
+            if (this.delivery) {
+                return delivery.invoiceNo
+            }
+            return null
+        },
+        itemName() {
+            if (this.delivery) {
+                return delivery.itemName
+            }
+            return null
+        },
+        trackingDetails() {
+            if (this.delivery) {
+                return delivery.trackingDetails
+            }
+            return null
+        }
     },
-    methods:{
-        goChat(){
+    methods: {
+        goChat() {
             history.go(-1)
         }
     },
     watch: {
-        deliveryModal(value){
-            value||this.$emit("closeModal")
+        deliveryModal(value) {
+            value || this.$emit("closeModal")
         }
     }
 }
@@ -84,7 +102,6 @@ export default {
 
 <style scoped>
 .posttitle {
-  background: rgb(255, 189, 66);
+    background: rgb(255, 189, 66);
 }
-
 </style>

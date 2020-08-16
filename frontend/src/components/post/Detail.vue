@@ -291,14 +291,25 @@ export default {
     },
     createRoom(){
       if(this.myProfile == null || this.myProfile == ""){
-          alert('로그인 해주세요');
+                      this.$swal({
+                position: 'top-end',
+
+                title: "로그인 해주세요",
+                showConfirmButton: false,
+                timer:1200,
+                backdrop: false,
+                heightAuto: false,
+                
+            });
       }else{
         var params = new URLSearchParams();
         params.append("receiverId", this.item.user_id);
         httpChat.post('/api/chat/room', params,{headers:{Authorization: this.$store.state.authorization}})
             .then(
                 response => {
-                    this.goChat()
+
+                    // this.goChat()
+                    this.$store.dispatch("findAllRoom")
                 }
             )
       }
