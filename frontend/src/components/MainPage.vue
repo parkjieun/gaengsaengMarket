@@ -19,7 +19,7 @@
         </div>
         <div style="width: 80%; margin-left:auto; margin-right:auto;">
             <h3>카테고리별 상품</h3>
-            <v-tabs style="width: 100%; margin-bottom:10px;" grow>
+            <v-tabs style="width: 100%; margin-bottom:10px;" grow color="cyan">
                 <v-tab v-for="cate in categorytab" :key="cate.id" @click="goToCategory(cate.id)">{{cate.name}}</v-tab>
             </v-tabs>
         </div>
