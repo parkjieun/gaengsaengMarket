@@ -268,81 +268,82 @@
         </v-container>
         <v-container>
           <v-row v-show="toggle_exclusive.includes(1)">
-            <v-col cols="2"><h2>거래 가능 요일</h2></v-col>
-            <ValidationProvider rules="required" v-slot="{ errors }">
-              <v-col>
-                <v-btn-toggle v-model="toggle_weekend" multiple group>
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >월</v-btn
-                  >
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >화</v-btn
-                  >
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >수</v-btn
-                  >
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >목</v-btn
-                  >
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >금</v-btn
-                  >
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >토</v-btn
-                  >
-                  <v-btn style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    >일</v-btn
-                  >
-                </v-btn-toggle>
-                <v-row>
-                  <v-container fluid>
-                    <div class="map_wrap">
-                      <div
-                        id="map"
-                        style="width:100%;height:100%;position:relative;overflow:hidden;"
-                      ></div>
-                      <div id="menu_wrap" class="bg_white">
-                        <v-row
-                          rows="1"
-                          style="text-align: center; margin-top: 3px; "
-                        >
-                          <v-col
-                            sm="4"
-                            style="font-size: 13px;margin-top: 10px; "
-                            >키워드 :
-                          </v-col>
-                          <v-col sm="5" style="font-size: 13px;padding:0px;">
-                            <v-text-field
-                              hide-details
-                              v-model="searchKeyword"
-                            ></v-text-field>
-                          </v-col>
-                          <v-col
-                            sm="3"
-                            style=" margin-top: 2px;margin-bottom: 0px;"
-                          >
-                            <v-btn icon color="#00bcd4" @click="searchPlaces()">
-                              <v-icon>mdi-magnify</v-icon>
-                            </v-btn>
-                          </v-col>
-                        </v-row>
-
-                        <hr />
-                        <ul id="placesList" style="padding-left: 4px;"></ul>
-                        <div id="pagination"></div>
-                      </div>
-                    </div>
-                  </v-container>
-                </v-row>
-                <v-row>
-                  {{ selectedTitleAddr }}[직거래로 선택한 주소의 이름]<br />
-                  {{ selectedAddr }}[직거래로 선택한 주소]
-                  {{ errors[0] }}
-                </v-row>
-              </v-col>
-            </ValidationProvider>
+            <v-col cols="2"><h2>직거래 가능 요일</h2></v-col>
+            <v-col>
+              <v-btn-toggle v-model="toggle_weekend" multiple group>
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >월</v-btn
+                >
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >화</v-btn
+                >
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >수</v-btn
+                >
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >목</v-btn
+                >
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >금</v-btn
+                >
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >토</v-btn
+                >
+                <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  >일</v-btn
+                >
+              </v-btn-toggle>
+            </v-col>
           </v-row>
         </v-container>
+        <br />
+        <v-container>
+          <v-row>
+            <v-col cols="2"><h2>직거래 장소</h2></v-col>
+            <v-col>
+              <div class="map_wrap">
+                <div
+                  id="map"
+                  style="width:100%;height:100%;position:relative;overflow:hidden;"
+                ></div>
+                <div id="menu_wrap" class="bg_white">
+                  <v-row rows="1" style="text-align: center; margin-top: 3px; ">
+                    <v-col sm="4" style="font-size: 13px;margin-top: 10px; "
+                      >키워드 :
+                    </v-col>
+                    <v-col sm="5" style="font-size: 13px;padding:0px;">
+                      <v-text-field
+                        hide-details
+                        v-model="searchKeyword"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col sm="3" style=" margin-top: 2px;margin-bottom: 0px;">
+                      <v-btn icon color="#00bcd4" @click="searchPlaces()">
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+
+                  <hr />
+                  <ul id="placesList" style="padding-left: 4px;"></ul>
+                  <div id="pagination"></div>
+                </div>
+              </div>
+              <v-row>
+                <v-row justify="center" v-if="selectedTitleAddr != ''">
+                  <v-chip class="ma-2" label color="#fc9d9d">
+                    {{ selectedTitleAddr }}
+                  </v-chip>
+                  <v-chip class="ma-2" label color="#ffcac2">
+                    {{ selectedAddr }}
+                  </v-chip>
+                </v-row>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <br />
         <v-form fluid>
           <v-container>
             <v-row>
@@ -536,6 +537,20 @@ export default {
         this.categoryBig = data;
       });
   },
+  mounted() {
+    this.$nextTick(function() {
+      if (window.kakao && window.kakao.maps) {
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+        // global kakao
+        script.onload = () => kakao.maps.load(this.initMap);
+        script.src =
+          "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
+        document.head.appendChild(script);
+      }
+    });
+  },
   watch: {
     model(val, prev) {
       if (val.length === prev.length) return;
@@ -563,32 +578,24 @@ export default {
       this.selectedTitleAddr = addrInfos[0]; //마커클릭하면 설정되는 직거래 위치 장소이름
       this.selectedAddr = addrInfos[3]; //마커클릭하면 설정되는 직거래 위치 지번? 도로명주소?
     },
-    setMap(map, infowindow) {
-      this.pageMap = map;
-      this.pageInfowindow = infowindow;
-    },
     initMap() {
       console.log(" focusAdrr 잘 받아오니? " + this.focusAdrr);
 
       console.log("setTimeout 전에 this.pageMap: " + this.pageMap);
 
-      var searchPlaces = this.searchPlaces;
-      var setMap = this.setMap;
-      setTimeout(function() {
-        var container = document.getElementById("map");
-        console.log("맵 잘 띄웡ㅆ니 : " + container);
-        var options = {
-          center: new kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
-        };
+      var container = document.getElementById("map");
+      console.log("맵 잘 띄웡ㅆ니 : " + container);
+      var options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+      };
 
-        var map = new kakao.maps.Map(container, options);
-
-        // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-
-        setMap(map, infowindow);
-      }, 100); //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
+      var map = new kakao.maps.Map(container, options);
+      this.pageMap = map;
+      // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+      var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+      this.pageInfowindow = infowindow;
+      //[0] : title (검색 이름), [1]:위도 [2]:경도 [3]:지번(3번 아직 미추가)
       var addrInfos;
       //디비에 주소가 아무것도 저장이 안되어있다면? 혹은 불러오지 못해서 값이 아예없다면?
       if (this.focusAdrr == "" || this.focusAdrr == null) {
@@ -599,14 +606,13 @@ export default {
       }
       this.searchKeyword = addrInfos[0];
 
-      setTimeout(function() {
-        searchPlaces();
-      }, 100);
-
+      var searchPlaces = this.searchPlaces;
+      this.$nextTick(function() {
+        searchPlaces;
+      });
       this.isInOwnAddr = true;
     },
     searchPlaces() {
-      console.log("맵 잘 띄웡11 this.pageMap: " + this.pageMap);
       var markers = [];
       var sendAddr = this.sendAddr;
       var keyword = this.searchKeyword;
@@ -666,14 +672,8 @@ export default {
         });
         infowindow.open(map, marker);
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        //  map.setLevel(1);
-        // map.setCenter(moveLatLon);
-
-        setTimeout(function() {
-          map.relayout();
-          map.setLevel(1);
-          map.setCenter(moveLatLon);
-        }, 100);
+        map.setLevel(1);
+        map.setCenter(moveLatLon);
       }
 
       // 검색 결과 목록과 마커를 표출하는 함수입니다
@@ -761,6 +761,26 @@ export default {
 
             itemEl.onmouseout = function() {
               infowindow.close();
+            };
+
+            itemEl.onclick = function() { 
+              let sendToserverAddrInfo =
+                title +
+                "," +
+                marker.getPosition().getLat() +
+                "," +
+                marker.getPosition().getLng() +
+                "," +
+                placeI.road_address_name +
+                "," +
+                placeI.address_name;
+              sendAddr(sendToserverAddrInfo);
+              var moveLatLon = new kakao.maps.LatLng(
+                marker.getPosition().getLat(),
+                marker.getPosition().getLng()
+              );
+              // 지도 중심을 이동 시킵니다
+              map.setCenter(moveLatLon);
             };
           })(marker, places[i].place_name);
 
@@ -900,8 +920,7 @@ export default {
           el.removeChild(el.lastChild);
         }
       }
-    
-        this.isInOwnAddr = true;},
+    },
     updateTags() {
       this.$nextTick(() => {
         const i = this.search.indexOf("#");
@@ -1221,19 +1240,6 @@ export default {
   },
   computed: {
     ...mapState(["isAuthenticated"]),
-  },
-  mounted() {
-    console.log("mounted 동작중...");
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
-      document.head.appendChild(script);
-    }
   },
 };
 </script>
