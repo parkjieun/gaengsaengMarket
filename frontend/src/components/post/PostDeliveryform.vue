@@ -88,7 +88,7 @@ export default {
     ...mapGetters(['item']),
     ...mapState(['myProfile']),
     getN () { 
-        console.log("PostDirectform getN"+ this.$store.getters.getN)
+       // console.log("PostDirectform getN"+ this.$store.getters.getN)
         this.addr = this.$store.getters.getN.address; 
       }
   },
@@ -123,7 +123,7 @@ export default {
       
        //del_flag변경
       
-      console.log("close1");
+     // console.log("close1");
       this.$emit("closeForm1", "saleCompleted")
     },
     addrchange(){
