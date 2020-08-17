@@ -30,7 +30,7 @@
             <v-card-text>
                 <v-spacer></v-spacer>
 
-                <table class="table table-striped table-condensed">
+                <table class="table table-striped table-condensed" style="width:100%">
                     <colgroup>
                         <col :style="{ width: '40%' }" />
                         <col :style="{ width: '30%' }" />
@@ -64,25 +64,26 @@ import {
 export default {
     props: ['deliveryModal'],
     created() {
-        console.log(this.delivery)
+
     },
     computed: {
         ...mapState(['delivery']),
         invoiceNo() {
-            if (this.delivery) {
-                return delivery.invoiceNo
+
+            if (this.delivery!==null) {
+                return this.delivery.invoiceNo
             }
             return null
         },
         itemName() {
-            if (this.delivery) {
-                return delivery.itemName
+            if (this.delivery!==null) {
+                return this.delivery.itemName
             }
             return null
         },
         trackingDetails() {
-            if (this.delivery) {
-                return delivery.trackingDetails
+            if (this.delivery!==null) {
+                return this.delivery.trackingDetails
             }
             return null
         }
