@@ -588,9 +588,9 @@ export default {
     this.pageMap = new kakao.maps.Map(container, options);
     this.pageMap.relayout();
     //this.initMap();*/
-    this.$nextTick(function() {
+     
       if (window.kakao && window.kakao.maps) {
-        this.initMap();
+        setTimeout(() => { this.initMap() }, 1000)
       } else {
         const script = document.createElement("script");
         // global kakao
@@ -599,7 +599,7 @@ export default {
           "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=796352c031f116d976328625bdafa6df&libraries=services";
         document.head.appendChild(script);
       }
-    });
+     
   },
 
   watch: {
