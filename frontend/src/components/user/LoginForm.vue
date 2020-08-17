@@ -144,7 +144,7 @@ export default {
                 },
                 backdrop: false,
                 heightAuto: false,
-                height:'200px'
+                
             });
             this.$store.dispatch("findAllRoom")
         },
@@ -264,7 +264,6 @@ export default {
                 })
                 .then(res => {
                     this.slideLUp()
-                    this.$swal.fire('Hello Vue world!!!');
                 })
                 .catch(res => {
 
