@@ -52,7 +52,7 @@
         <!-- search -->
         <v-col cols="5">
             <v-flex>
-                <v-combobox multiple v-model="select" color="#a6e3e9" @click:append="searchItem" chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="제목 및 #해시태그를 검색해주세요" :search-input.sync="search" @keyup.space="updateTags">
+                <v-combobox multiple v-model="select" color="#a6e3e9" @click:append="searchItem" chips deletable-chips class="tag-input" append-icon="mdi-magnify" placeholder="제목 및 #해시태그를 검색해주세요" :search-input.sync="search" @keyup.space="updateTags" @keydown.enter="searchItem">
                 </v-combobox>
             </v-flex>
         </v-col>
