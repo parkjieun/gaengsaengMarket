@@ -195,7 +195,7 @@
                   :rules="titleRules"
                   :counter="125"
                   label="띄어쓰기를 꼭 해주세요"
-                  @keyup.enter="analyzeTitle"
+                  @blur="analyzeTitle"
                   required
                 ></v-text-field>
               </ValidationProvider>
@@ -304,7 +304,7 @@
         </v-container>
         <br />
         <v-container>
-          <v-row>
+          <v-row v-show="toggle_exclusive.includes(1)">
             <v-col cols="2"><h2>직거래 장소</h2></v-col>
 
             <v-col>
@@ -364,9 +364,9 @@
             <v-row>
               <v-col cols="2"><h2>가격</h2></v-col>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
-                <v-col  
+                <v-col
                   ><v-text-field
-                  append-icon="mdi-currency-krw"
+                    append-icon="mdi-currency-krw"
                     type="number"
                     :rules="priceRules"
                     v-model="price"
@@ -421,7 +421,7 @@
               small-chips
               solo
             >
-              <template v-slot:selection="{ attrs, item, parent, selected }">
+              <template v-slot:selection="{ attrs, item, selected }">
                 <v-chip
                   v-if="item === Object(item)"
                   v-bind="attrs"
@@ -433,7 +433,7 @@
                   <span class="pr-2">
                     {{ item.text }}
                   </span>
-                  <v-icon small @click="parent.selectItem(item)">x</v-icon>
+                  <v-icon small @click="remoceTags(item)">mdi-close</v-icon>
                 </v-chip>
               </template>
               <template v-slot:item="{ index, item }">
@@ -447,17 +447,6 @@
                   solo
                   @keyup.enter="edit(index, item)"
                 ></v-text-field>
-                <v-chip v-else :color="`${item.color}  `" dark label small>
-                  {{ item.text }}
-                </v-chip>
-                <v-spacer></v-spacer>
-                <v-list-item-action @click.stop>
-                  <v-btn icon @click.stop.prevent="edit(index, item)">
-                    <v-icon>{{
-                      editing !== item ? "mdi-pencil" : "mdi-check"
-                    }}</v-icon>
-                  </v-btn>
-                </v-list-item-action>
               </template>
             </v-combobox>
           </v-col>
@@ -580,10 +569,18 @@ export default {
           v = {
             text: v,
             color: this.colors[this.nonce - 1],
-          }; 
+          };
 
-          this.inputTags.push(v.text);
-          this.nonce++;
+          let isIn = false;
+          for (let tt of this.inputTags) {
+            if (tt == v.text) {
+              isIn = true;
+            }
+          }
+          if (!isIn) {
+            this.inputTags.push(v.text);
+            this.nonce++;
+          }
         }
 
         return v;
@@ -591,6 +588,18 @@ export default {
     },
   },
   methods: {
+    remoceTags(item) {
+      let i = 0;
+      for (let tt of this.model) {
+        if (tt.text == item.text) { 
+          this.inputTags.splice(i, 1);
+          this.model.splice(i, 1);
+          this.nonce--;
+          break;
+        }
+        i++;
+      }
+    },
     analyzeTitle() {
       axios
         .get(
@@ -600,7 +609,7 @@ export default {
         .then(({ data }) => {
           for (let tag of data.tags) {
             this.inputTags.push(tag);
-            this.model.push({ text: tag, color: this.colors[0] }); 
+            this.model.push({ text: tag, color: this.colors[0] });
           }
 
           this.seletedCateBig = data.categories.cate_big_id;
@@ -622,13 +631,8 @@ export default {
       this.selectedTitleAddr = addrInfos[0]; //마커클릭하면 설정되는 직거래 위치 장소이름
       this.selectedAddr = addrInfos[3]; //마커클릭하면 설정되는 직거래 위치 지번? 도로명주소?
     },
-    initMap() {
-      console.log(" focusAdrr 잘 받아오니? " + this.focusAdrr);
-
-      console.log("setTimeout 전에 this.pageMap: " + this.pageMap);
-
-      var container = document.getElementById("map");
-      console.log("맵 잘 띄웡ㅆ니 : " + container);
+    initMap() { 
+      var container = document.getElementById("map"); 
       var options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
@@ -643,7 +647,7 @@ export default {
       var addrInfos;
       //디비에 주소가 아무것도 저장이 안되어있다면? 혹은 불러오지 못해서 값이 아예없다면?
       if (this.focusAdrr == "" || this.focusAdrr == null) {
-        console.log("아무것도 안들어왔대요");
+        //console.log("아무것도 안들어왔대요");
         addrInfos = ["멀티캠퍼스 역삼", 37.5012860931305, 127.03960466386198];
       } else {
         addrInfos = this.focusAdrr.split(","); //디비에 저장된 정보들 받아오는 변수
@@ -759,10 +763,7 @@ export default {
 
             kakao.maps.event.addListener(marker, "click", function() {
               // 마커 위에 인포윈도우를 표시합니다
-              // 이동할 위도 경도 위치를 생성합니다
-              console.log(
-                "click..:" + placeI.road_address_name + placeI.address_name
-              );
+              // 이동할 위도 경도 위치를 생성합니다 
               let sendToserverAddrInfo =
                 title +
                 "," +
@@ -965,23 +966,6 @@ export default {
         }
       }
     },
-    updateTags() {
-      this.$nextTick(() => {
-        const i = this.search.indexOf("#");
-        console.log(i);
-        if (i !== -1) {
-          const hashtag = this.search.slice(-(this.search.length - i) + 1);
-          if (hashtag.length > 1) {
-            this.select.push(hashtag);
-          }
-        }
-        // this.select.push(...this.search.split(","));
-
-        this.$nextTick(() => {
-          if (i !== -1) this.search = this.search.slice(0, i);
-        });
-      });
-    },
     getCateMid() {
       axios
         .get(
@@ -1008,9 +992,8 @@ export default {
         for (let Standbyimg of this.StandbyImgs) {
           this.UploadImages.push(Standbyimg);
           this.thumnailImgsUrl.push(URL.createObjectURL(Standbyimg)); //현재 페이지에 임시로 띄우기 위한 url
-          console.log("서버에 들어갈 이미지:" + Standbyimg);
-        }
-        console.log(this.UploadImages);
+        
+        } 
 
         //opencv 이미지 넣은 갯수만큼 분석
 
@@ -1026,14 +1009,14 @@ export default {
             },
           })
           .then(({ data }) => {
-            console.log("전송후 가져오는 데이터:" + data);
+            //console.log("전송후 가져오는 데이터:" + data);
             this.tempimgtags = data;
 
             let splitTags = data.split(",");
             if (splitTags.length != 0) {
               for (let i in splitTags) {
                 this.inputTags.push(splitTags[i]);
-                this.model.push({ text: splitTags[i], color: this.colors[i] }); 
+                this.model.push({ text: splitTags[i], color: this.colors[i] });
                 if (!splitTags[i].includes("색")) {
                   this.distingishCategory(splitTags[i]);
                 }
@@ -1058,23 +1041,11 @@ export default {
         "헤어드라이기",
         "시계",
       ];
-      let peripheral = ["마우스", "리모콘", "키보드"];
+      let peripheral = [ "리모콘" ];
       let book = ["책"];
       //도서 티켓 취미 애완
-      let kidult = [
-        "프리스비",
-        "자전거",
-        "차",
-        "오토바이",
-        "비행기",
-        "버스",
-        "열차",
-        "트럭",
-        "보트",
-        "신호등",
-        "곰인형",
-        "연",
-        "스포츠볼",
+      let kidult = [ 
+        "자전거", 
       ];
       //생활 문구 가구 식품
       let daily_necessities = ["칫솔", "가위", "우산", "화분", "꽃병"];
@@ -1100,7 +1071,29 @@ export default {
         "도넛",
         "케이크",
       ];
-
+      let pc_monitor_labtop_etc = ["마우스", "키보드","노트북"];
+      let sports = [
+        "스포츠볼",
+        "스키",
+        "스노우보드 ",
+        "야구 배트",
+        "야구 글러브",
+        "스케이트보드",
+        "서핑보드",
+        "테니스 라켓", ];
+      let toy = [
+        "곰인형",
+        "연",
+        "차",
+        "오토바이",
+        "비행기",
+        "버스",
+        "열차",
+        "트럭",
+        "보트",
+        "신호등",  ];
+      let pet_products = [
+        "프리스비",];
       let categories = [
         bag,
         accessories,
@@ -1113,6 +1106,11 @@ export default {
         furniture,
         kitchen_utensils,
         food,
+        //0817 mid category add
+        pc_monitor_labtop_etc,
+        sports,
+        toy,
+        pet_products,
       ];
       //console.log("넘어온값 detectName :" + detectName)
       //console.log("categories 배열 출력 " + categories)
@@ -1148,7 +1146,7 @@ export default {
                 this.seletedCateMid = 10024; //주변기기
                 break;
               case 5:
-                this.seletedCateBig = 10007;
+                this.seletedCateBig = 10008;
                 this.getCateMid();
                 this.seletedCateMid = 10025; //책
                 break;
@@ -1175,7 +1173,27 @@ export default {
               case 10:
                 this.seletedCateBig = 10009;
                 this.getCateMid();
-                this.seletedCateMid = 10004; // 식품
+                this.seletedCateMid = 10031; // 식품
+                break;
+              case 11:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10031; // pc,모니터,노트북, 주변기기
+                break;
+              case 12:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10031; // 스포츠
+                break;
+              case 13:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10031; // 장난감
+                break;
+              case 14:
+                this.seletedCateBig = 10009;
+                this.getCateMid();
+                this.seletedCateMid = 10031; // 애완용품
                 break;
               default:
                 return;
@@ -1252,8 +1270,7 @@ export default {
             },
           }
         )
-        .then((response) => {
-          console.log(response);
+        .then((response) => { 
           let msg = "등록 처리시 문제가 발생했습니다.";
           if (response.status == 200) {
             msg = "등록이 완료되었습니다.";
