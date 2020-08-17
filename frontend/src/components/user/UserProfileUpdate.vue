@@ -3,7 +3,6 @@
         <v-col cols="11" md="8" class="mx-auto">
             <!-- 프로필 사진 -->
             <v-list>
-                {{myProfile}}
                 <v-list-item>
                     <v-spacer></v-spacer>
                     <image-input v-model="avatar" @input="input" :rules="rules">
