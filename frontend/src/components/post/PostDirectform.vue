@@ -22,7 +22,7 @@
                     </div>
                   </v-col>
 
-                  <v-col cols="12">
+                  <v-col cols="12" style="padding-bottom:0px">
                     <v-radio-group v-model="addrselect" row  v-on:change="addrchange">
                       <v-radio
                         label="장소1"

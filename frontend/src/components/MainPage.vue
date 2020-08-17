@@ -9,6 +9,8 @@
                     </v-carousel-item>
                     <v-carousel-item src="https://media.bunjang.co.kr/images/nocrop/485696213.jpg">
                     </v-carousel-item>
+                    <v-carousel-item src="@/assets/banners/banner2.png">
+                    </v-carousel-item>
                 </v-carousel>
             </v-col>
         </v-row>
