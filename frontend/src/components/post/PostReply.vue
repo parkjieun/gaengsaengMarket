@@ -131,7 +131,7 @@ export default {
         return false;
     },
     goReplyDel(reply_id){
-      console.log(">> "+reply_id);
+      //console.log(">> "+reply_id);
 
       http_post.delete('/api/post/reply?reply_id='+reply_id, 
             {

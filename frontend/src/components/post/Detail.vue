@@ -213,18 +213,18 @@ export default {
       return days.split('').reverse().join('');
     },
     getN () { 
-        console.log("******myProfile 변화: "+ this.$store.getters.getN)
+        //console.log("******myProfile 변화: "+ this.$store.getters.getN)
         if(this.$store.getters.getN == null){
           this.item.likeFlag=0
         }else{
-          console.log("디테일에서 로그인 성공시");
+          //console.log("디테일에서 로그인 성공시");
           //likeflag 받아오기 & 주소 받아오기
            this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}?user_id=${this.myProfile.userId}`);
         }
       }
   },
   created() {
-    console.log("디테일 createds");
+    //console.log("디테일 createds");
     if(this.myProfile == null || this.myProfile == ""){
       this.$store.dispatch('getPost', `/api/post/${this.$route.query.post_id}`);
     }else{
@@ -318,8 +318,8 @@ export default {
     },
     typeUpdate(result) {
       if(result  == "saleCompleted"){
-        console.log("close3");
-        console.log("deal::::::::"+ result);
+       // console.log("close3");
+        //console.log("deal::::::::"+ result);
         this.item.type = 0;
       }
       this.dealdialog = false;
@@ -343,7 +343,7 @@ export default {
   },
   watch:{
     getN2 (value) { 
-        console.log("getN2##############"+ value)
+        //console.log("getN2##############"+ value)
       },
   }
 
