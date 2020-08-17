@@ -210,6 +210,8 @@
               v-model="title"
               :rules="titleRules"
               :counter="125"
+              label="띄어쓰기를 꼭 해주세요"
+              @blur="analyzeTitle"
               required
             ></v-text-field>
           </v-col>
@@ -305,7 +307,7 @@
       </v-container>
       <br />
       <v-container>
-        <v-row>
+        <v-row v-show="toggle_exclusive.includes(1)">
           <v-col cols="2"><h2>직거래 장소</h2></v-col>
           <v-col>
             <div class="map_wrap">
@@ -346,10 +348,14 @@
                 </v-chip>
               </v-row>
             </v-row>
-            <v-row justify="center" style="color:red;" v-if="selectedTitleAddr == ''">
-                <br>
-                    *  반드시 거래위치를 선택해주세요  
-              </v-row>
+            <v-row
+              justify="center"
+              style="color:red;"
+              v-if="selectedTitleAddr == ''"
+            >
+              <br />
+              * 반드시 거래위치를 선택해주세요
+            </v-row>
           </v-col>
         </v-row>
       </v-container>
@@ -360,7 +366,7 @@
             <v-col cols="2"><h2>가격</h2></v-col>
             <v-col cols="3"
               ><v-text-field
-              append-icon="mdi-currency-krw"
+                append-icon="mdi-currency-krw"
                 type="number"
                 :rules="priceRules"
                 v-model="price"
@@ -395,18 +401,18 @@
         <br />
         <v-col>
           <v-combobox
-          append-icon="mdi-pound"
+            append-icon="mdi-pound"
             v-model="model"
             :filter="filter"
             :hide-no-data="!search"
             :items="items"
             :search-input.sync="search"
-            hide-selected 
+            hide-selected
             multiple
             small-chips
             solo
           >
-            <template v-slot:selection="{ attrs, item, parent, selected }">
+            <template v-slot:selection="{ attrs, item, selected }">
               <v-chip
                 v-if="item === Object(item)"
                 v-bind="attrs"
@@ -418,7 +424,7 @@
                 <span class="pr-2">
                   {{ item.text }}
                 </span>
-                <v-icon small @click="parent.selectItem(item)">x</v-icon>
+                <v-icon small @click="remoceTags(item)">x</v-icon>
               </v-chip>
             </template>
             <template v-slot:item="{ index, item }">
@@ -432,17 +438,6 @@
                 solo
                 @keyup.enter="edit(index, item)"
               ></v-text-field>
-              <v-chip v-else :color="`${item.color}  `" dark label small>
-                {{ item.text }}
-              </v-chip>
-              <v-spacer></v-spacer>
-              <v-list-item-action @click.stop>
-                <v-btn icon @click.stop.prevent="edit(index, item)">
-                  <v-icon>{{
-                    editing !== item ? "mdi-pencil" : "mdi-check"
-                  }}</v-icon>
-                </v-btn>
-              </v-list-item-action>
             </template>
           </v-combobox>
         </v-col>
@@ -525,18 +520,12 @@ export default {
       });
 
     this.postId = this.$route.params.post_id; //임시
-    //this.postId = 10062; //임시
-    console.log(
-      "현재 수정페이지...포스트아이디 넘어오나" +
-        this.postId +
-        " / " +
-        `${this.$route.query.post_id}`
-    );
+    //this.postId = 10062; //임시 
     axios
       .get("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId)
       .then(({ data }) => {
-        console.log("오는 전체데이터");
-        console.log(data);
+       // console.log("오는 전체데이터");
+        //console.log(data);
         this.focusAdrr = data.addr;
         this.addr = this.focusAdrr; //새로 주소 설정 안하면 기존에 설정된 주소로 보내기 위해서
         let addrInfos = this.focusAdrr.split(",");
@@ -549,11 +538,11 @@ export default {
         this.title = data.title;
 
         let dbContens = data.contents.split("<br>");
-        let resultContens = ""
-        for(let lines of dbContens){
-          resultContens += lines + "\n"
+        let resultContens = "";
+        for (let lines of dbContens) {
+          resultContens += lines + "\n";
         }
-        this.contents = resultContens
+        this.contents = resultContens;
         if (data.deal_type == 1) {
           this.toggle_exclusive.push(0);
         } else if (data.deal_type == 2) {
@@ -573,7 +562,7 @@ export default {
         let splitTags = data.tags.split(",");
         for (let i in splitTags) {
           this.inputTags.push(splitTags[i]);
-          this.model.push({ text: splitTags[i], color: this.colors[i] }); 
+          this.model.push({ text: splitTags[i], color: this.colors[i] });
         }
 
         let sum = data.deal_weak;
@@ -623,7 +612,7 @@ export default {
             text: v,
             color: this.colors[this.nonce - 1],
           };
- 
+
           this.inputTags.push(v.text);
           this.nonce++;
         }
@@ -634,22 +623,41 @@ export default {
   },
 
   methods: {
-     analyzeTitle() { 
+    remoceTags(item) {
+      let i = 0;
+      for (let tt of this.model) {
+        if (tt.text == item.text) {
+          this.inputTags.splice(i, 1);
+          this.model.splice(i, 1);
+          this.nonce--;
+          break;
+        }
+        i++;
+      }
+    },
+    analyzeTitle() {
       axios
-        .get("http://i3a504.p.ssafy.io:8002/api/opencv/distractinfo?title="+this.title)
+        .get(
+          "http://i3a504.p.ssafy.io:8002/api/opencv/distractinfo?title=" +
+            this.title
+        )
         .then(({ data }) => {
           for (let tag of data.tags) {
             this.inputTags.push(tag);
-            this.model.push({ text: tag, color: this.colors[0] }); 
+            this.model.push({ text: tag, color: this.colors[0] });
           }
 
           this.seletedCateBig = data.categories.cate_big_id;
-          this.getCateMid()
+          this.getCateMid();
           this.seletedCateMid = data.categories.cate_mid_id;
 
           this.price = Number(data.price);
 
-          this.contents = this.title + "\n" + data.tags + " 이거 정말 좋은 놈으로 갖고왔습니다."
+          this.contents =
+            this.title +
+            "\n" +
+            data.tags +
+            " 이거 정말 좋은 놈으로 갖고왔습니다.";
         });
     },
     sendAddr(title) {
@@ -659,12 +667,12 @@ export default {
       this.selectedAddr = addrInfos[3]; //마커클릭하면 설정되는 직거래 위치 지번? 도로명주소?
     },
     initMap() {
-      console.log(" focusAdrr 잘 받아오니? " + this.focusAdrr);
+      //console.log(" focusAdrr 잘 받아오니? " + this.focusAdrr);
 
-      console.log("setTimeout 전에 this.pageMap: " + this.pageMap);
+     // console.log("setTimeout 전에 this.pageMap: " + this.pageMap);
 
       var container = document.getElementById("map");
-      console.log("맵 잘 띄웡ㅆ니 : " + container);
+      //console.log("맵 잘 띄웡ㅆ니 : " + container);
       var options = {
         center: new kakao.maps.LatLng(33.450701, 126.570667),
         level: 3,
@@ -679,7 +687,7 @@ export default {
       var addrInfos;
       //디비에 주소가 아무것도 저장이 안되어있다면? 혹은 불러오지 못해서 값이 아예없다면?
       if (this.focusAdrr == "" || this.focusAdrr == null) {
-        console.log("아무것도 안들어왔대요");
+        //console.log("아무것도 안들어왔대요");
         addrInfos = ["멀티캠퍼스 역삼", 37.5012860931305, 127.03960466386198];
       } else {
         addrInfos = this.focusAdrr.split(","); //디비에 저장된 정보들 받아오는 변수
@@ -798,10 +806,7 @@ export default {
 
             kakao.maps.event.addListener(marker, "click", function() {
               // 마커 위에 인포윈도우를 표시합니다
-              // 이동할 위도 경도 위치를 생성합니다
-              console.log(
-                "click..:" + placeI.road_address_name + placeI.address_name
-              );
+              // 이동할 위도 경도 위치를 생성합니다 
               let sendToserverAddrInfo =
                 title +
                 "," +
@@ -1019,6 +1024,8 @@ export default {
           if (response.status == 200) {
             msg = "삭제가 완료되었습니다.";
             alert(msg);
+
+            this.$router.push({ name: "MainPage" });
           } else {
             alert(msg);
           }
@@ -1137,6 +1144,7 @@ export default {
           if (response.status == 200) {
             msg = "수정이 완료되었습니다.";
             alert(msg);
+            this.$router.push(`/post/detail?post_id=${this.post_id}`)
           } else {
             alert(msg);
           }
