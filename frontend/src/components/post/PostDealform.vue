@@ -51,7 +51,7 @@ export default {
        this.deliverydialog = true;
     },
     goDirect(){
-      console.log("###직거래 열기###");
+      //console.log("###직거래 열기###");
       //this.$emit('closeForm')
       this.directdialog = true;
     },
@@ -60,8 +60,8 @@ export default {
     // },
     typeUpdate(result) {
       if(result != undefined){
-        console.log("close2");
-        console.log("direct::::::::"+ result);
+        //console.log("close2");
+        //console.log("direct::::::::"+ result);
         this.directdialog = false;
         this.deliverydialog = false;
         this.$emit('closeForm',result);
@@ -87,7 +87,7 @@ export default {
     arrange (val) {
       if(val != null){
         let arr = val.split(",")
-        console.log("filterssssssss"+arr[3] +" " +arr[0]);
+       // console.log("filterssssssss"+arr[3] +" " +arr[0]);
         return arr[3] +" " +arr[0]
       }
     }
