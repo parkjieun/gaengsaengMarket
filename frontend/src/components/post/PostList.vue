@@ -9,6 +9,15 @@
                 </div>  
             </v-col>
         </template>
+        <template v-if="len==0" >
+            <v-col cols="12" style="text-align:center;margin-top:100px;font-weight:bold;font-size:20px">검색결과가 없습니다.</v-col>
+            <v-col cols="12"  style="font-size:14px;text-align:center;">
+                - 단어의 철자가 정확한지 확인해 보세요<br>
+                - 보다 일반적인 검색어로 다시 검색해 보세요<br>
+                - 검색어의 띄어쓰기를 다르게 해보세요<br>
+                - 유해/금지어가 아닌지 확인해주세요<br>
+            </v-col>
+        </template>
         <v-btn
             id="scrollButton"
             fab

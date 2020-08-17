@@ -2,7 +2,7 @@
   <div id="app">
       <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subtitle">
         <div style="font-size:12px; height:28px; ">
-            <v-icon small>mdi-magnify</v-icon>{{ msg }} 
+            <v-icon >mdi-magnify</v-icon> <span v-html="msg" style="font-size: 16px"></span>
         </div>
         </v-row> 
       <PostList :posts="posts"/>
@@ -34,7 +34,7 @@ export default {
             this.tags = this.$route.params.tags
             this.title = this.$route.params.title
             if (this.tags && this.title) {
-                this.msg = `해시태그 검색: ${this. tags} & 제목 검색: ${this.title}`
+                this.msg = `해시태그 검색:  <span style="color:red;">${this. tags}</span> & 제목 검색: <span  style="color:red;">${this.title}</span>`
                 httpPost.get(`/api/post?query=${this.title}&tags=${this.tags}`)
                 .then(res => {
                     this.posts = res.data
@@ -42,14 +42,14 @@ export default {
             }
             else if (this.tags || this.title) {
                 if (this.tags) {
-                    this.msg = `해시태그 검색: ${this. tags}`
+                    this.msg = `해시태그 검색: <span style="color:red;">${this. tags}</span>`
                     httpPost.get(`/api/post?tags=${this.tags}`)
                     .then(res => {
                         this.posts = res.data
                     })
                 }
                 else {
-                    this.msg = `제목 검색: ${this.title}`
+                    this.msg = `제목 검색: <span style="color:red;">${this.title}</span>`
                     httpPost.get(`/api/post?query=${this.title}`)
                     .then(res => {
                         this.posts = res.data
