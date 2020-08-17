@@ -1226,7 +1226,10 @@ export default {
       );
     },
     createHandler() {
-      // const token = window.sessionStorage.getItem("jwt-auth-token");
+      if(this.toggle_exclusive.includes(1) && this.selectedTitleAddr == ''){
+        alert("직거래 장소를 선택해 주세요")
+        return
+      }
       let deal_type1 = 1;
       if (this.toggle_exclusive.length == 1) {
         deal_type1 = this.toggle_exclusive[0] == 0 ? 1 : 2;
