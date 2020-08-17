@@ -38,6 +38,7 @@ export default {
             this.posts = []
             this.start = 0
             this.$refs.InfiniteLoading.stateChanger.reset();
+            this.getCategoryName()
         },
         infiniteHandler($state) {
             httpPost.get(`/api/post/category/big/${this.$route.params.bigCategoryNum}?sno=` + this.start)
@@ -52,15 +53,19 @@ export default {
                 }
             });      
         },
+        getCategoryName() {
+            httpPost.get('/api/post/category/category_big')
+            .then(res => {
+                this.categoryBig = res.data.filter(cate => {
+                    return (cate.cate_big_id == this.$route.params.bigCategoryNum)
+                })
+            })
+        }
 
     },
     mounted() {
-        httpPost.get('/api/post/category/category_big')
-        .then(res => {
-            this.categoryBig = res.data.filter(cate => {
-                return (cate.cate_big_id == this.$route.params.bigCategoryNum)
-            })
-        })
+        this.getCategoryName()
+        
              
     },
 }
