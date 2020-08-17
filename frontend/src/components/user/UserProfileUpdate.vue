@@ -2,33 +2,37 @@
     <v-row>
         <v-col cols="11" md="8" class="mx-auto">
             <!-- 프로필 사진 -->
-                                <v-list>
-                        <v-list-item>
-                            <v-spacer></v-spacer>
-                            <image-input v-model="avatar" @input="input">
-                                <div slot="activator">
-                                    <v-avatar size="10rem" v-ripple v-if="!profileImg" class="grey lighten-3 mb-3">
-                                        <v-icon size="5rem">mdi-account</v-icon>
-                                    </v-avatar>
-                                    <v-avatar size="10rem" v-ripple v-else class="mb-3">
-                                        <img :src="'http://i3a504.p.ssafy.io/static/image/account/'+profileImg" v-if="!change" alt="avatar">
-                                        <img :src="avatar.imageURL" v-else alt="avatar">
-                                    </v-avatar>
-                                </div>
-                            </image-input>
+            <v-list>
+                {{myProfile}}
+                <v-list-item>
+                    <v-spacer></v-spacer>
+                    <image-input v-model="avatar" @input="input" :rules="rules">
+                        <div slot="activator">
+                            <v-avatar size="10rem" v-ripple v-if="!profileImg" class="grey lighten-3 mb-3">
+                                <v-icon size="5rem">mdi-account</v-icon>
+                            </v-avatar>
+                            <v-avatar size="10rem" v-ripple v-else class="mb-3">
+                                <img :src="'http://i3a504.p.ssafy.io/static/image/account/'+profileImg" v-if="!change" alt="avatar">
+                                <img :src="avatar.imageURL" v-else alt="avatar">
+                            </v-avatar>
+                        </div>
+                    </image-input>
 
-                            <v-spacer></v-spacer>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-text-field v-model="nickName" :rules="rules" label="닉네임" required></v-text-field>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
-                        </v-list-item>
-                        <v-list-item>
-                            <v-textarea v-model="introduce" label="상점 소개"></v-textarea>
-                        </v-list-item>
-                    </v-list>
+                    <v-spacer></v-spacer>
+                </v-list-item>
+                <v-list-item>
+                    <v-text-field v-model="nickName"  label="닉네임" required></v-text-field>
+                </v-list-item>
+                <v-list-item>
+                    <v-text-field v-model="phone" :rules="phoneRules" label="핸드폰번호" required></v-text-field>
+                </v-list-item>
+                <v-list-item>
+                    <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
+                </v-list-item>
+                <v-list-item>
+                    <v-textarea v-model="introduce" label="상점 소개"></v-textarea>
+                </v-list-item>
+            </v-list>
             <v-btn @click="submit" id="clickBtn">수정완료</v-btn>
         </v-col>
 
@@ -46,6 +50,9 @@ export default {
             rules: [
                 value => !value || value.size < 1000000 || '프로필 사진 파일 크기는 1 MB 미만이여야 합니다.',
             ],
+            phoneRules:[
+                value => (value && !value.includes("-") && (/^[0-9]*$/).test(value) && value.length<=11) || "\'-\'를 제외한 숫자만 입력해주세요"
+            ],
             nickName: "",
             address: "",
             introduce: "",
@@ -53,6 +60,7 @@ export default {
             avatar:null,
             change:false,
             img:null,
+            phone: null,
         }
     },
     components:{
@@ -88,10 +96,14 @@ export default {
             if (this.img !== null) {
                 frm.append("img", this.img)
             }
+            frm.append("phone",this.phone)
             frm.append("introduce", this.introduce)
             frm.append("address", this.address)
             
-            for (var pair of frm.entries()) { console.log(pair[0]+ ', ' + pair[1]); }
+            // for (var pair of frm.entries()) { 
+            //     console.log(pair)
+            //     // console.log(pair[0]+ ', ' + pair[1]); 
+            //     }
 
             http.put("/api/user", frm, {
                     headers: {
@@ -101,9 +113,10 @@ export default {
                 })
                 .then(res => {
                     this.getMyProfile()
+                    console.log(res)
                 })
             
-            this.$router.push("/user")
+            this.$router.push({name:'UserProfile', params: {uid: this.myProfile.userId}})
         },
     },
     created() {
@@ -111,6 +124,7 @@ export default {
         this.introduce = this.myProfile.introduce
         this.address = this.myProfile.address
         this.profileImg = this.myProfile.profileImg
+        this.phone = this.myProfile.phone
     },
 
 
