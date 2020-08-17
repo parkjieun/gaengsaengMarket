@@ -45,7 +45,7 @@
         <v-col align="center">
             <div style="">
                 <router-link to="/">
-                    <v-img width="250px" src="@/assets/logo.png"></v-img>
+                    <v-img width="200px" src="@/assets/logo3.png"></v-img>
                 </router-link>
             </div>
         </v-col>
