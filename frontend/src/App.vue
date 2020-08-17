@@ -3,8 +3,8 @@
     <div :class="computeClass">
   <login-form :dialog="dialog" @closeForm="dialog=false" />
     <NavBar v-if="!isChat" @openForm="openForm" />
-    <ChatList v-if="!isChat"/>
-    <router-view></router-view>
+    <ChatList v-if="!isChat" :chatroomId="chatroomId" @deleteChatroomId="deleteChatroomId"/>
+    <router-view @showChatRoomById="showChatRoomById"></router-view>
     </div>
     <div v-if="!isChat" style="width:100%;height:100%;" class="d-block d-md-none">
         <small-page/>
@@ -30,7 +30,8 @@ export default {
     data() {
         return {
             dialog: false,
-            category: false
+            category: false,
+            chatroomId: '',
 
         }
     },
@@ -61,6 +62,12 @@ export default {
         },
         closeForm() {
             this.dialog = false;
+        },
+        showChatRoomById(roomId) {
+            this.chatroomId = roomId
+        },
+        deleteChatroomId() {
+            this.chatroomId = ''
         }
     },
 
