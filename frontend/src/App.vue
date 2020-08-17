@@ -1,12 +1,12 @@
 <template>
 <v-app>
-    <div class="d-none d-lg-block">
+    <div :class="computeClass">
   <login-form :dialog="dialog" @closeForm="dialog=false" />
     <NavBar v-if="!isChat" @openForm="openForm" />
-    <ChatList/>
+    <ChatList v-if="!isChat"/>
     <router-view></router-view>
     </div>
-    <div style="width:100%;height:100%;" class="d-block d-lg-none">
+    <div v-if="!isChat" style="width:100%;height:100%;" class="d-block d-md-none">
         <small-page/>
     </div>
 </v-app>
@@ -35,13 +35,20 @@ export default {
         }
     },
     created() {
-        console.log("qweqwe")
+
     },
     computed: {
         isChat() {
             var url = window.location.href
             console.log(url)
-            return url.includes("chat") || url.includes("point") || url.includes("delivery")
+            return url.includes("point")
+        },
+        computeClass(){
+            var url = window.location.href
+            if(url.includes("point")){
+                return []
+            }
+            else return ['d-none','d-md-block']
         }
     },
     methods: {
