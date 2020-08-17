@@ -13,6 +13,7 @@
             
             <div id="username" style="margin: 30px; max-width:300px;">
                 <h3>{{user.nickName}}</h3>
+                <v-subheader v-if="myPage&&this.phone" class="px-0">{{phone}}</v-subheader>
                 <v-subheader class="px-0">{{user.introduce}}</v-subheader>
             </div>
             
@@ -68,6 +69,7 @@ export default {
             soldOutPosts: [],
             likePosts: [],
             user: null,
+            phone: ''
         }
     },
     components: {
@@ -174,6 +176,9 @@ export default {
         this.getUserProfile (this.$route.params.uid)
         this.setUserProfile()
         this.getLikePosts(this.$route.params.uid)
+        if (this.user.phone != null) {
+            this.phone = this.user.phone.slice(0,3) + '-' + this.user.phone.slice(3,7) + '-' + this.user.phone.slice(7,this.user.phone.length)
+        }
         
     },
     watch:{
