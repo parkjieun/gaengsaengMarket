@@ -308,13 +308,11 @@ export default {
             .then(
                 response => {
                     console.log(response)
-                    // this.goChat()
                     this.$store.dispatch("findAllRoom")
-                    this.$store.dispatch("setPatner", this.item.user_id)
-                    $('#chatRoom').show();
+                    this.$store.dispatch("setPatner", this.item.user_id)           
                 }
             )
-          
+            this.$emit("showChatRoomById", this.$store.getters.roomId(this.item.nick_name).roomId)    
       }
     },
     typeUpdate(result) {

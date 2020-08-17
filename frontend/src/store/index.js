@@ -23,6 +23,9 @@ export default new Vuex.Store({
   },
   getters: {
     config: (state) => ({headers: { Authorization: state.authorization }}),
+    roomId: (state) => (nickName) => {
+      return state.chatrooms.find(room => room.roomName == nickName)
+    },
     items(state) {
       return state.items;
     },
