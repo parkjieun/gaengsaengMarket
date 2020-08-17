@@ -157,10 +157,9 @@ export default {
                             // this.goChat()
                             this.$store.dispatch("findAllRoom")
                             this.$store.dispatch("setPatner", this.user.userId)
-                            $('#chatRoom').show();
                         }
                     )
-                
+                this.$emit("showChatRoomById", this.$store.getters.roomId(this.user.nickName).roomId)      
             }
         },
     },

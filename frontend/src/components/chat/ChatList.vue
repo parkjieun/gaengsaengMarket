@@ -52,6 +52,14 @@ export default {
             messages: [],
         }
     },
+    props: ['chatroomId'],
+    watch: {
+        chatroomId: function() {
+            if (this.chatroomId) {
+                this.enterRoom(this.chatroomId)
+            }
+        }
+    },
     computed: {
         imgURL: function () {
             return baseURL + "/static/image/account/" + this.myProfile.profileImg
@@ -99,6 +107,7 @@ export default {
             this.showRoom = false
             this.$refs.chatRoom.destroyed()
             this.messages = []
+            this.$emit("deleteChatroomId")
         }
     },
     created() {
