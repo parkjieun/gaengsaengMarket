@@ -136,6 +136,7 @@ public class UserController {
 		user.setAddress(payload.getAddress());
 		user.setNickName(payload.getNickName());
 		user.setIntroduce(payload.getIntroduce());
+		user.setPhone(payload.getPhone());
 		if(payload.getImg()!=null) {
 			user.setProfileImg(md5Hex+filename.substring(filename.lastIndexOf(".")));
 			//user.setProfileImg(uploadFileDir+md5Hex+filename.substring(filename.lastIndexOf(".")));
