@@ -2,8 +2,8 @@
   <div class="contain" style="position:relative;">
 
   
-  <v-icon fab text @click="carouselLeft" style="position:absolute; bottom:120px; left: -30px;">mdi-chevron-left</v-icon>
-  <v-icon fab text @click="carouselRight" style="position:absolute; bottom:120px; right: -30px;">mdi-chevron-right</v-icon>
+  <v-icon fab text @click="carouselLeft" color="#3d1860" style="position:absolute; bottom:120px; left: -30px;">mdi-chevron-left</v-icon>
+  <v-icon fab text @click="carouselRight" color="#3d1860" style="position:absolute; bottom:120px; right: -30px;">mdi-chevron-right</v-icon>
   <div class="row" id="carousel">
     <div class="row__inner">
     

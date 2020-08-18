@@ -4,6 +4,7 @@
       <!-- <v-col cols="12" md="12">  -->
         <v-textarea v-model="message"
           filled
+          dense
           auto-grow
           name="message"
           ref="message"
@@ -11,6 +12,7 @@
           value=""
           rows="1"
           row-height="10"
+          color="#bb99cd"
           :rules="[rules.length(100)]"
           counter="100"
           required
@@ -21,7 +23,7 @@
 
         
         <!-- <v-btn class="ma-2" outlined color="rgba(0,0,0,.87)" @click="submitReply"> -->
-        <v-btn class="ma-2" outlined  @click="submitReply" style="background:#2FA599 !important;border-color:#2FA599 !important;height:36px;color:#fff !important">           
+        <v-btn class="my-0" outlined  @click="submitReply" style="background:#bb99cd !important;border-color:#bb99cd !important;height:40px;color:#fff !important">           
           <v-icon small>mdi-pencil</v-icon>  등록
         </v-btn>
                 
