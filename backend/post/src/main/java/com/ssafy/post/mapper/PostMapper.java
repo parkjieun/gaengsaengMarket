@@ -45,4 +45,6 @@ public interface PostMapper {
 	public int updatePostType(int post_id) throws Exception;
 	
 	public int updatePoint(HashMap<String, Object> map) throws Exception;
+	
+	public int updatePointPlus(HashMap<String, Object> map) throws Exception;
 }

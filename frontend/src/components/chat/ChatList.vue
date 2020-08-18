@@ -26,6 +26,8 @@
                 </v-list-item>
             </template>
         </v-virtual-scroll>
+    
+        
     </v-card>
 </div>
 </template>
@@ -59,13 +61,19 @@ export default {
             if (this.chatroomId) {
                 this.enterRoom(this.chatroomId)
             }
+        },
+        isAuthenticated: function() {
+            if (!this.isAuthenticated) {
+                $("#userListBox").hide();
+            }
         }
+
     },
     computed: {
         imgURL: function () {
             return baseURL + "/static/image/account/" + this.myProfile.profileImg
         },
-        ...mapState(['myProfile', 'chatrooms']),
+        ...mapState(['myProfile', 'chatrooms', 'isAuthenticated']),
 
     },
     methods: {
@@ -101,8 +109,14 @@ export default {
             this.$refs.chatRoom.connect(roomId)
         },
         expandChatList() {
-            $("#userListBox").slideToggle();
-            this.showChatList = !this.showChatList;
+            if (this.$store.state.isAuthenticated) {
+                $("#userListBox").slideToggle();
+                this.showChatList = !this.showChatList;
+            }
+            else {
+                alert("로그인한 사용자만 채팅기능을 사용할 수 있습니다.")
+            }
+            
         },
         hideRoom() {
             this.showRoom = false

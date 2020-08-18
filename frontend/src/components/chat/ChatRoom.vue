@@ -122,10 +122,15 @@ export default {
                 $('#chatRoom').hide();
             }
         },
+        isAuthenticated: function() {
+            if (!this.isAuthenticated) {
+                this.closeRoom()
+            }
+        }
 
     },
     computed: {
-        ...mapState(['myProfile', 'patner']),
+        ...mapState(['myProfile', 'patner', 'isAuthenticated']),
         patnerImg() {
             return baseURL + "/static/image/account/" + this.patner.profileImg
         },
