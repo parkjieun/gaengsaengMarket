@@ -155,8 +155,9 @@ export default {
       }
     },
     buyAction(){
+      
       //업데이트
-      http_post.put('/api/post/buy?user_id=' +this.myProfile.userId +'&post_id=' + this.item.post_id + '&price=' + this.point + '&gubun=delivery', {}, 
+      http_post.put('/api/post/buy?user_id=' +this.myProfile.userId +'&post_id=' + this.item.post_id + '&price=' + this.point + '&gubun=delivery&sellerUser_id=' + this.item.user_id , {}, 
             {
                 headers: {
                   Authorization: this.$store.state.authorization,
