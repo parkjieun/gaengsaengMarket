@@ -1,7 +1,7 @@
 <template>
     <div id="userProfile">
-        <h3 style="margin-top: 30px;">회원정보</h3>
-        <v-divider class="my-5"></v-divider>
+        <h3 style="margin-top: 30px; color:#3d1860;">회원정보</h3>
+        <v-divider class="my-5" color="#bb99cd"></v-divider>
         <!-- 내정보 -->
         <v-row style="position:relative;" v-if="myPage">
         
@@ -22,17 +22,17 @@
             
             <div class="d-md-flex d-none" style="margin: 30px; position:absolute; top: 0; right: 0;">
                 <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
-                    <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
+                    <span><v-btn color="#e7d8eb" small @click="chargePoint" style="margin: 10px; width:100px; color:#3d1860;">갱생머니 충전</v-btn></span> 
                 </h5>  
             </div>
            
             <div class="d-md-none" style="position:absolute; bottom: 0; right: 150px;">
                 <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
-                    <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
+                    <span><v-btn color="#e7d8eb" small @click="chargePoint" style="margin: 10px; width:100px; color:#3d1860;">갱생머니 충전</v-btn></span> 
                 </h5>  
             </div>
         <!-- update button -->
-            <v-btn color="#defcfc" small @click="updateBtn" style="margin: 10px; width:100px; position: absolute; bottom:0; right:30px;">수정</v-btn>
+            <v-btn color="#e7d8eb" small @click="updateBtn" style="margin: 10px; width:100px; position: absolute; bottom:0; right:30px; color:#3d1860;">수정</v-btn>
             
         </v-row>
 
@@ -62,7 +62,7 @@
         
         <!-- menu -->
         <v-divider style="margin-top:30px;"></v-divider>
-        <v-tabs grow color="#349ea8">
+        <v-tabs grow color="#3d1860">
             <v-tab @click="allProduct()">총 판매</v-tab>
             <v-tab @click="onSale()">판매 중</v-tab>
             <v-tab @click="soldOut()">판매 완료</v-tab>

@@ -46,7 +46,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn width="100%" elevation="0" tile color="#a6e3e9"  @click="submit">
+                    <v-btn width="100%" elevation="0" tile color="#643579"  @click="submit">
                         회원가입
                     </v-btn>
                 </v-card-actions>

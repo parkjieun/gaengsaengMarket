@@ -13,7 +13,7 @@
             id="scrollButton"
             fab
             small
-            color="#a6e3e9"
+            color="#bb99cd"
             retain-focus-on-click
             @click="scrollToTop"
         > 
