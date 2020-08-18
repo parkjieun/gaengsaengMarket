@@ -41,7 +41,7 @@ export default {
     computed: {
         isChat() {
             var url = window.location.href
-            console.log(url)
+            // console.log(url)
             return url.includes("point")
         },
         computeClass(){
@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         openCategory(value) {
-            console.log(value)
+            // console.log(value)
             this.category = value
         },
         openForm() {
