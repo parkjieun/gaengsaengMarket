@@ -3,9 +3,12 @@
     <v-toolbar color="#a6e3e9" flat dense>
         <v-toolbar-title color="#3f696e" style="font-size:0.9rem; " id="chatTitle" >
             <div @click="goUserProfile(patner.userId)" style="cursor: pointer;">
-                <v-avatar size="30">
-                    <v-img :src="patnerImg" />
-                </v-avatar><span class="mx-3">{{patner.nickName}}</span>
+                <v-avatar size="30" color="#8acdd4">
+                    <v-img  v-if="!!patner.profileImg" :src="patnerImg" />
+                    <v-icon dark v-else>mdi-account</v-icon>
+                </v-avatar>
+                
+                <span class="mx-3">{{patner.nickName}}</span>
             </div>
             <v-icon small @click="closeRoom">mdi-close</v-icon>
 
@@ -16,9 +19,10 @@
 
         <v-list-item two-line v-for="item in messages" :key="item.messageId">
             <!-- 받는 메세지 -->
-            <div v-if="item.userId != userId" class="row">
-                <v-avatar size="30" style="margin-right: 5px;" class="my-auto">
-                    <v-img :src="patnerImg" />
+            <div v-if="item.userId != $store.state.myProfile.userId" class="row">
+                <v-avatar size="30" style="margin-right: 5px;" color="#edc0c9" class="my-auto">
+                    <v-img v-if="!!patner.profileImg" :src="patnerImg" />
+                    <v-icon dark v-else>mdi-account</v-icon>
                 </v-avatar>
                 <v-list-item-content class="py-1">
                     <v-list-item-title class="receiveMsg my-auto caption delivery" v-if="isJsonString(item.content)">
@@ -42,8 +46,9 @@
                     <v-list-item-title class="sendMsg my-auto caption" v-else>{{item.content}}</v-list-item-title>
                     <v-list-item-subtitle style="font-size:0.1rem; text-align:right; margin-right:10px">{{item.createDate | processingDate}}</v-list-item-subtitle>
                 </v-list-item-content>
-                <v-avatar size="30" style="margin-right: 5px;" class="my-auto">
-                    <v-img :src="myProfileImg" />
+                <v-avatar size="30" style="margin-right: 5px;" class="my-auto" color="#8acdd4">
+                    <v-img v-if="!!myProfile.profileImg" :src="myProfileImg" />
+                    <v-icon dark v-else>mdi-account</v-icon>
                 </v-avatar>
             </div>
         </v-list-item>
@@ -202,7 +207,7 @@ export default {
     filters: {
         processingDate(value) {
             const date = new Date(value)
-            return date.getMonth() + "월 " + date.getDate() + "일  " + date.getHours() + "시 " + date.getMinutes() + "분";
+            return (date.getMonth()+1) + "월 " + date.getDate() + "일  " + date.getHours() + "시 " + date.getMinutes() + "분";
         }
     },
 
