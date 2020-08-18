@@ -1043,10 +1043,7 @@ export default {
       ];
       let peripheral = [ "리모콘" ];
       let book = ["책"];
-      //도서 티켓 취미 애완
-      let kidult = [ 
-        "자전거", 
-      ];
+      //도서 티켓 취미 애완 
       //생활 문구 가구 식품
       let daily_necessities = ["칫솔", "가위", "우산", "화분", "꽃병"];
       let furniture = ["벤치", "의자", "침대", "식탁", "쇼파"];
@@ -1073,6 +1070,7 @@ export default {
       ];
       let pc_monitor_labtop_etc = ["마우스", "키보드","노트북"];
       let sports = [
+        "자전거", 
         "스포츠볼",
         "스키",
         "스노우보드 ",
@@ -1100,8 +1098,7 @@ export default {
         mobile,
         home_appliances,
         peripheral,
-        book,
-        kidult,
+        book, 
         daily_necessities,
         furniture,
         kitchen_utensils,
@@ -1123,7 +1120,7 @@ export default {
               case 0:
                 this.seletedCateBig = 10004;
                 this.getCateMid();
-                this.seletedCateMid = 10006;
+                this.seletedCateMid = 10006; //가방
                 break;
               case 1:
                 this.seletedCateBig = 10004;
@@ -1150,50 +1147,45 @@ export default {
                 this.getCateMid();
                 this.seletedCateMid = 10025; //책
                 break;
-              case 6:
-                this.seletedCateBig = 10008;
-                this.getCateMid();
-                this.seletedCateMid = 10026; //취미 키덜트
-                break;
-              case 7:
+              case 6: 
                 this.seletedCateBig = 10009;
                 this.getCateMid();
                 this.seletedCateMid = 10028; //생활용품
                 break;
-              case 8:
+              case 7:
                 this.seletedCateBig = 10009;
                 this.getCateMid();
                 this.seletedCateMid = 10029; //가구
                 break;
-              case 9:
+              case 8:
                 this.seletedCateBig = 10009;
                 this.getCateMid();
                 this.seletedCateMid = 10030; //주방용품
                 break;
-              case 10:
+              case 9:
                 this.seletedCateBig = 10009;
                 this.getCateMid();
                 this.seletedCateMid = 10031; // 식품
                 break;
-              case 11:
-                this.seletedCateBig = 10009;
+              case 10:
+                this.seletedCateBig = 10007;
                 this.getCateMid();
-                this.seletedCateMid = 10031; // pc,모니터,노트북, 주변기기
+                this.seletedCateMid = 10035; // pc,모니터,노트북, 주변기기
+                break;
+              case 11:
+                this.seletedCateBig = 10008;
+                this.getCateMid();
+                this.seletedCateMid = 10036; // 스포츠
                 break;
               case 12:
-                this.seletedCateBig = 10009;
+                this.seletedCateBig = 10008;
                 this.getCateMid();
-                this.seletedCateMid = 10031; // 스포츠
+                this.seletedCateMid = 10037; // 장난감
                 break;
               case 13:
-                this.seletedCateBig = 10009;
+                this.seletedCateBig = 10008;
                 this.getCateMid();
-                this.seletedCateMid = 10031; // 장난감
-                break;
-              case 14:
-                this.seletedCateBig = 10009;
-                this.getCateMid();
-                this.seletedCateMid = 10031; // 애완용품
+                this.seletedCateMid = 10038; // 애완용품
                 break;
               default:
                 return;
