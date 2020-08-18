@@ -19,7 +19,7 @@
 		from post t0
 		
 		left outer join (
-		    select post_id, min(img_url) as files
+		    select post_id, img_url as files
 		    from post_img
 		    group by post_id
 		) t1
@@ -59,7 +59,7 @@
 		from post t0
 		
 		left outer join (
-		    select post_id, min(img_url) as files
+		    select post_id, img_url as files
 		    from post_img
 		    group by post_id
 		) t1
