@@ -204,6 +204,12 @@
     	set point_val = (point_val- #{price})
     	where user_id = #{user_id}
    </update>
+   
+   <update id="updatePointPlus">
+		update user
+    	set point_val = (point_val + #{price})
+    	where user_id = #{user_id}
+   </update>
 
 </mapper>
 

@@ -28,7 +28,7 @@ public interface PostService {
 	
 	public String selectLike(int post_id, String user_id)  throws Exception;
 	
-	public int updatePostType(int post_id, int price, String user_id, String gubun)  throws Exception;
+	public int updatePostType(int post_id, int price, String user_id, String gubun, String sellerUser_id)  throws Exception;
 	
 
 }

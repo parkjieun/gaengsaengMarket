@@ -7,7 +7,7 @@
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)"> {{ categoryMid }} 
         </div>
     </v-row> 
-    <template v-if="posts.length == 0" >
+    <template v-if="noData" >
             <v-col cols="12" style="text-align:center;margin-top:100px;font-weight:bold;font-size:20px">해당 카테고리에 등록된 상품이 없습니다.</v-col>
     </template>
     <div id="postList" style="margin-top: 30px;"> 
@@ -33,6 +33,7 @@ export default {
             start: 0,
             categoryBig: '',
             categoryMid: '',
+            noData: false,
         }
     },
     watch: {
@@ -67,6 +68,9 @@ export default {
             .then(res => {
                 this.categoryMid = res.data[0].cate_mid_name
                 this.categoryBig = res.data[0].cate_big_name
+                if (res.data.length == 1) {
+                    this.noData = true
+                }
             });      
            
         }
