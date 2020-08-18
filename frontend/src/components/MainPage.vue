@@ -80,7 +80,7 @@ export default {
             
         },
         goToBigCatePage(cateInfo) {
-            console.log(cateInfo)
+            // console.log(cateInfo)
             this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: cateInfo.id}})
         }
 
