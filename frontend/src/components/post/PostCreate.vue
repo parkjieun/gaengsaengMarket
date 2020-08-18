@@ -340,10 +340,7 @@
                 <v-row justify="center" v-if="selectedTitleAddr != ''">
                   <v-chip class="ma-2" label color="#fc9d9d">
                     {{ selectedTitleAddr }}
-                  </v-chip>
-                  <v-chip class="ma-2" label color="#ffcac2">
-                    {{ selectedAddr }}
-                  </v-chip>
+                  </v-chip> 
                 </v-row>
               </v-row>
               <v-row
