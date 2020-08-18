@@ -6,6 +6,9 @@
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig[0].name }} 
         </div>
     </v-row> 
+    <template v-if="posts.length == 0" >
+            <v-col cols="12" style="text-align:center;margin-top:100px;font-weight:bold;font-size:20px">해당 카테고리에 등록된 상품이 없습니다.</v-col>
+    </template>
     <div id="postList" style="margin-top: 30px;"> 
             <PostList :posts="posts"/>
     </div>
