@@ -1141,7 +1141,7 @@ export default {
           if (response.status == 200) {
             msg = "수정이 완료되었습니다.";
             alert(msg);
-            this.$router.push(`/post/detail?post_id=${this.post_id}`)
+            this.$router.push(`/post/detail?post_id=${this.postId}`)
           } else {
             alert(msg);
           }
