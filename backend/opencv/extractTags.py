@@ -133,7 +133,7 @@ def extract_tags(image_path):
                 # 좌표
                 x = int(center_x - w / 2)
                 y = int(center_y - h / 2)
-                bbox.append([x, y, w+x, h+y]) #기존에서는 w, h에 x,y값 안붙여도 되던데 여기는 왜이러는지.. 아마 기본 검출 메소드는 리사이즈를 자동으로해주나보다
+                bbox.append([abs(x) abs(y), abs(w+x), abs(h+y)]) #기존에서는 w, h에 x,y값 안붙여도 되던데 여기는 왜이러는지.. 아마 기본 검출 메소드는 리사이즈를 자동으로해주나보다
                 conf.append(float(confidence))
                 label.append(classes[class_id])
 
