@@ -140,6 +140,7 @@
           ><v-col>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-file-input
+                color="#bb99cd"
                 multiple
                 v-model="StandbyImgs"
                 accept="image/*"
@@ -191,6 +192,7 @@
             <v-col>
               <ValidationProvider rules="required|max:125">
                 <v-text-field
+                  color="#bb99cd"
                   v-model="title"
                   :rules="titleRules"
                   :counter="125"
@@ -208,6 +210,7 @@
             <v-col cols="3">
               <ValidationProvider rules="required">
                 <v-select
+                  color="#bb99cd"
                   :items="categoryBig"
                   item-text="name"
                   item-value="cate_big_id"
@@ -223,6 +226,7 @@
             <v-col>
               <ValidationProvider rules="required">
                 <v-select
+                  color="#bb99cd"
                   :items="categoryMid"
                   item-text="name"
                   item-value="cate_mid_id"
@@ -245,18 +249,18 @@
               ><v-col cols="1">
                 <v-btn-toggle
                   v-model="toggle_exclusive"
-                  color="#00bcd4"
+                  color="#bb99cd"
                   multiple
                   group
                 >
                   <v-btn
-                    style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    color="#00bcd4"
+                    style="border: 1px solid #bb99cd ; color:#643579"
+                    color="#bb99cd"
                     >택배거래</v-btn
                   >
                   <v-btn
-                    style="border: 1px solid #00bcd4 ; color:#00bcd4"
-                    color="#00bcd4"
+                    style="border: 1px solid #bb99cd ; color:#643579"
+                    color="#bb99cd"
                     >직거래</v-btn
                   >
                 </v-btn-toggle>
@@ -273,25 +277,25 @@
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-col>
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >월</v-btn
                   >
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >화</v-btn
                   >
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >수</v-btn
                   >
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >목</v-btn
                   >
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >금</v-btn
                   >
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >토</v-btn
                   >
-                  <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+                  <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                     >일</v-btn
                   >
                 </v-btn-toggle>
@@ -320,6 +324,7 @@
                     </v-col>
                     <v-col sm="5" style="font-size: 13px;padding:0px;">
                       <v-text-field
+                        color="#bb99cd"
                         hide-details
                         v-model="searchKeyword"
                       ></v-text-field>
@@ -366,6 +371,7 @@
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
                 <v-col
                   ><v-text-field
+                    color="#bb99cd"
                     append-icon="mdi-currency-krw"
                     type="number"
                     :rules="priceRules"
@@ -391,6 +397,7 @@
             <v-container>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
                 <v-textarea
+                  color="#bb99cd"
                   v-model="contents"
                   required
                   outlined
@@ -438,6 +445,7 @@
               </template>
               <template v-slot:item="{ index, item }">
                 <v-text-field
+                  color="#bb99cd"
                   v-if="editing === item"
                   v-model="editing.text"
                   autofocus
@@ -458,7 +466,7 @@
             ><v-layout row justify-center align-center>
               <v-btn
                 :disabled="invalid && selectedTitleAddr == ''"
-                color="#A6E3E9"
+                color="#bb99cd"
                 @click="createHandler()"
               >
                 등록

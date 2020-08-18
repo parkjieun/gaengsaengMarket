@@ -29,20 +29,20 @@
                                     <v-spacer></v-spacer>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-text-field v-model="nickName" :rules="rules" label="닉네임" required></v-text-field>
+                                    <v-text-field color="#bb99cd" v-model="nickName" :rules="rules" label="닉네임" required></v-text-field>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-text-field v-model="phone" :rules="phoneRules" label="핸드폰번호" required></v-text-field>
+                                    <v-text-field color="#bb99cd" v-model="phone" :rules="phoneRules" label="핸드폰번호" required></v-text-field>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
+                                    <v-text-field color="#bb99cd" :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
                                 </v-list-item>
                                 <v-list-item>
-                                    <v-textarea no-resize rows="2" v-model="introduce" label="상점 소개"></v-textarea>
+                                    <v-textarea color="#bb99cd" no-resize rows="2" v-model="introduce" label="상점 소개"></v-textarea>
                                 </v-list-item>
                             </v-list>
 
-                            <button class="submit-btn" @click="submit">Sign up</button>
+                            <v-btn color="#bb99cd" class="submit-btn" @click="submit">Sign up</v-btn>
                         </div>
                     </div>
                 </div>
@@ -321,8 +321,8 @@ body {
         left: 0;
         background-repeat: no-repeat;
         background-position: left bottom;
-        background-size: 500px;
-        background-image: url('https://images.unsplash.com/photo-1503602642458-232111445657?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bf884ad570b50659c5fa2dc2cfb20ecf&auto=format&fit=crop&w=1000&q=100');
+        background-size: cover;
+        background-image: url('../../assets/LoginIMG.jpg');
     }
 
     .login {
@@ -523,7 +523,7 @@ body {
             }
 
             .submit-btn {
-                background-color: #6B92A4;
+                background-color: #bb99cd;
                 color: rgba(256, 256, 256, 0.7);
                 border: 0;
                 border-radius: 15px;

@@ -15,18 +15,18 @@
             </v-col>
         </v-row>
         <div class="postList" style="width:80%; margin-left:auto; margin-right:auto; margin-top: 50px;">
-            <h3>최근 등록 상품</h3>
-            <hr>
+            <h3 style="color:#3d1860;">최근 등록 상품</h3>
+            <hr style="background-color: #bb99cd; border: 0 none; color: #253b6e; height: 1px;">
             <PostListCarousel :posts="recentPosts"/>
         </div>
         <div style="width: 80%; margin-left:auto; margin-right:auto;">
-            <h3>카테고리별 상품</h3>
-            <v-tabs style="width: 100%; margin-bottom:10px;" grow color="cyan">
+            <h3 style="color:#3d1860;">카테고리별 상품</h3>
+            <v-tabs style="width: 100%; margin-bottom:10px;" grow color="#643579">
                 <v-tab v-for="cate in categorytab" :key="cate.id" @click="goToCategory(cate.id)">{{cate.name}}</v-tab>
             </v-tabs>
         </div>
         <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;" v-for="post in categoryPosts" :key="post[0].id">
-            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center; margin-top: 20px;"><v-icon small color="cyan" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px;"> {{ post[0].name }} </span><v-btn text small @click="goToBigCatePage(post[0])">전체보기</v-btn></div> 
+            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center; margin-top: 20px;"><v-icon small color="#3d1860" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px; color:#3d1860;"> {{ post[0].name }} </span><v-btn text color="#3d1860" small @click="goToBigCatePage(post[0])">전체보기</v-btn></div> 
             <PostList :posts="post[1]"/>
         </div>
 

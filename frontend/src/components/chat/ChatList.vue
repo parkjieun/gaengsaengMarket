@@ -2,8 +2,8 @@
 <div>
     <ChatRoom id="chatRoom" ref="chatRoom" :roomId="roomId" :showRoom="showRoom" :messages="messages" @hideRoom="hideRoom" />
     <v-card id="chatList" width="200" class="mx-auto">
-        <v-toolbar color="#a6e3e9" flat dense @click="expandChatList">
-            <v-toolbar-title color="#3f696e" style="font-size:1rem">
+        <v-toolbar color="#bb99cd" flat dense @click="expandChatList">
+            <v-toolbar-title color="#bb99cd" style="font-size:1rem">
                 톡톡<v-icon class="mx-3">mdi-chat</v-icon>
             </v-toolbar-title>
         </v-toolbar>
@@ -11,7 +11,7 @@
         <v-virtual-scroll :items="chatrooms" :item-height="45" height="350" id="userListBox">
             <template v-slot="{ item }">
                 <v-list-item @click="enterRoom(item.roomId)">
-                    <v-list-item-avatar size="30" color="#8acdd4">
+                    <v-list-item-avatar size="30" color="#bb99cd">
                         <v-img v-if="item.profileImg" :src="item.profileImg"></v-img>
                         <v-icon dark v-else>mdi-account</v-icon>
                     </v-list-item-avatar>
@@ -21,7 +21,7 @@
                     </v-list-item-content>
 
                     <v-list-item-icon class="my-auto">
-                        <v-icon :color="'#a6e3e9'">mdi-chat-processing</v-icon>
+                        <v-icon :color="'#bb99cd'">mdi-chat-processing</v-icon>
                     </v-list-item-icon>
                 </v-list-item>
             </template>

@@ -157,8 +157,8 @@ export default {
 }
 
 .v-tab--active {
-    border-bottom: solid 2px #A6e3e9 !important;
-    color: rgba(166, 227, 233, 1) !important;
+    border-bottom: solid 2px #3d1860 !important;
+    color: #3d1860 !important;
 }
 
 .v-application--wrap {
