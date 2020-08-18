@@ -185,7 +185,12 @@ export default new Vuex.Store({
                   if (ele.userId !== context.state.myProfile.userId) {
                       http_user.get('/api/user/' + ele.userId).then(res2 => {
                           element['roomName'] = res2.data.nickName
-                          element['profileImg'] = "http://i3a504.p.ssafy.io/static/image/account/" + res2.data.profileImg
+                          if ( res2.data.profileImg != null ) {
+                            element['profileImg'] = "http://i3a504.p.ssafy.io/static/image/account/" + res2.data.profileImg
+                          }
+                          else {
+                            element['profileImg'] = res2.data.profileImg
+                          }
                           context.commit("ADD_CHATROOM",element)
                       })
                   }
