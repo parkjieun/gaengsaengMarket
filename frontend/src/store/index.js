@@ -42,7 +42,7 @@ export default new Vuex.Store({
       return false
     }, 
     getN(state){
-      console.log(">>>>GETTERS")
+      // console.log(">>>>GETTERS")
       return state.myProfile
     },
   },
@@ -80,9 +80,9 @@ export default new Vuex.Store({
       sessionStorage.removeItem("authorization")
     },
     setPoint(state, value){
-      console.log("포인트 변환***"+ value);
+      // console.log("포인트 변환***"+ value);
       state.myProfile.pointVal -=  value;
-      console.log("포인트 변환222***"+ state.myProfile.pointVal);
+      // console.log("포인트 변환222***"+ state.myProfile.pointVal);
 },
     SET_DELIVERY(state,value){
       state.delivery=value
@@ -96,7 +96,7 @@ export default new Vuex.Store({
     setUserProfile( { commit, getters } ) {
       return http_user.get('/api/user', getters.config)
       .then((res) => {
-        console.log("내 정보", res)
+        // console.log("내 정보", res)
         commit('SET_USERPROFILE', res.data)
       })
       .catch(err => console.log(err))
