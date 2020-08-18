@@ -49,13 +49,13 @@ export default new Vuex.Store({
   mutations: {
     SET_USERPROFILE(state, value) {
       sessionStorage.setItem("myProfile",JSON.stringify(value))
+      state.isAuthenticated = true
       state.myProfile = value
     },
     SET_AUTH(state,value){
       sessionStorage.setItem("authorization",value)
       sessionStorage.setItem("isAuthenticated", true)
       state.authorization = value
-      state.isAuthenticated = true
     },
     setPosts(state, payload) {
       state.items = payload;
