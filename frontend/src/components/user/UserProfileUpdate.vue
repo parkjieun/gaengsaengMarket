@@ -20,19 +20,19 @@
                     <v-spacer></v-spacer>
                 </v-list-item>
                 <v-list-item>
-                    <v-text-field v-model="nickName"  label="닉네임" required></v-text-field>
+                    <v-text-field color="#643579" v-model="nickName"  label="닉네임" required></v-text-field>
                 </v-list-item>
                 <v-list-item>
-                    <v-text-field v-model="phone" :rules="phoneRules" label="핸드폰번호" required></v-text-field>
+                    <v-text-field color="#643579" v-model="phone" :rules="phoneRules" label="핸드폰번호" required></v-text-field>
                 </v-list-item>
                 <v-list-item>
-                    <v-text-field :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
+                    <v-text-field color="#643579" :value="address" label="상세 주소" readonly @click="addressSearch"></v-text-field>
                 </v-list-item>
                 <v-list-item>
-                    <v-textarea v-model="introduce" label="상점 소개"></v-textarea>
+                    <v-textarea color="#643579" v-model="introduce" label="상점 소개"></v-textarea>
                 </v-list-item>
             </v-list>
-            <v-btn @click="submit" id="clickBtn">수정완료</v-btn>
+            <v-btn color="#e7d8eb" @click="submit" id="clickBtn">수정완료</v-btn>
         </v-col>
 
     </v-row>

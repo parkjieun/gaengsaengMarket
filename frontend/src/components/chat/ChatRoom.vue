@@ -1,14 +1,14 @@
 <template>
-<v-card width="300" class="mx-auto" id="chatRoom">
-    <v-toolbar color="#a6e3e9" flat dense>
-        <v-toolbar-title color="#3f696e" style="font-size:0.9rem; " id="chatTitle" >
+<v-card width="300" height="400" class="mx-auto" id="chatRoom">
+    <v-toolbar color="#bb99cd" flat dense>
+        <v-toolbar-title style="font-size:0.9rem; " id="chatTitle" >
             <div @click="goUserProfile(patner.userId)" style="cursor: pointer;">
-                <v-avatar size="30" color="#8acdd4">
+                <v-avatar size="30" color="#946da8">
                     <v-img  v-if="!!patner.profileImg" :src="patnerImg" />
                     <v-icon dark v-else>mdi-account</v-icon>
                 </v-avatar>
                 
-                <span class="mx-3">{{patner.nickName}}</span>
+                <span class="mx-3" style="color:#3d1860;">{{patner.nickName}}</span>
             </div>
             <v-icon small @click="closeRoom">mdi-close</v-icon>
 
@@ -20,7 +20,7 @@
         <v-list-item two-line v-for="item in messages" :key="item.messageId">
             <!-- 받는 메세지 -->
             <div v-if="item.userId != $store.state.myProfile.userId" class="row">
-                <v-avatar size="30" style="margin-right: 5px;" color="#edc0c9" class="my-auto">
+                <v-avatar size="30" style="margin-right: 5px;" color="#bb99cd" class="my-auto">
                     <v-img v-if="!!patner.profileImg" :src="patnerImg" />
                     <v-icon dark v-else>mdi-account</v-icon>
                 </v-avatar>
@@ -46,16 +46,16 @@
                     <v-list-item-title class="sendMsg my-auto caption" v-else>{{item.content}}</v-list-item-title>
                     <v-list-item-subtitle style="font-size:0.1rem; text-align:right; margin-right:10px">{{item.createDate | processingDate}}</v-list-item-subtitle>
                 </v-list-item-content>
-                <v-avatar size="30" style="margin-right: 5px;" class="my-auto" color="#8acdd4">
+                <v-avatar size="30" style="margin-right: 5px;" class="my-auto" color="#f5edf7">
                     <v-img v-if="!!myProfile.profileImg" :src="myProfileImg" />
-                    <v-icon dark v-else>mdi-account</v-icon>
+                    <v-icon color="#3d1860" v-else>mdi-account</v-icon>
                 </v-avatar>
             </div>
         </v-list-item>
     </v-list>
     <v-list dense id="chatBody" v-else>
-        <v-list-item style="background: #ffe6eb; font-size:0.7rem">
-            <v-list-item-title style="color: #805d64;">
+        <v-list-item style="background: #f5edf7; font-size:0.7rem">
+            <v-list-item-title style="color: #3d1860;">
                 채팅 기록이 없습니다. <br>
                 메세지를 보내 채팅을 시작하세요 :)
             </v-list-item-title>
@@ -63,13 +63,13 @@
     </v-list>
 
     <v-divider></v-divider>
-    <v-row class="chat-input" style="width:300px; margin:0; height:50px;">
-        <v-col cols="11">
-            <input type="text" v-model="text" @keydown.enter="sendMessage" style="padding:0; width:100%; height:100%; font-size: 0.9rem;" placeholder="채팅내용을 입력해주세요" />
+    <v-row class="chat-input" style="width:300px; margin:0; height:50px; max-height:50px;">
+        <v-col cols="11" height="40">
+            <v-text-field dense color="#643579" v-model="text" @keydown.enter="sendMessage" style="padding:0; width:100%;  font-size: 0.9rem;" placeholder="채팅내용을 입력해주세요"></v-text-field>
         </v-col>
-        <v-col cols="1" style="padding: 10px 0;">
-            <button @click="sendMessage" style="width:100% height: 100%;">
-                <v-icon small style="color:#3f696e; margin: 0;">
+        <v-col cols="1" height="40" style="padding: 10px 0;">
+            <button @click="sendMessage" style="width:100% ">
+                <v-icon small style="color:#3d1860; margin: 0;">
                     mdi-send
                 </v-icon>
             </button>
@@ -233,10 +233,10 @@ export default {
 }
 
 .receiveMsg {
-    background: #ffe6eb;
+    background: #f5edf7;
     padding: 5px 5px 5px 10px;
     border-radius: 20px;
-    color: #805d64;
+    color: #3d1860;
     white-space: pre-line;
     width: auto;
     max-width: 180px;
@@ -244,10 +244,10 @@ export default {
 
 .sendMsg {
     float: right;
-    background: #defcfc;
+    background: #bb99cd;
     padding: 5px 5px 5px 10px;
     border-radius: 20px;
-    color: #517373;
+    color: #f5edf7;
     white-space: pre-line;
     width: auto;
     max-width: 180px;

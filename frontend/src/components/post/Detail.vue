@@ -1,7 +1,7 @@
 <template>
 <v-app>
     <v-container justify="center" align="center">
-      <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; ">
+      <v-row style="border-bottom:1px solid #bb99cd; padding:30px 0px 20px;height:78px; ">
          <div style="font-size:12px; height:28px; font-weight:550 ">
            <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{item.cate_big_name }} 
@@ -89,7 +89,7 @@
 
        <v-row>
          <v-col cols="10" >
-            <v-tabs background-color="#fafafa"  :grow="true" color="#2FA599" >
+            <v-tabs background-color="#fafafa"  :grow="true" color="#643579" >
               <v-tab ripple>
                 <span  style="font-weight:600;"> 상품정보 </span>
               </v-tab>

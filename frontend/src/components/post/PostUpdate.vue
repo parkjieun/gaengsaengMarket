@@ -207,6 +207,7 @@
           <v-col cols="2"><h2>제목</h2></v-col>
           <v-col>
             <v-text-field
+              color="#bb99cd"
               v-model="title"
               :rules="titleRules"
               :counter="125"
@@ -257,18 +258,18 @@
           <v-col cols="1">
             <v-btn-toggle
               v-model="toggle_exclusive"
-              color="#00bcd4"
+              color="#bb99cd"
               multiple
               group
             >
               <v-btn
-                style="border: 1px solid #00bcd4; color: #00bcd4;"
-                color="#00bcd4"
+                style="border: 1px solid #bb99cd; color:#643579;"
+                color="#bb99cd"
                 >택배거래</v-btn
               >
               <v-btn
-                style="border: 1px solid #00bcd4; color: #00bcd4;"
-                color="#00bcd4"
+                style="border: 1px solid #bb99cd; color:#643579;"
+                color="#bb99cd"
                 >직거래</v-btn
               >
             </v-btn-toggle>
@@ -280,25 +281,25 @@
           <v-col cols="2"><h2>직거래 가능 요일</h2></v-col>
           <v-col>
             <v-btn-toggle v-model="toggle_weekend" multiple group>
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >월</v-btn
               >
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >화</v-btn
               >
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >수</v-btn
               >
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >목</v-btn
               >
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >금</v-btn
               >
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >토</v-btn
               >
-              <v-btn style="border: 1px solid #00bcd4; color: #00bcd4;"
+              <v-btn style="border: 1px solid #bb99cd; color: #643579;"
                 >일</v-btn
               >
             </v-btn-toggle>
@@ -322,6 +323,7 @@
                   </v-col>
                   <v-col sm="5" style="font-size: 13px;padding:0px;">
                     <v-text-field
+                      color="#bb99cd"
                       hide-details
                       v-model="searchKeyword"
                     ></v-text-field>
@@ -363,6 +365,7 @@
             <v-col cols="2"><h2>가격</h2></v-col>
             <v-col cols="3"
               ><v-text-field
+                color="#bb99cd"
                 append-icon="mdi-currency-krw"
                 type="number"
                 :rules="priceRules"
@@ -383,6 +386,7 @@
           <br />
           <v-container>
             <v-textarea
+              color="#bb99cd"
               v-model="contents"
               required
               outlined
@@ -426,6 +430,7 @@
             </template>
             <template v-slot:item="{ index, item }">
               <v-text-field
+                color="#bb99cd"
                 v-if="editing === item"
                 v-model="editing.text"
                 autofocus
