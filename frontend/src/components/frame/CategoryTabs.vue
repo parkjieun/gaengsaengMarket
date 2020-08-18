@@ -122,6 +122,7 @@ export default {
                 this.$router.push("/").catch(res=>{})
             }
             else {
+                this.outTab()
                 this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: value.cate_big_id}})
             }
         },
