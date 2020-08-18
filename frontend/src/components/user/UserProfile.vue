@@ -2,7 +2,8 @@
     <div id="userProfile">
         <h3 style="margin-top: 30px;">회원정보</h3>
         <v-divider class="my-5"></v-divider>
-        <v-row style="position:relative;">
+        <!-- 내정보 -->
+        <v-row style="position:relative;" v-if="myPage">
         
         <!-- profile image -->
             <div>
@@ -12,27 +13,50 @@
         <!-- User Info -->
             
             <div id="username" style="margin: 30px; max-width:300px;">
-                <h3>{{user.nickName}}</h3>
-                <v-subheader v-if="myPage&&this.phone" class="px-0">{{phone}}</v-subheader>
-                <v-subheader class="px-0">{{user.introduce}}</v-subheader>
+                <div class="d-flex align-center">
+                    <div style="font-weight: bolder;">{{myProfile.nickName}}</div>
+                    <div class="px-3" v-if="this.phone" style="font-size:0.8rem; color:gray;">{{phone}}</div>
+                </div>
+                <v-subheader class="px-0">{{myProfile.introduce}}</v-subheader>
             </div>
             
-            <div v-if="myPage" class="d-md-flex d-none" style="margin: 30px; position:absolute; top: 0; right: 0;">
+            <div class="d-md-flex d-none" style="margin: 30px; position:absolute; top: 0; right: 0;">
                 <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
                     <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
                 </h5>  
             </div>
-            <div v-else style="margin: 30px; position:absolute; top: 0; right: 0; cursor:pointer;" @click="createRoom">
-                <v-icon x-large style="margin-left: 5px;" color="#a6e3e9">mdi-chat-processing</v-icon>
-            </div>
-            <div v-if="myPage" class="d-md-none" style="position:absolute; bottom: 0; right: 150px;">
+           
+            <div class="d-md-none" style="position:absolute; bottom: 0; right: 150px;">
                 <h5> GM: {{$store.state.myProfile.pointVal | currency}} 
                     <span><v-btn color="#defcfc" small @click="chargePoint" style="margin: 10px; width:100px;">갱생머니 충전</v-btn></span> 
                 </h5>  
             </div>
         <!-- update button -->
-        <!-- user == login.user만 보여줄 것!!! -->
-            <v-btn v-if="myPage" color="#defcfc" small @click="updateBtn" style="margin: 10px; width:100px; position: absolute; bottom:0; right:30px;">수정</v-btn>
+            <v-btn color="#defcfc" small @click="updateBtn" style="margin: 10px; width:100px; position: absolute; bottom:0; right:30px;">수정</v-btn>
+            
+        </v-row>
+
+        <!-- 다른 유저 프로필 -->
+        <v-row style="position:relative;" v-else>
+        
+        <!-- profile image -->
+            <div>
+                <v-img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
+                <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" ></v-img>
+            </div>
+        <!-- User Info -->
+            
+            <div id="username" style="margin: 30px; max-width:300px;">
+                <div class="d-flex align-center">
+                    <div style="font-weight: bolder;">{{user.nickName}}</div>
+                </div>
+                <v-subheader class="px-0">{{user.introduce}}</v-subheader>
+            </div>
+            
+            
+            <div style="margin: 30px; position:absolute; top: 0; right: 0; cursor:pointer;" @click="createRoom">
+                <v-icon x-large style="margin-left: 5px;" color="#a6e3e9">mdi-chat-processing</v-icon>
+            </div>
             
         </v-row>
         
@@ -69,7 +93,7 @@ export default {
             soldOutPosts: [],
             likePosts: [],
             user: null,
-            phone: ''
+            myPage: '',
         }
     },
     components: {
@@ -77,6 +101,15 @@ export default {
     },
     methods: {
         ...mapActions(['setUserProfile']),
+        isMyPage() {
+            if (this.myProfile.userId == this.$route.params.uid) {
+                this.myPage = true
+            }
+            else {
+                this.myPage = false
+            }
+    
+        },
         getUserProfile(userID) {
             httpUser.get('/api/user/' + userID,{headers:{ Authorization: this.$store.state.authorization }})
             .then((res) => {
@@ -90,7 +123,6 @@ export default {
         getLikePosts(userId) {
             httpPost.get('/api/post?sno=0&like=true&user_id='+userId)
             .then((res) => {
-                console.log(res)
                 this.likePosts = res.data
             })
         },
@@ -166,23 +198,22 @@ export default {
     computed : {
         
         ...mapState(['myProfile']),
-        
-        myPage: function() { return this.myProfile.userId == this.user.userId },
-        imgURL: function() { return baseURL + "/static/image/account/" + this.user.profileImg }
+        imgURL: function() { return baseURL + "/static/image/account/" + this.user.profileImg },
+        phone: function() { return this.myProfile.phone.slice(0,3) + '-' + this.myProfile.phone.slice(3,7) + '-' + this.myProfile.phone.slice(7,this.myProfile.phone.length)}
     },
     created() {
-        
         this.getUserProfile (this.$route.params.uid)
         this.setUserProfile()
         this.getLikePosts(this.$route.params.uid)
-        if (this.user.phone != null) {
-            this.phone = this.user.phone.slice(0,3) + '-' + this.user.phone.slice(3,7) + '-' + this.user.phone.slice(7,this.user.phone.length)
-        }
+    },
+    mounted() {
+        this.isMyPage()
         
     },
     watch:{
         '$route'(){
             this.getUserProfile(this.$route.params.uid)
+            this.isMyPage()
         },
 
     },
@@ -210,4 +241,5 @@ export default {
     margin-left: 20px;
     margin-right: 10px;
 }
+
 </style>

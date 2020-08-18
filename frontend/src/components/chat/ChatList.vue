@@ -11,8 +11,9 @@
         <v-virtual-scroll :items="chatrooms" :item-height="45" height="350" id="userListBox">
             <template v-slot="{ item }">
                 <v-list-item @click="enterRoom(item.roomId)">
-                    <v-list-item-avatar size="30">
-                        <v-img :src="item.profileImg"></v-img>
+                    <v-list-item-avatar size="30" color="#8acdd4">
+                        <v-img v-if="item.profileImg" :src="item.profileImg"></v-img>
+                        <v-icon dark v-else>mdi-account</v-icon>
                     </v-list-item-avatar>
 
                     <v-list-item-content>
