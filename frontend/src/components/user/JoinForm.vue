@@ -1,5 +1,5 @@
 <template>
-<v-app>
+<v-app style="position:absolute;">
     <v-row justify="center">
         <v-dialog v-model="dialog2" max-width="500" >
             <v-card>

@@ -1,5 +1,5 @@
 <template>
-<v-app>
+<v-app style="position:absolute;">
     <v-dialog v-model="dealdialog" max-width="20rem" >
       <v-card>
         <!-- <v-card-title style="padding:1rem;font-size:0.7rem;">

@@ -24,19 +24,11 @@ const routes = [
     name: 'MainPage',
     component: MainPage
   },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
-    path: '/user',
-    name: 'MyProfile',
-    component: MyProfile
-  },
+  // {
+  //   path: '/user',
+  //   name: 'MyProfile',
+  //   component: MyProfile
+  // },
   {
     path: '/user/update',
     name: 'UserProfileUpdate',
@@ -85,21 +77,21 @@ const routes = [
     name: 'BigCategoryPage',
     component: BigCategoryPage
   }, 
-  {
-    path:"/chat",
-    name:"Chat",
-    component:Chat
-  },
-  {
-    path:"/inchat/:roomId",
-    name:"Chat2",
-    component:Chat2
-  },
-  {
-    path:"/delivery",
-    name:"Delivery",
-    component:DeliveryDetail
-  },
+  // {
+  //   path:"/chat",
+  //   name:"Chat",
+  //   component:Chat
+  // },
+  // {
+  //   path:"/inchat/:roomId",
+  //   name:"Chat2",
+  //   component:Chat2
+  // },
+  // {
+  //   path:"/delivery",
+  //   name:"Delivery",
+  //   component:DeliveryDetail
+  // },
   {
     path:"/point",
     name:"Point",
