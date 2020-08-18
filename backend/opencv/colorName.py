@@ -321,6 +321,7 @@ detectColorNmae = {
 0xC8AABF:'연보라색',
 0xC9B93B:'초록색',
 0xC9FFE5:'파란색',
+0xCAB29D:'모래색',
 0xCADCD4:'하얀색',
 0xCAE00D:'레몬색',
 0xCBCAB6:'회색',
