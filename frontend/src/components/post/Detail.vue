@@ -70,16 +70,16 @@
 
               <div style="font-weight: 600px;font-size:13px; margin-right:10px;height:56px; color:#555555;   display: flex;">
                   <v-col class="hover_big" style="border-right: 1.5px solid #f2f3f6; text-align:center" >
-                    <div  @click="goPostLike" v-if="item.likeFlag==1"><img calss="txt_btn"   style="width:40px" :src="require(`@/assets/post/fullheart3.png`)"></div>
-                    <div  @click="goPostLike" v-else><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/plusheart.png`)"></div>
+                    <div v-if="item.likeFlag==1"><a @click="goPostLike"><img calss="txt_btn"   style="width:40px" :src="require(`@/assets/post/fullheart3.png`)"></a></div>
+                    <div v-else><a @click="goPostLike"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/plusheart.png`)"></a></div>
                       <span style="color:#2d3753">찜하기</span>
                   </v-col>
                   <v-col class="hover_big" style="border-right: 1.5px solid #f2f3f6; text-align:center">
-                    <div @click="createRoom"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/chat2.png`)"></div>
+                    <div><a  @click="createRoom"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/chat2.png`)"></a></div>
                       <span style="color:#2d3753">채팅</span>
                   </v-col>
                   <v-col class="hover_big" style="text-align:center" >
-                    <div  @click="openDialog"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/credit-card.png`)"></div>
+                    <div><a  @click="openDialog"><img calss="txt_btn" style="width:40px" :src="require(`@/assets/post/credit-card.png`)"></a></div>
                       <span style="color:#2d3753">바로구매</span>
                   </v-col>
               </div>
