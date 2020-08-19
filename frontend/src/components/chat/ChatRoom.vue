@@ -16,7 +16,6 @@
     </v-toolbar>
 
     <v-list dense id="chatBody" v-if="messages.length">
-
         <v-list-item two-line v-for="item in messages" :key="item.messageId">
             <!-- 받는 메세지 -->
             <div v-if="item.userId != $store.state.myProfile.userId" class="row">
@@ -108,7 +107,6 @@ export default {
         }
     },
     created() {
-        this.userId = this.$store.state.myProfile.userId
     },
     updated: function () {
         $("#chatBody").scrollTop($("#chatBody").prop('scrollHeight'))

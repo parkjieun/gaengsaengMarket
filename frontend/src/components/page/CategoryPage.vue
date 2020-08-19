@@ -13,7 +13,8 @@
     <div id="postList" style="margin-top: 30px;"> 
             <PostList :posts="posts"/>
     </div>
-    <infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
+    <infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="InfiniteLoading">
+    </infinite-loading>
 </div>
 </template>
 
