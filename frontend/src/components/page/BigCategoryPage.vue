@@ -41,6 +41,7 @@ export default {
         fetchData() {
             this.posts = []
             this.start = 0
+            this.noData = false;
             this.$refs.InfiniteLoading.stateChanger.reset();
             this.getCategoryName()
         },
