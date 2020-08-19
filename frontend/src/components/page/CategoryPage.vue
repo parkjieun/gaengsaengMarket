@@ -41,10 +41,11 @@ export default {
     },
     methods: {
         fetchData() {
-            this.posts = [],
-            this.start = 0,
-            this.categoryMid = '',
-            this.categoryBig = '',
+            this.posts = []
+            this.start = 0
+            this.categoryMid = ''
+            this.categoryBig = ''
+            this.noData = false
             this.$refs.InfiniteLoading.stateChanger.reset();
             this.getCategory(this.$route.params.categoryNum)
         },
