@@ -204,7 +204,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <v-col cols="2"><h2>제목</h2></v-col>
+          <v-col cols="2"><h3>제목</h3></v-col>
           <v-col>
             <v-text-field
               color="#bb99cd"
@@ -220,7 +220,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <v-col cols="2"><h2>카테고리</h2> </v-col>
+          <v-col cols="2"><h3>카테고리</h3> </v-col>
           <v-col cols="3">
             <v-select
               :items="categoryBig"
@@ -253,7 +253,7 @@
       </v-container>
       <v-container>
         <v-row>
-          <v-col cols="2"><h2>거래타입</h2></v-col>
+          <v-col cols="2"><h3>거래타입</h3></v-col>
 
           <v-col cols="1">
             <v-btn-toggle
@@ -278,7 +278,7 @@
       </v-container>
       <v-container>
         <v-row v-show="toggle_exclusive.includes(1)">
-          <v-col cols="2"><h2>직거래 가능 요일</h2></v-col>
+          <v-col cols="2"><h3>직거래 가능 요일</h3></v-col>
           <v-col>
             <v-btn-toggle v-model="toggle_weekend" multiple group>
               <v-btn style="border: 1px solid #bb99cd; color: #643579;"
@@ -309,7 +309,7 @@
       <br />
       <v-container>
         <v-row v-show="toggle_exclusive.includes(1)">
-          <v-col cols="2"><h2>직거래 장소</h2></v-col>
+          <v-col cols="2"><h3>직거래 장소</h3></v-col>
           <v-col>
             <div class="map_wrap">
               <div
@@ -362,7 +362,7 @@
       <v-form fluid>
         <v-container>
           <v-row>
-            <v-col cols="2"><h2>가격</h2></v-col>
+            <v-col cols="2"><h3>가격</h3></v-col>
             <v-col cols="3"
               ><v-text-field
                 color="#bb99cd"
@@ -382,7 +382,7 @@
 
       <v-form fluid>
         <v-container>
-          <h2>내용</h2>
+          <h3>내용</h3>
           <br />
           <v-container>
             <v-textarea
@@ -398,7 +398,7 @@
       </v-form>
 
       <v-container>
-        <h2>태그</h2>
+        <h3>태그</h3>
         <br />
         <v-col>
           <v-combobox
