@@ -8,16 +8,17 @@
         <!-- profile image -->
             <div>
                 <v-img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
-                <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" ></v-img>
+                <!-- <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" ></v-img> -->
+                <v-avatar v-else color="#bb99cd" size="200"><v-icon dark size="150">mdi-account</v-icon></v-avatar>
             </div>
         <!-- User Info -->
             
-            <div id="username" style="margin: 30px; max-width:300px;">
+            <div id="username" style="margin: 30px; max-width:400px; width:400px;">
                 <div class="d-flex align-center">
                     <div style="font-weight: bolder;">{{myProfile.nickName}}</div>
                     <div class="px-3" v-if="this.phone" style="font-size:0.8rem; color:gray;">{{phone}}</div>
                 </div>
-                <v-subheader class="px-0">{{myProfile.introduce}}</v-subheader>
+                <div class="px-0 body-2 py-2" height="100" style="white-space: pre-wrap;">{{myProfile.introduce}}</div>
             </div>
             
             <div class="d-md-flex d-none" style="margin: 30px; position:absolute; top: 0; right: 0;">
@@ -46,16 +47,16 @@
             </div>
         <!-- User Info -->
             
-            <div id="username" style="margin: 30px; max-width:300px;">
+            <div id="username" style="margin: 30px; max-width:400px; width:400px;">
                 <div class="d-flex align-center">
                     <div style="font-weight: bolder;">{{user.nickName}}</div>
                 </div>
-                <v-subheader class="px-0">{{user.introduce}}</v-subheader>
+                <div class="px-0 body-2 py-2" height="100" style="white-space: pre-wrap;">{{user.introduce}}</div>
             </div>
             
             
             <div style="margin: 30px; position:absolute; top: 0; right: 0; cursor:pointer;" @click="createRoom">
-                <v-icon x-large style="margin-left: 5px;" color="#a6e3e9">mdi-chat-processing</v-icon>
+                <v-icon x-large style="margin-left: 5px;" color="#bb99cd">mdi-chat-processing</v-icon>
             </div>
             
         </v-row>
