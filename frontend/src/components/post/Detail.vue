@@ -3,11 +3,11 @@
     <v-container justify="center" align="center">
       <v-row style="border-bottom:1px solid #bb99cd; padding:30px 0px 20px;height:78px; ">
          <div style="font-size:14px; height:28px; font-weight:550 ">
-           <a @click="gohome()"><img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/home.png`)">홈</a>
+           <a @click="gohome()" class="top_a"><img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/home.png`)">홈</a>
            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
-           <a @click="goBigCategory()">  {{item.cate_big_name }} </a>
+           <a @click="goBigCategory()" class="top_a">  {{item.cate_big_name }} </a>
            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
-           <a @click="goMidCategory()"> {{item.cate_mid_name }} </a>
+           <a @click="goMidCategory()" class="top_a"> {{item.cate_mid_name }} </a>
           </div>
       </v-row> 
         <v-row style="padding:30px 0px 50px;">
@@ -416,5 +416,8 @@ position: relative;
   position: absolute;
   width: 100%;
 }
-
+.top_a{
+  color:#3d1860;
+  font-weight:bold;
+}
 </style>
