@@ -42,7 +42,10 @@
 	</select>
 	
 	<select id="selectCateName" resultType="Post" >
-		SELECT c1.name AS 'cate_big_name', c2.name AS 'cate_mid_name'
+		SELECT c1.name AS 'cate_big_name',
+				c2.name AS 'cate_mid_name',
+				c1.cate_big_id,
+				c2.cate_mid_id
 		FROM category_big c1, category_mid c2
 		WHERE c1.cate_big_id=c2.cate_big_id
 		AND cate_mid_id = #{category_mid_id}
