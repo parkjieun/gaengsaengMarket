@@ -1,12 +1,12 @@
 <template>
 <div id="app">
     <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subMenu">
-        <div style="font-size:14px; height:28px; font-weight:550 ">
-            <a @click="gohome()"><img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/home.png`)">홈</a>
+        <div style="font-size:14px; height:28px; font-weight:550;z-index:5; ">
+            <a @click="gohome()" class="top_a"><img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/home.png`)">홈</a>
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
-            <a @click="goBigCategory()">  {{categoryBig }} </a>
+            <a @click="goBigCategory()" class="top_a">  {{categoryBig }} </a>
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
-            <a @click="goMidCategory()"> {{categoryMid }} </a>
+            <a class="top_a"> {{categoryMid }} </a>
             <!-- <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig }} 
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)"> {{ categoryMid }}  -->
@@ -108,5 +108,8 @@ export default {
     width: 80%;
     margin: 0 auto 0 auto;
 }
-
+.top_a{
+  color:#3d1860;
+  font-weight:bold;
+}
 </style>
