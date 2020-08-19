@@ -1,10 +1,15 @@
 <template>
 <div id="app">
     <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subMenu">
-        <div style="font-size:12px; height:28px; ">
-            <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
+        <div style="font-size:14px; height:28px; font-weight:550 ">
+            <a @click="gohome()"><img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/home.png`)">홈</a>
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
+            <a @click="goBigCategory()">  {{categoryBig }} </a>
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
+            <a @click="goMidCategory()"> {{categoryMid }} </a>
+            <!-- <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
             <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig }} 
-            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)"> {{ categoryMid }} 
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)"> {{ categoryMid }}  -->
         </div>
     </v-row> 
     <template v-if="noData" >
@@ -35,12 +40,23 @@ export default {
             categoryBig: '',
             categoryMid: '',
             noData: false,
+            categoryBigId: '',
+            categoryMidId: '',
         }
     },
     watch: {
         '$route.params.categoryNum': 'fetchData'
     },
     methods: {
+        gohome(){
+          this.$router.push("/")
+        },
+        goBigCategory(){
+            this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: this.categoryBigId}})
+        },
+        goMidCategory(){
+            this.$router.push({name:'CategoryPage',params:{categoryNum:this.categoryMidId}})
+        },
         fetchData() {
             this.posts = []
             this.start = 0
@@ -70,6 +86,8 @@ export default {
             .then(res => {
                 this.categoryMid = res.data[0].cate_mid_name
                 this.categoryBig = res.data[0].cate_big_name
+                this.categoryBigId = res.data[0].cate_big_id
+                this.categoryMidId = res.data[0].cate_mid_id
                 if (res.data.length == 1) {
                     this.noData = true
                 }

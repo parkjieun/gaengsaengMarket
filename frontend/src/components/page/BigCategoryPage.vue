@@ -1,9 +1,12 @@
 <template>
 <div id="app">
     <v-row style="border-bottom:1px solid; padding:30px 0px 20px;height:78px; " id="subMenu">
-        <div style="font-size:12px; height:28px; ">
-            <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
-            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig[0].name }} 
+        <div style="font-size:14px; height:28px; font-weight:550 ">
+            <a @click="gohome()"><img style="width:16px; height:16px; margin-right:5px" :src="require(`@/assets/post/home.png`)">홈</a>
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">
+            <a @click="goBigCategory()">  {{categoryBig[0].name }} </a>
+            <!-- <img style="width:15px; height:15px; margin-right:5px" :src="require(`@/assets/post/home.png`)"> 홈
+            <img style="width:6px; height:10px; margin:0px 10px" :src="require(`@/assets/post/next.png`)">  {{ categoryBig[0].name }}  -->
         </div>
     </v-row> 
     <template v-if="noData" >
@@ -38,6 +41,12 @@ export default {
         '$route.params.bigCategoryNum': 'fetchData'
     },
     methods: {
+        gohome(){
+          this.$router.push("/")
+        },
+        goBigCategory(){
+           this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: this.categoryBig[0].cate_big_id}})
+        },
         fetchData() {
             this.posts = []
             this.start = 0
@@ -73,8 +82,7 @@ export default {
     },
     mounted() {
         this.getCategoryName()
-        
-             
+
     },
 }
 </script>
@@ -84,5 +92,4 @@ export default {
     width: 80%;
     margin: 0 auto 0 auto;
 }
-
 </style>
