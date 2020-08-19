@@ -2,13 +2,16 @@
 <div>
     <ChatRoom id="chatRoom" ref="chatRoom" :roomId="roomId" :showRoom="showRoom" :messages="messages" @hideRoom="hideRoom" />
     <v-card id="chatList" width="200" class="mx-auto">
-        <v-toolbar color="#bb99cd" flat dense @click="expandChatList">
-            <v-toolbar-title color="#bb99cd" style="font-size:1rem">
-                톡톡<v-icon class="mx-3">mdi-chat</v-icon>
+        <v-toolbar color="#bb99cd" flat dense >
+            <v-toolbar-title color="#bb99cd" style="font-size:1rem; width:100%; display:flex; justify-content: space-between;">
+                <div @click="expandChatList" style="cursor: pointer;">톡톡<v-icon class="mx-3">mdi-chat</v-icon></div> <v-icon @click="showHelpMsg" style="cursor: pointer;" title='제품페이지의 "채팅" 혹은 회원정보의 "채팅아이콘"을 클릭하면 채팅방을 개설할 수 있습니다.' id="chatHelp">mdi-help-circle-outline</v-icon>
             </v-toolbar-title>
         </v-toolbar>
-
-        <v-virtual-scroll :items="chatrooms" :item-height="45" height="350" id="userListBox">
+        <div id="userListBox" style="height:350px;">
+        <v-card-item><v-alert color="#f5edf7" dismissible close-icon="mdi-close-circle-outline" v-model="showHelp" id="helpMsg" style="font-size:10px; z-index:99;">제품페이지의 <strong>채팅</strong> 혹은 회원정보의 <strong>채팅아이콘</strong>을 클릭하면 채팅방을 개설할 수 있습니다.</v-alert></v-card-item>
+    
+        <v-virtual-scroll :items="chatrooms" :item-height="45"  height="350">
+            
             <template v-slot="{ item }">
                 <v-list-item @click="enterRoom(item.roomId)">
                     <v-list-item-avatar size="30" color="#bb99cd">
@@ -25,8 +28,9 @@
                     </v-list-item-icon>
                 </v-list-item>
             </template>
+            
         </v-virtual-scroll>
-    
+        </div>
         
     </v-card>
 </div>
@@ -53,6 +57,7 @@ export default {
             roomId: '',
             showRoom: false,
             messages: [],
+            showHelp: false,
         }
     },
     props: ['chatroomId'],
@@ -118,6 +123,10 @@ export default {
             }
             
         },
+        showHelpMsg() {
+            $('#userListBox').show();
+            this.showHelp = !this.showHelp
+        },
         hideRoom() {
             this.showRoom = false
             this.$refs.chatRoom.destroyed()
@@ -140,11 +149,7 @@ export default {
     position: fixed;
     bottom: 0;
     right: 15px;
-    z-index: 99;
-}
-
-.v-toolbar:hover {
-    cursor: pointer;
+    z-index: 3;
 }
 
 #chatRoom {
