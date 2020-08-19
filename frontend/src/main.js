@@ -17,7 +17,20 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import '@/sweetalert2/dist/sweetalert2.css';
  
 Vue.use(VueSweetalert2);
-Vue.use(InfiniteLoading)
+Vue.use(InfiniteLoading, {
+  slots: {
+    // keep default styles
+    noResults: '',
+
+    // remove default styles
+    noMore: '',
+
+    // hide slot
+    error: {
+      render: h => h('div'),
+    },
+  },
+})
 Vue.use(GSignInButton)
 Vue.config.productionTip = false
 
