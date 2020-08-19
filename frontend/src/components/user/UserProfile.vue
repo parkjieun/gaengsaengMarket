@@ -72,27 +72,29 @@
             <v-tab>판매 중</v-tab>
             <v-tab>판매 완료</v-tab>
             <v-tab v-if="myPage">찜한 글</v-tab>
+            
             <v-tab-item>
+                <v-divider></v-divider>
                 <PostList :posts="allPosts" id="postList"/>
                 <infinite-loading @infinite="allInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
             </v-tab-item>
             <v-tab-item>
+                <v-divider></v-divider>
                 <PostList :posts="onSalePosts" id="postList"/>
                 <infinite-loading @infinite="saleInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
             </v-tab-item>
             <v-tab-item>
+                <v-divider></v-divider>
                 <PostList :posts="soldOutPosts" id="postList"/>
                 <infinite-loading @infinite="soldoutInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
             </v-tab-item>
             <v-tab-item>
+                <v-divider></v-divider>
                 <PostList :posts="likePosts" id="postList"/>
                 <infinite-loading @infinite="likeInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
             </v-tab-item>
         </v-tabs>
-        <v-divider></v-divider>
-
-        <!-- product list -->
-        <!-- <PostList :posts="showPosts" id="postList"/> -->
+        
     </div>
 </template>
 
@@ -190,7 +192,7 @@ export default {
             })
         },
         likeInfiniteHandler($state) {
-            httpPost.get(`/api/post?sno=${this.likeStart}&like=true&user_id=`+userId)
+            httpPost.get(`/api/post?sno=${this.likeStart}&like=true&user_id=`+this.$route.params.uid)
             .then((res) => {
                 if (res.data.length) {
                     this.likeStart += 12;
