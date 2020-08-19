@@ -9,7 +9,9 @@
             <div>
                 <v-img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
                 <!-- <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" ></v-img> -->
-                <v-avatar v-else color="#bb99cd" size="200"><v-icon dark size="150">mdi-account</v-icon></v-avatar>
+                <div v-else style="width: 200px; height: 200px; display:flex; align-items:center; justify-content:center;">
+                    <v-avatar color="#bb99cd" size="150"><v-icon dark size="120">mdi-account</v-icon></v-avatar>
+                </div>
             </div>
         <!-- User Info -->
             
@@ -43,7 +45,9 @@
         <!-- profile image -->
             <div>
                 <v-img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
-                <v-img v-else :src="require(`@/assets/post/noUserImg.png`)" ></v-img>
+                 <div v-else style="width: 200px; height: 200px; display:flex; align-items:center; justify-content:center;">
+                    <v-avatar color="#bb99cd" size="150"><v-icon dark size="120">mdi-account</v-icon></v-avatar>
+                </div>
             </div>
         <!-- User Info -->
             
@@ -64,15 +68,31 @@
         <!-- menu -->
         <v-divider style="margin-top:30px;"></v-divider>
         <v-tabs grow color="#3d1860">
-            <v-tab @click="allProduct()">총 판매</v-tab>
-            <v-tab @click="onSale()">판매 중</v-tab>
-            <v-tab @click="soldOut()">판매 완료</v-tab>
-            <v-tab v-if="myPage" @click="likePost()">찜한 글</v-tab>
+            <v-tab>총 판매</v-tab>
+            <v-tab>판매 중</v-tab>
+            <v-tab>판매 완료</v-tab>
+            <v-tab v-if="myPage">찜한 글</v-tab>
+            <v-tab-item>
+                <PostList :posts="allPosts" id="postList"/>
+                <infinite-loading @infinite="allInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
+            </v-tab-item>
+            <v-tab-item>
+                <PostList :posts="onSalePosts" id="postList"/>
+                <infinite-loading @infinite="saleInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
+            </v-tab-item>
+            <v-tab-item>
+                <PostList :posts="soldOutPosts" id="postList"/>
+                <infinite-loading @infinite="soldoutInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
+            </v-tab-item>
+            <v-tab-item>
+                <PostList :posts="likePosts" id="postList"/>
+                <infinite-loading @infinite="likeInfiniteHandler" spinner="waveDots" ref="InfiniteLoading"></infinite-loading>
+            </v-tab-item>
         </v-tabs>
         <v-divider></v-divider>
 
         <!-- product list -->
-        <PostList :posts="showPosts" id="postList"/>
+        <!-- <PostList :posts="showPosts" id="postList"/> -->
     </div>
 </template>
 
@@ -81,6 +101,8 @@ import PostList from '@/components/post/PostList.vue'
 import httpUser from '@/util/http-common'
 import httpPost from '@/util/http-post'
 import httpChat from "@/util/http-chat"
+import InfiniteLoading from 'vue-infinite-loading'
+
 
 import axios from 'axios'
 import { mapState, mapActions,mapGetters } from 'vuex'
@@ -88,17 +110,21 @@ const baseURL = "http://i3a504.p.ssafy.io"
 export default {
     data() {
         return {
-            showPosts: null,
             allPosts: [],
             onSalePosts: [],
             soldOutPosts: [],
             likePosts: [],
             user: null,
             myPage: '',
+            allStart: 0,
+            onsaleStart: 0,
+            soldoutStart: 0,
+            likeStart: 0,
         }
     },
     components: {
-        PostList
+        PostList,
+        InfiniteLoading
     },
     methods: {
         ...mapActions(['setUserProfile']),
@@ -115,45 +141,67 @@ export default {
             httpUser.get('/api/user/' + userID,{headers:{ Authorization: this.$store.state.authorization }})
             .then((res) => {
                 this.user = res.data
-                httpPost.get('/api/post?user_id=' + res.data.userId)
-                .then((res) => {
-                    this.setPosts(res.data)
-                })
             })
         },
         getLikePosts(userId) {
-            httpPost.get('/api/post?sno=0&like=true&user_id='+userId)
+            httpPost.get(`/api/post?sno=${this.likeStart}&like=true&user_id=`+userId)
             .then((res) => {
-                this.likePosts = res.data
+                this.likePosts.push(...res.data) 
             })
         },
-        setPosts(posts) {
-          this.allPosts = posts
-          this.showPosts = this.allPosts
-          // 판매 중인 상품
-          this.onSalePosts = posts.filter(function(post) {
-              return post.type === 1
-          })
-          // 판매 완료 상품
-          this.soldOutPosts = posts.filter(function(post) {
-              return post.type === 0
-          }) 
+        allInfiniteHandler($state) {
+            httpPost.get(`/api/post?sno=${this.allStart}&user_id=${this.$route.params.uid}`)
+            .then(res => {
+                if (res.data.length) {
+                    this.allStart += 12;
+                    this.allPosts.push(...res.data)
+                    $state.loaded();
+                } 
+                else {
+                    $state.complete();
+                }
+            })
         },
-        likePost() {
-            this.showPosts = this.likePosts
-
+        saleInfiniteHandler($state) {
+            httpPost.get(`/api/post?sno=${this.onsaleStart}&user_id=${this.$route.params.uid}&type=1`)
+            .then(res => {
+                if (res.data.length) {
+                    this.onsaleStart += 12;
+                    this.onSalePosts.push(...res.data)
+                    $state.loaded();
+                } 
+                else {
+                    $state.complete();
+                }
+            })
         },
-        
-        allProduct() {
-            this.showPosts = this.allPosts
+        soldoutInfiniteHandler($state) {
+            httpPost.get(`/api/post?sno=${this.soldoutStart}&user_id=${this.$route.params.uid}&type=0`)
+            .then(res => {
+                if (res.data.length) {
+                    console.log(res.data)
+                    this.soldoutStart += 12;
+                    this.soldOutPosts.push(...res.data)
+                    $state.loaded();
+                } 
+                else {
+                    $state.complete();
+                }
+            })
         },
-        onSale() {
-            this.showPosts = this.onSalePosts
+        likeInfiniteHandler($state) {
+            httpPost.get(`/api/post?sno=${this.likeStart}&like=true&user_id=`+userId)
+            .then((res) => {
+                if (res.data.length) {
+                    this.likeStart += 12;
+                    this.likePosts.push(...res.data) 
+                    $state.loaded();
+                } 
+                else {
+                    $state.complete();
+                }
+            })
         },
-        soldOut() {
-            this.showPosts = this.soldOutPosts
-        },
-
         updateBtn() {
             this.$router.push({ name: 'UserProfileUpdate' })
         },
@@ -215,6 +263,15 @@ export default {
         '$route'(){
             this.getUserProfile(this.$route.params.uid)
             this.isMyPage()
+            this.allPosts = []
+            this.onSalePosts = []
+            this.soldOutPosts = []
+            this.likePosts = []
+            this.allStart = 0
+            this.onsaleStart = 0
+            this.soldoutStart = 0
+            this.likeStart = 0
+            this.$refs.InfiniteLoading.stateChanger.reset();
         },
 
     },
@@ -229,7 +286,7 @@ export default {
 
 <style scoped>
 #userProfile {
-    width: 75%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
 }
