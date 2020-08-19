@@ -449,7 +449,7 @@
       <v-form fluid>
         <v-container
           ><v-layout row justify-center align-center>
-            <v-btn color="#A6E3E9" @click="createHandler()">
+            <v-btn color="#bb99cd" style="margin-right:10px;" @click="createHandler()">
               수정
             </v-btn>
             <v-btn @click="deletePost()" color="#ffcac2">
@@ -1013,6 +1013,10 @@ export default {
       this.isInOwnAddr = true;
     },
     deletePost() {
+      var x = confirm("삭제 하시겠습니까?");
+      if (!x)
+        return false;
+
       axios
         .delete("http://i3a504.p.ssafy.io:8000/api/post/" + this.postId, {
           headers: {

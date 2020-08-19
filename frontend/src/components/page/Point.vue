@@ -42,7 +42,7 @@
                     </v-row>
                     <v-row>
                         <v-col align="center">
-                            <v-btn @click="charge" dark color="green darken-1">
+                            <v-btn @click="charge" dark color="rgb(61, 24, 96)">
                                 충전하기
                             </v-btn>
                         </v-col>
@@ -53,7 +53,7 @@
     </v-container>
     <v-snackbar
         v-model="snackbar"
-        color="success"
+       color="#bb99cd"
         timeout="5000"
         top
         vertical
