@@ -188,7 +188,7 @@
         </v-container>
         <v-container>
           <v-row>
-            <v-col cols="2"><h2>제목</h2></v-col>
+            <v-col cols="2"><h3>제목</h3></v-col>
             <v-col>
               <ValidationProvider rules="required|max:125">
                 <v-text-field
@@ -206,7 +206,7 @@
         </v-container>
         <v-container>
           <v-row>
-            <v-col cols="2"><h2>카테고리</h2> </v-col>
+            <v-col cols="2"><h3>카테고리</h3> </v-col>
             <v-col cols="3">
               <ValidationProvider rules="required">
                 <v-select
@@ -243,7 +243,7 @@
         </v-container>
         <v-container>
           <v-row>
-            <v-col cols="2"><h2>거래타입</h2></v-col>
+            <v-col cols="2"><h3>거래타입</h3></v-col>
 
             <ValidationProvider rules="required" v-slot="{ errors }"
               ><v-col cols="1">
@@ -273,7 +273,7 @@
         </v-container>
         <v-container>
           <v-row v-show="toggle_exclusive.includes(1)">
-            <v-col cols="2"><h2>직거래 가능 요일</h2></v-col>
+            <v-col cols="2"><h3>직거래 가능 요일</h3></v-col>
             <ValidationProvider rules="required" v-slot="{ errors }">
               <v-col>
                 <v-btn-toggle v-model="toggle_weekend" multiple group>
@@ -309,7 +309,7 @@
         <br />
         <v-container>
           <v-row v-show="toggle_exclusive.includes(1)">
-            <v-col cols="2"><h2>직거래 장소</h2></v-col>
+            <v-col cols="2"><h3>직거래 장소</h3></v-col>
 
             <v-col>
               <div class="map_wrap">
@@ -364,7 +364,7 @@
         <v-form fluid>
           <v-container>
             <v-row>
-              <v-col cols="2"><h2>가격</h2></v-col>
+              <v-col cols="2"><h3>가격</h3></v-col>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
                 <v-col
                   ><v-text-field
@@ -389,7 +389,7 @@
 
         <v-form fluid>
           <v-container>
-            <h2>내용</h2>
+            <h3>내용</h3>
             <br />
             <v-container>
               <ValidationProvider rules="required|min:0" v-slot="{ errors }">
@@ -410,7 +410,7 @@
         </v-form>
 
         <v-container>
-          <h2>태그</h2>
+          <h3>태그</h3>
           <br />
           <v-col>
             <v-combobox
