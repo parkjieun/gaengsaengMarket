@@ -3,7 +3,7 @@
  <v-dialog v-model="directdialog" persistent max-width="600px">
           <v-card>
             <v-card-title style="float:right;padding-top:24px">
-              <img calss="txt_btn" :src="require(`@/assets/post/close.png`)" @click="close">
+              <a  @click="close"><img calss="txt_btn" :src="require(`@/assets/post/close.png`)"></a>
             </v-card-title>
             <v-card-text>
               <v-container>
