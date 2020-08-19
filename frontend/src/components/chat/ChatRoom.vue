@@ -142,7 +142,7 @@ export default {
         sendMessage: function () {
             if (this.text !== "") {
                 this.stomp.send("/pub/chat/message/" + this.roomId, JSON.stringify({
-                    userId: this.userId,
+                    userId: this.$store.state.myProfile.userId,
                     content: this.text
                 }), {});
                 this.text = '';
