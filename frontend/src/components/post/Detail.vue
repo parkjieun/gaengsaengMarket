@@ -51,7 +51,7 @@
                   <span style="color:#6E47EE"  v-else-if="item.deal_type == 2">직거래</span>
                   <span style="color:#6E47EE" v-else>택배/직거래</span>
                 
-                  <span style="color:#6E47EE" v-if="item.deal_weak != 0">
+                  <span style="color:#6E47EE" v-if="item.deal_type != 1">
                     ( {{day}} )
                   </span>
                 </div>
