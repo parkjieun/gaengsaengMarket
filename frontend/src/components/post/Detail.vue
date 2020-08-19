@@ -164,7 +164,7 @@
 
         <v-row v-if="myProfile != null" >  
           <v-col cols="12" style="text-align:right"  v-show="item.user_id ==  myProfile.userId" >    
-            <v-btn class="ma-2" tile outlined color="#2FA599" @click="goPostUpdate" >
+            <v-btn class="ma-2" tile outlined color="#643579" @click="goPostUpdate" >
               <v-icon left>mdi-pencil</v-icon> 수정하기
             </v-btn>
           </v-col>
