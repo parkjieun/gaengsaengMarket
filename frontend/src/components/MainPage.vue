@@ -5,11 +5,18 @@
             <v-col align="center" style="margin:auto;padding:0px;">
                 <v-carousel style="z-index:5;" delimiter-icon="mdi-minus" height="250px" cycle hide-delimiter-background :show-arrows="false">
                     
-                    <v-carousel-item src="https://media.bunjang.co.kr/images/nocrop/494869579.jpg">
+                    <!-- <v-carousel-item src="https://media.bunjang.co.kr/images/nocrop/494869579.jpg">
                     </v-carousel-item>
                     <v-carousel-item src="https://media.bunjang.co.kr/images/nocrop/485696213.jpg">
+                    </v-carousel-item> -->
+
+                    <v-carousel-item src="@/assets/banners/banner1.png">
                     </v-carousel-item>
+
                     <v-carousel-item src="@/assets/banners/banner2.png">
+                    </v-carousel-item>
+
+                    <v-carousel-item src="@/assets/banners/banner3.png">
                     </v-carousel-item>
                 </v-carousel>
             </v-col>
