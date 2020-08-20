@@ -424,7 +424,7 @@
               multiple
               small-chips
               solo
-              label="이미지 업로드 후, 태그 생성까지 5~10초 소요됩니다."
+              label="이미지 업로드 후, 태그 생성까지 2~30초 소요됩니다."
             >
               <template v-slot:selection="{ attrs, item, selected }">
                 <v-chip
