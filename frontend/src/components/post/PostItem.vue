@@ -46,7 +46,7 @@
         <v-card-text class="text-left" style="padding-bottom:0px;padding-top:5px;margin-top:5px">
 
          
-          <v-chip style="margin-right:3px;margin-top:3px" color="#f5edf7" text-color="#643579"  small v-for="tag in tags" :key="tag">
+          <v-chip style="margin-right:3px;margin-top:3px;pointer-events: none !important;" color="#f5edf7" text-color="#643579"  small v-for="tag in tags" :key="tag">
               {{ tag }}
             </v-chip>
         </v-card-text>
@@ -55,8 +55,8 @@
           <v-icon color="red" small class="mx-2">mdi-heart</v-icon><span class="caption"> {{post.like_cnt}} </span>
           </div>
           <div style="">
-            <v-chip class="my-1" small label v-if="post.deal_type !== 2" color="#e7d8eb" style="color:#3d1860; font-weight:bold; margin-right:5px;">택배</v-chip>            
-            <v-chip class="my-1" small label v-if="post.deal_type !== 1" color="#e7d8eb" style="color:#3d1860; font-weight:bold; margin-right:5px;">직거래</v-chip>
+            <v-chip class="my-1" small label v-if="post.deal_type !== 2" color="#e7d8eb" style="color:#3d1860; font-weight:bold; margin-right:5px;pointer-events: none !important;">택배</v-chip>            
+            <v-chip class="my-1" small label v-if="post.deal_type !== 1" color="#e7d8eb" style="color:#3d1860; font-weight:bold; margin-right:5px;pointer-events: none !important;">직거래</v-chip>
           </div>
       </v-card-actions>
     </v-card>
@@ -107,8 +107,3 @@ export default {
 } */
 </style>
 
-<style scoped>
-.v-chip{
-  pointer-events: none !important;
-}
-</style>
