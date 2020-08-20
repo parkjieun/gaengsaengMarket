@@ -88,7 +88,11 @@ export default {
   methods:{
     submitReply(){
       if(this.myProfile == null || this.myProfile == ""){
-        alert("로그인해주세요");
+       // alert("로그인해주세요");
+       this.$dialog.notify.error('로그인 해주세요', {
+          position: 'top-right',
+          timeout: 2000
+        })
       }else{
         if(this.message.length == 0 || this.message.length > 100){
             this.$refs.message.focus();
@@ -115,7 +119,11 @@ export default {
             }
           })
           .catch(() => {
-            alert('에러가 발생했습니다?');
+            //alert('에러가 발생했습니다?');
+            this.$dialog.notify.warning('에러가 발생했습니다', {
+              position: 'top-right',
+              timeout: 2000
+            })
           })
 
         }//else
@@ -124,9 +132,15 @@ export default {
     goUserProfile(user_id){
       this.$router.push({name: 'UserProfile', params: { uid : user_id }} )
     },
-    ReplyConfirmDelete(reply_id)
+    
+    async ReplyConfirmDelete(reply_id)
     {
-      var x = confirm("삭제 하시겠습니까?");
+      // var x = confirm("삭제 하시겠습니까?");
+      let x = await this.$dialog.warning({
+        text: '삭제 하시겠습니까?',
+        // title: '댓글 삭제',
+        persistent: false
+      })
       if (x)
         return this.goReplyDel(reply_id);
       else 
@@ -149,7 +163,11 @@ export default {
             }
       })
       .catch(() => {
-          alert('에러가 발생했습니다?');
+          //alert('에러가 발생했습니다?');
+          this.$dialog.notify.warning('에러가 발생했습니다', {
+            position: 'top-right',
+            timeout: 2000
+          })
       })
     }, //goReplyDel
   },

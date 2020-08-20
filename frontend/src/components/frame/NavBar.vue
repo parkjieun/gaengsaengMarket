@@ -123,7 +123,11 @@ export default {
                     name: 'post-create'
                 })
             } else {
-                alert("회원만 판매글을 등록할 수 있습니다. 로그인을 해주세요.")
+                //alert("회원만 판매글을 등록할 수 있습니다. 로그인을 해주세요.")
+                this.$dialog.notify.error('로그인 해주세요', {
+                    position: 'top-right',
+                    timeout: 2000
+                })
             }
 
         },
@@ -136,7 +140,11 @@ export default {
                     }
                 })
             } else {
-                alert("로그인을 해주세요")
+                //alert("로그인을 해주세요")
+                this.$dialog.notify.error('로그인 해주세요', {
+                    position: 'top-right',
+                    timeout: 2000
+                })
             }
 
         },
@@ -172,7 +180,11 @@ export default {
                 // let routeData = this.$router.resolve('/chat');
                 // window.open(routeData.href, "a", "width=400, height=600, left=100, top=50");
             } else {
-                alert("로그인을 해주세요")
+                //alert("로그인을 해주세요")
+                this.$dialog.notify.error('로그인을 해주세요', {
+                 position: 'top-right',
+                 timeout: 2000
+                })
             }
             
 

@@ -676,7 +676,11 @@ export default {
       var iwRemoveable = true; //인포윈도우 지울지말지 확인하는 불린
 
       if (!keyword.replace(/^\s+|\s+$/g, "")) {
-        alert("키워드를 입력해주세요!");
+        //alert("키워드를 입력해주세요!");
+           this.$dialog.notify.warning('키워드를 입력해주세요', {
+              position: 'top-right',
+              timeout: 2000
+            })
         return false;
       }
 
@@ -694,7 +698,11 @@ export default {
           // 페이지 번호를 표출합니다
           displayPagination(pagination);
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-          alert("검색 결과가 존재하지 않습니다.");
+            alert("검색 결과가 존재하지 않습니다.");
+            //  this.$dialog.notify.warning('검색 결과가 존재하지 않습니다', {
+            //     position: 'top-right',
+            //     timeout: 2000
+            //   })
           return;
         } else if (status === kakao.maps.services.Status.ERROR) {
           alert("검색 결과 중 오류가 발생했습니다.");
@@ -988,7 +996,11 @@ export default {
     },
     onFileChange() {
       if (this.UploadImages.length >= 10 || this.StandbyImgs.length > 10) {
-        alert("이미지는 10개 이하 까지 올릴 수 있습니다.");
+        //alert("이미지는 10개 이하 까지 올릴 수 있습니다.");
+           this.$dialog.notify.warning('이미지는 10개 이하 까지 올릴 수 있습니다', {
+              position: 'top-right',
+              timeout: 2000
+            })
         this.StandbyImgs = [];
       } else if (
         this.UploadImages.length <= 10 &&
@@ -1224,7 +1236,12 @@ export default {
     },
     createHandler() {
       if(this.toggle_exclusive.includes(1) && this.selectedTitleAddr == ''){
-        alert("직거래 장소를 선택해 주세요")
+        //alert("직거래 장소를 선택해 주세요")
+           this.$dialog.notify.warning('직거래 장소를 선택해 주세요', {
+            position: 'top-right',
+            timeout: 2000
+          })
+	
         return
       }
       let deal_type1 = 1;
@@ -1274,11 +1291,19 @@ export default {
           let msg = "등록 처리시 문제가 발생했습니다.";
           if (response.status == 200) {
             msg = "등록이 완료되었습니다.";
-            alert(msg);
+            //alert(msg);
+              this.$dialog.notify.success(msg, {
+                position: 'top-right',
+                timeout: 2000
+              })	
 
             this.$router.push({ name: "MainPage" });
           } else {
-            alert(msg);
+            //alert(msg);
+               this.$dialog.notify.warning(msg, {
+                position: 'top-right',
+                timeout: 2000
+              })
           }
         })
         .catch((error) => {
