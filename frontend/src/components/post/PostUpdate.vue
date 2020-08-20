@@ -120,11 +120,33 @@
   cursor: default;
   color: #777;
 }
+.post_loading{
+ position: fixed;
+  top: 0%;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 10;
+  background: #000;
+  opacity: 0.5;
+  height: 100%;
+}
 </style>
 
 <template>
   <v-app>
     <v-container fluid>
+    <div class="text-center post_loading" v-show="isActive">
+              <v-progress-circular
+          :size="100"
+          :width="10"
+          color="purple"
+          indeterminate
+        ></v-progress-circular>
+      </div>
+
       <v-container>
         <v-col>
           <v-layout row justify-center align-center
@@ -513,6 +535,7 @@ export default {
     search: null,
     y: 0,
     inputTags: [],
+    isActive: false,
   }),
   created() {
     axios
@@ -1151,7 +1174,7 @@ export default {
       for (let t in this.model) {
         allTags.push(this.model[t].text);
       }
-
+      this.isActive = true;
       axios
         .put(
           "http://i3a504.p.ssafy.io:8000/api/post/" +
@@ -1167,6 +1190,7 @@ export default {
           }
         )
         .then((response) => {
+          this.isActive = false;
           console.log(response);
           let msg = "수정 처리시 문제가 발생했습니다.";
           if (response.status == 200) {
@@ -1187,6 +1211,7 @@ export default {
           }
         })
         .catch((error) => {
+           this.isActive = false;
           console.log(error.response);
           if (!error.response && !error.status) {
             this.message = "서버가 응답하지 않습니다.";
