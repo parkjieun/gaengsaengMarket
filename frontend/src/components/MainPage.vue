@@ -26,9 +26,11 @@
             </v-tabs>
         </div>
         <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;margin-bottom:50px" v-for="post in categoryPosts" :key="post[0].id">
-            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center; margin-top: 20px;"><v-icon small color="#3d1860" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px; color:#3d1860;"> {{ post[0].name }} </span><v-btn text color="#3d1860" small @click="goToBigCatePage(post[0])">전체보기</v-btn> <v-btn text color="#3d1860" small @click="hideCategory(post[0])">접기</v-btn></div> 
-            <v-divider color="#3d1860" class="my-3"></v-divider>
-            <PostList v-bind:id="post[0].id+'posts'" :posts="post[1]"/>
+            <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center; margin-top: 20px;"><v-icon small color="#3d1860" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px; color:#3d1860;"> {{ post[0].name }} </span><v-btn text color="#bb99cd" small @click="goToBigCatePage(post[0])">전체보기</v-btn> <v-btn text color="#bb99cd"  small v-bind:id="post[0].id+'hideBtn'" @click="hideCategory(post[0])">접기</v-btn><v-btn text color="#bb99cd" v-bind:id="post[0].id+'openBtn'" small  @click="openCategory(post[0])" style="display:none;">펼치기</v-btn></div> 
+            <div v-bind:id="post[0].id+'posts'">
+                <v-divider color="#3d1860" class="my-3"></v-divider>
+                <PostList :posts="post[1]"/>
+            </div>
         </div>
 
     </v-container>
@@ -85,8 +87,15 @@ export default {
             this.$router.push({name:'BigCategoryPage', params:{bigCategoryNum: cateInfo.id}})
         },
         hideCategory(cateInfo) {
-            $(`#${cateInfo.id}posts`).toggle();
-        }
+            $(`#${cateInfo.id}posts`).hide();
+            $(`#${cateInfo.id}hideBtn`).hide();
+            $(`#${cateInfo.id}openBtn`).show();
+        },
+        openCategory(cateInfo) {
+            $(`#${cateInfo.id}posts`).show();
+            $(`#${cateInfo.id}hideBtn`).show();
+            $(`#${cateInfo.id}openBtn`).hide();
+        },
 
     },
     created() {
