@@ -247,7 +247,7 @@ export default {
     computed : {
         
         ...mapState(['myProfile']),
-        imgURL: function() { return baseURL + "/static/image/account/" + this.user.profileImg },
+        imgURL: function() { return baseURL + "/static/image/account/" + this.myProfile.profileImg },
         phone: function() { return this.myProfile.phone.slice(0,3) + '-' + this.myProfile.phone.slice(3,7) + '-' + this.myProfile.phone.slice(7,this.myProfile.phone.length)}
     },
     created() {
