@@ -124,8 +124,14 @@ export default {
             
         },
         showHelpMsg() {
-            $('#userListBox').show();
-            this.showHelp = !this.showHelp
+            if (this.$store.state.isAuthenticated) {
+                $('#userListBox').show();
+                this.showHelp = !this.showHelp
+            }
+            else {
+                alert("로그인한 사용자만 채팅기능을 사용할 수 있습니다.")
+            }
+            
         },
         hideRoom() {
             this.showRoom = false
