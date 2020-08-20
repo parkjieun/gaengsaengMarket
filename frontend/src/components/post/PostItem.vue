@@ -50,7 +50,7 @@
               {{ tag }}
             </v-chip>
         </v-card-text>
-      <v-card-actions style="position:absolute; bottom: 0; width:250px; display:flex; justify-content:space-between">
+      <v-card-actions style="position:absolute; bottom: 0; width:250px; display:flex; justify-content:space-between; height:40px;">
           <div>
           <v-icon color="red" small class="mx-2">mdi-heart</v-icon><span class="caption"> {{post.like_cnt}} </span>
           </div>

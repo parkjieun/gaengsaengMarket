@@ -145,12 +145,6 @@ export default {
                 this.user = res.data
             })
         },
-        getLikePosts(userId) {
-            httpPost.get(`/api/post?sno=${this.likeStart}&like=true&user_id=`+userId)
-            .then((res) => {
-                this.likePosts.push(...res.data) 
-            })
-        },
         allInfiniteHandler($state) {
             httpPost.get(`/api/post?sno=${this.allStart}&user_id=${this.$route.params.uid}`)
             .then(res => {
@@ -255,7 +249,6 @@ export default {
     created() {
         this.getUserProfile (this.$route.params.uid)
         this.setUserProfile()
-        this.getLikePosts(this.$route.params.uid)
     },
     mounted() {
         this.isMyPage()

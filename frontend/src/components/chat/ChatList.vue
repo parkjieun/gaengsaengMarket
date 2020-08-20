@@ -149,7 +149,7 @@ export default {
     position: fixed;
     bottom: 0;
     right: 15px;
-    z-index: 3;
+    z-index: 99;
 }
 
 #chatRoom {
