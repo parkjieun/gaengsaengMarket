@@ -716,7 +716,11 @@ export default {
       var iwRemoveable = true; //인포윈도우 지울지말지 확인하는 불린
 
       if (!keyword.replace(/^\s+|\s+$/g, "")) {
-        alert("키워드를 입력해주세요!");
+        //alert("키워드를 입력해주세요!");
+        this.$dialog.notify.warning('키워드를 입력해주세요', {
+            position: 'top-right',
+            timeout: 2000
+          })
         return false;
       }
 
@@ -1012,8 +1016,13 @@ export default {
       }
       this.isInOwnAddr = true;
     },
-    deletePost() {
-      var x = confirm("삭제 하시겠습니까?");
+    async deletePost() {
+      //var x = confirm("삭제 하시겠습니까?");
+      let x = await this.$dialog.warning({
+        text: '삭제 하시겠습니까?',
+        // title: '댓글 삭제',
+        persistent: false
+      })
       if (!x)
         return false;
 
@@ -1029,11 +1038,20 @@ export default {
           let msg = "삭제 처리시 문제가 발생했습니다.";
           if (response.status == 200) {
             msg = "삭제가 완료되었습니다.";
-            alert(msg);
+            //alert(msg);
+            this.$dialog.notify.success(msg, {
+              position: 'top-right',
+              timeout: 2000
+            })
 
             this.$router.push({ name: "MainPage" });
           } else {
-            alert(msg);
+            //alert(msg);
+               this.$dialog.notify.warning(msg, {
+                position: 'top-right',
+                timeout: 2000
+              })
+	
           }
         });
     },
@@ -1059,7 +1077,11 @@ export default {
     },
     onFileChange() {
       if (this.UploadImages.length > 10 || this.StandbyImgs.length > 10) {
-        alert("이미지는 10개 이하 까지 올릴 수 있습니다.");
+        //alert("이미지는 10개 이하 까지 올릴 수 있습니다.");
+           this.$dialog.notify.warning('이미지는 10개 이하 까지 올릴 수 있습니다', {
+            position: 'top-right',
+            timeout: 2000
+          })
         this.StandbyImgs.pop();
       }
 
@@ -1149,10 +1171,19 @@ export default {
           let msg = "수정 처리시 문제가 발생했습니다.";
           if (response.status == 200) {
             msg = "수정이 완료되었습니다.";
-            alert(msg);
+            //alert(msg);
+             this.$dialog.notify.success(msg, {
+                position: 'top-right',
+                timeout: 2000
+              })
+
             this.$router.push(`/post/detail?post_id=${this.postId}`)
           } else {
-            alert(msg);
+            //alert(msg);
+               this.$dialog.notify.warning(msg, {
+                position: 'top-right',
+                timeout: 2000
+              })
           }
         })
         .catch((error) => {

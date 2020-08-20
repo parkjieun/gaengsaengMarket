@@ -214,16 +214,20 @@ export default {
         },
         createRoom(){
             if(this.myProfile == null || this.myProfile == ""){
-                            this.$swal({
-                        position: 'top-end',
+                this.$dialog.notify.error('로그인 해주세요', {
+                    position: 'top-right',
+                    timeout: 2000
+                })
+                    //         this.$swal({
+                    //     position: 'top-end',
 
-                        title: "로그인 해주세요",
-                        showConfirmButton: false,
-                        timer:1200,
-                        backdrop: false,
-                        heightAuto: false,
+                    //     title: "로그인 해주세요",
+                    //     showConfirmButton: false,
+                    //     timer:1200,
+                    //     backdrop: false,
+                    //     heightAuto: false,
                         
-                    });
+                    // });
             }else{
                 var params = new URLSearchParams();
                 params.append("receiverId", this.user.userId);

@@ -193,6 +193,7 @@ Vue.use(vueMoment)
 
 import PostDealform from "@/components/post/PostDealform.vue"
 
+
 export default {
  
   name: 'post-detail',
@@ -251,9 +252,18 @@ export default {
     },
     openDialog(){
       if(this.myProfile == null || this.myProfile == ""){
-        alert('로그인 해주세요');
+        //alert('로그인 해주세요');
+        this.$dialog.notify.error('로그인 해주세요', {
+          position: 'top-right',
+          timeout: 2000
+        })
+    
       }else if(this.item.type == 0){
-        alert('판매 완료된 상품입니다!');
+        //alert('판매 완료된 상품입니다!');
+        this.$dialog.notify.warning('판매 완료된 상품입니다', {
+          position: 'top-right',
+          timeout: 2000
+        })
       }else{
         this.dealdialog = true;
       }
@@ -267,7 +277,11 @@ export default {
     goPostLike(){
       //로그인 안했으면
       if(this.myProfile == null || this.myProfile == ""){
-          alert('로그인 해주세요');
+         // alert('로그인 해주세요');
+        this.$dialog.notify.error('로그인 해주세요', {
+          position: 'top-right',
+          timeout: 2000
+        })
       }else{
         http_post.post('/api/post/doLike?user_id=' +this.myProfile.userId +'&post_id=' + this.item.post_id, {}, 
             {
@@ -293,7 +307,11 @@ export default {
 
         })
         .catch(() => {
-          alert('에러가 발생했습니다?');
+          //alert('에러가 발생했습니다?');
+             this.$dialog.notify.warning('글을 불러오는데 에러가 발생했습니다', {
+              position: 'top-right',
+              timeout: 2000
+            })
         })
       }
     },
@@ -303,16 +321,21 @@ export default {
     },
     createRoom(){
       if(this.myProfile == null || this.myProfile == ""){
-                      this.$swal({
-                position: 'top-end',
+            //           this.$swal({
+            //     position: 'top-end',
 
-                title: "로그인 해주세요",
-                showConfirmButton: false,
-                timer:1200,
-                backdrop: false,
-                heightAuto: false,
+            //     title: "로그인 해주세요",
+            //     showConfirmButton: false,
+            //     timer:1200,
+            //     backdrop: false,
+            //     heightAuto: false,
                 
-            });
+            // });
+
+        this.$dialog.notify.error('로그인 해주세요', {
+          position: 'top-right',
+          timeout: 2000
+        })
       }else{
         var params = new URLSearchParams();
         params.append("receiverId", this.item.user_id);
@@ -340,6 +363,7 @@ export default {
   data () {
     return {
         dealdialog: false,
+       // hasAttribute: null
       }
   },
   components: {
