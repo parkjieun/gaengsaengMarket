@@ -175,12 +175,20 @@ export default {
           }else{
             msg = '이미 판매된 상품입니다.';
           }
-        alert(msg);
+        //alert(msg);
         //this.myProfile.pointVal -= this.item.price;
+        this.$dialog.notify.success(msg, {
+          position: 'top-right',
+          timeout: 2000
+        })
 
       })
       .catch(() => {
-        alert('에러가 발생했습니다?');
+        //alert('에러가 발생했습니다?');
+           this.$dialog.notify.warning('에러가 발생했습니다', {
+            position: 'top-right',
+            timeout: 2000
+          })
       })
     },
     pointChange(){

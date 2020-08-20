@@ -111,13 +111,23 @@ export default {
                 })
                 .then(
                     response => {
-                        alert(response.data.name + "방 개설에 성공하였습니다.")
+                        //(response.data.name + "방 개설에 성공하였습니다.")
+                             this.$dialog.notify.success("방 개설에 성공하였습니다", {
+                              position: 'top-right',
+                              timeout: 2000
+                            })	
                         this.receiverId = '';
                         this.findAllRoom();
                     }
                 )
                 .catch(response => {
-                    alert("채팅방 개설에 실패하였습니다.");
+                   // alert("채팅방 개설에 실패하였습니다.");
+                      this.$dialog.notify.warning('채팅방 개설에 실패하였습니다', {
+                        position: 'top-right',
+                        timeout: 2000
+                      })
+	
+		
                 });
 
         },

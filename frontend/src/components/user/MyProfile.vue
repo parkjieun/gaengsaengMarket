@@ -117,7 +117,11 @@ export default {
     },
     mounted() {
         if ( !this.isAuthenticated ) {
-            alert("로그인을 해주세요")
+            //alert("로그인을 해주세요")
+            this.$dialog.notify.error('로그인을 해주세요', {
+                position: 'top-right',
+                timeout: 2000
+            })
             this.$router.push({name: 'MainPage'})
         }
     }
