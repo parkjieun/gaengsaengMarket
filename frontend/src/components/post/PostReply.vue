@@ -23,7 +23,7 @@
 
         
         <!-- <v-btn class="ma-2" outlined color="rgba(0,0,0,.87)" @click="submitReply"> -->
-        <v-btn class="my-0" outlined  @click="submitReply" style="background:#bb99cd !important;border-color:#bb99cd !important;height:40px;color:#fff !important">           
+        <v-btn class="my-0" outlined  @click="submitReply" style="background:#bb99cd !important;border-color:#bb99cd !important;height:40px;color:#fff !important;margin-left:5px">           
           <v-icon small>mdi-pencil</v-icon>  등록
         </v-btn>
                 
@@ -37,7 +37,7 @@
       <v-col cols="12" md="12" v-for="(reply, i) in replys" :key="i" style="border-bottom: 1px solid #ededed" >
         <v-row>
           <v-col cols="1" >
-            <v-avatar color="#a6e3e9" size="48" @click="goUserProfile(reply.user_id)">
+            <v-avatar color="#bb99cd"  size="48" @click="goUserProfile(reply.user_id)">
               <img v-if="!!reply.profile_img" :src="`http://i3a504.p.ssafy.io/static/image/account/${reply.profile_img}`" alt="Profile-image">
               <v-icon v-else size="48" dark>mdi-account</v-icon>
             </v-avatar>
