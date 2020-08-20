@@ -133,7 +133,11 @@ export default {
                 this.showHelp = !this.showHelp
             }
             else {
-                alert("로그인한 사용자만 채팅기능을 사용할 수 있습니다.")
+                //alert("로그인한 사용자만 채팅기능을 사용할 수 있습니다.")
+                  this.$dialog.notify.error('로그인 해주세요', {
+                    position: 'top-right',
+                    timeout: 2000
+                 })
             }
             
         },
