@@ -43,9 +43,7 @@
         <v-card-subtitle class="py-2 text-left" style="height:24px;overflow:hidden;padding-bottom:5px; margin-bottum: 5px;">
            <v-icon color="#3d1860" x-small>mdi-currency-krw</v-icon><span style="color:#3d1860; font-weight:bold;">{{post.price | currency}}</span>
         </v-card-subtitle>
-        <v-card-text class="text-left" style="padding-bottom:0px;padding-top:5px;margin-top:5px">
-
-         
+        <v-card-text class="text-left" style="padding-bottom:0px;padding-top:5px;margin-top:5px; height: 60px; padding-left: 10px;">
           <v-chip style="margin-right:3px;margin-top:3px" color="#f5edf7" text-color="#643579"  small v-for="tag in tags" :key="tag">
               {{ tag }}
             </v-chip>
