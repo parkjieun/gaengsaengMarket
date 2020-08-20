@@ -44,7 +44,7 @@
         
         <!-- profile image -->
             <div>
-                <v-img v-if="!!user.profileImg" :src="imgURL" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
+                <v-img v-if="!!user.profileImg" :src="imgURL2" alt="Profile-image" :aspect-ratio="1" max-width="200" min-width="200" style="margin-left:15px;"> </v-img>
                  <div v-else style="width: 200px; height: 200px; display:flex; align-items:center; justify-content:center;">
                     <v-avatar color="#bb99cd" size="150"><v-icon dark size="120">mdi-account</v-icon></v-avatar>
                 </div>
@@ -248,6 +248,7 @@ export default {
         
         ...mapState(['myProfile']),
         imgURL: function() { return baseURL + "/static/image/account/" + this.myProfile.profileImg },
+        imgURL2: function() { return baseURL + "/static/image/account/" + this.user.profileImg },
         phone: function() { return this.myProfile.phone.slice(0,3) + '-' + this.myProfile.phone.slice(3,7) + '-' + this.myProfile.phone.slice(7,this.myProfile.phone.length)}
     },
     created() {
