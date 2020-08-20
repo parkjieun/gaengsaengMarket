@@ -102,6 +102,12 @@ export default {
   width:100px;
   overflow:hidden;
 }
+/* .v-chip{
+  pointer-events: none !important;
+} */
+</style>
+
+<style scoped>
 .v-chip{
   pointer-events: none !important;
 }
