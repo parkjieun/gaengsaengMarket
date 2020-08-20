@@ -25,7 +25,7 @@
                 <v-tab v-for="cate in categorytab" :key="cate.id" @click="goToCategory(cate.id)">{{cate.name}}</v-tab>
             </v-tabs>
         </div>
-        <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;" v-for="post in categoryPosts" :key="post[0].id">
+        <div class="postList" style="width:80%; margin-left:auto; margin-right:auto;margin-bottom:50px" v-for="post in categoryPosts" :key="post[0].id">
             <div class="categoryTitles" v-bind:id="post[0].id" style="align-items:center; margin-top: 20px;"><v-icon small color="#3d1860" >mdi-alpha-c-circle</v-icon><span style="margin: 5px 5px 5px 5px; color:#3d1860;"> {{ post[0].name }} </span><v-btn text color="#3d1860" small @click="goToBigCatePage(post[0])">전체보기</v-btn> <v-btn text color="#3d1860" small @click="hideCategory(post[0])">접기</v-btn></div> 
             <v-divider color="#3d1860" class="my-3"></v-divider>
             <PostList v-bind:id="post[0].id+'posts'" :posts="post[1]"/>
