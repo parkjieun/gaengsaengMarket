@@ -84,5 +84,12 @@ export default {
     bottom: 20px;
     left: 30px;
 }
+.v-card{
+	transition: transform .2s ease-in-out;
+}
+.v-card:hover{
+  transform: scale(1.05);
 
+  z-index:98;
+}
 </style>

@@ -1,36 +1,20 @@
 <template>
 <div style="cursor:pointer;">
-  <v-hover v-slot:default="{ hover }">
-    
+
     <v-card tile width="250px;" height="350" style="position:relative; min-width:250px;max-width:250px;">
+
       <div v-if="post.type===1">
         <v-img
         :src="'http://i3a504.p.ssafy.io/static/image/post/'+post.files.split(',')[0]"
         height="200px"
-        ><v-expand-transition>
-            <div
-              v-if="hover"
-
-              class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 white--text"
-              style="height: 100%;opacity:0.5;"
-            >
-            </div>
-          </v-expand-transition></v-img>
+        ></v-img>
       </div>
       <div v-else style="position: relateve;">
         
         <v-img
         :src="'http://i3a504.p.ssafy.io/static/image/post/'+post.files.split(',')[0]"
         height="200px" style="filter:brightness(50%);"
-        ><v-expand-transition>
-            <div
-              v-if="hover"
-
-              class="d-flex transition-fast-in-fast-out black darken-2 v-card--reveal display-3 white--text"
-              style="height: 100%;opacity:0.5;"
-            >
-            </div>
-          </v-expand-transition></v-img>
+        ></v-img>
         <h4 style="position:absolute; top:90px; color:white; width:250px; background:black; padding:5px; opacity: 0.8;">판매완료</h4>
       </div>
         <v-divider></v-divider>
@@ -58,7 +42,7 @@
           </div>
       </v-card-actions>
     </v-card>
-    </v-hover>
+
 </div>
 </template>
 
@@ -92,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card-title{
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -103,5 +87,13 @@ export default {
 /* .v-chip{
   pointer-events: none !important;
 } */
+.v-card{
+	transition: transform .2s ease-in-out;
+}
+.v-card:hover{
+  transform: scale(1.05);
+
+  z-index:98;
+}
 </style>
 
